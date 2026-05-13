@@ -11,13 +11,19 @@
 </div>
 
 <div class="gallery-grid">
-    {% for i in range(9) %}
-        {% include 'components/_card.html' %}
+    {% for recipe in recipes %}
+    {% set card_name = recipe %}
+    {% include 'components/_card.html' with context %}
     {% endfor %}
 </div>
 
 <div class="gallery-pagination">
-    <button class="pagination-btn prev-btn">←</button>
-    <button class="pagination-btn next-btn">→</button>
+    {% if has_prev %}
+    <a href="{{ url_for('recipes', limit=limit, offset=offset-limit) }}" class="pagination-btn prev-btn">←</a>
+    {% endif %}
+
+    {% if has_next %}
+    <a href="{{ url_for('recipes', limit=limit, offset=offset+limit) }}" class="pagination-btn next-btn">→</a>
+    {% endif %}
 </div>
 {% endblock %}

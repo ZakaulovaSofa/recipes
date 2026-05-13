@@ -9,8 +9,9 @@
         <h2 class="section-title">Новые рецепты</h2>
     </div>
     <div class="cards-grid">
-        {% for i in range(9) %}
-            {% include 'components/_card.html' %}
+        {% for recipe in recipes %}
+        {% set card_name = recipe %}
+        {% include 'components/_card.html' with context %}
         {% endfor %}
     </div>
 </section>
@@ -21,8 +22,9 @@
         <h2 class="section-title">Новые статьи</h2>
     </div>
     <div class="cards-grid">
-        {% for i in range(9) %}
-            {% include 'components/_card.html' %}
+        {% for article in articles %}
+        {% set card_name = article %}
+        {% include 'components/_card.html' with context %}
         {% endfor %}
     </div>
 </section>

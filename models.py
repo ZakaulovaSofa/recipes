@@ -1,15 +1,10 @@
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin  # Добавьте этот импорт
 from datetime import datetime
 import enum
-import os
 
-app = Flask(__name__)
-app.secret_key = 'your_super_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///culinary.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 
 # Enum классы
@@ -25,7 +20,7 @@ class RecipeStatusEnum(enum.Enum):
 
 
 # 1. USER
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -43,6 +38,14 @@ class User(db.Model):
     notes = db.relationship('Note', backref='user', lazy='dynamic')
     chefs = db.relationship('Chef', backref='admin', lazy='dynamic')
     articles = db.relationship('Article', backref='author', lazy='dynamic')
+
+    def set_password(self, password):
+        """Создает хеш из чистого пароля."""
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        """Сравнивает чистый пароль с хешем в базе."""
+        return check_password_hash(self.password_hash, password)
 
 
 # 2. RECIPE (с полем ingredients: array(JSON))
@@ -168,11 +171,3 @@ class Note(db.Model):
     text = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-
-# Создание таблиц
-with app.app_context():
-    db.create_all()
-
-if __name__ == '__main__':
-    app.run(debug=True)

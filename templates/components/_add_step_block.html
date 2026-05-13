@@ -1,16 +1,20 @@
 <div class="step-block">
-    {# loop.index будет работать, если вывести уже существующие шаги при редактировании #}
     <div class="step-number-pill">Шаг {{ loop.index if loop else 1 }}</div>
     <div class="step-card">
         <div class="step-image-dropzone">
             <label class="step-image-label">
-                {# name="step_images[]" позволит загрузить пачку фото #}
-                <input type="file" name="step_images[]" class="step-image-input" accept="image/*">
+                <input type="file"
+                       name="step_images[]"
+                       class="step-image-input"
+                       accept="image/*">
                 <span class="step-image-placeholder">Загрузите фото шага</span>
             </label>
         </div>
         {# name="step_descriptions[]" соберет все тексты в список #}
-        <textarea name="step_descriptions[]" class="step-description-textarea" placeholder="Описание шага..." rows="3" required>{{ step.description if step else '' }}</textarea>
+        <textarea name="step_descriptions[]"
+                  class="step-description-textarea"
+                  placeholder="Описание шага..."
+                  rows="3" required></textarea>
     </div>
     <button type="button" class="step-delete-btn" title="Удалить шаг">×</button>
 </div>

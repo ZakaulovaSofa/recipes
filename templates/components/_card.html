@@ -1,16 +1,18 @@
+{% if card_name == recipe %}
+
 <div class="card">
-    {# Ссылка обертывает всю карточку, чтобы на нее можно было нажать #}
-    <a href="{{ url_for(detail_endpoint, id=item_id) }}" class="card-link">
+    <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}"
+       class="card-link">
         <div class="card-inner">
             <div class="card-image">
-                {# Если фото нет, будет заглушка заглушку #}
-                <img src="{{ image_url if image_url else 'https://placehold.co' }}" 
-                     alt="{{ title }}">
+                <img src="{{ recipe.main_image_url if recipe.main_image_url else 'https://placehold.co/400x300' }}"
+                     alt="{{ recipe.title }}">
             </div>
-            <div class="card-text">
-                {# Название рецепта/статьи#}
-                {{ title }}
-            </div>
+            <div class="card-text">{{ recipe.title }}</div>
         </div>
     </a>
 </div>
+
+{% else %}
+
+{% endif %}
