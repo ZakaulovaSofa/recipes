@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Добавить статью{% endblock %}
+
+{% block main_class %}article-add-main{% endblock %}
+{% block container_class %}article-add-container{% endblock %}
+
+{% block content %}
+<div class="article-add-header-wrapper">
+    <div class="article-add-header-pill">Добавить статью</div>
+</div>
+
+<form class="article-add-form" method="post" enctype="multipart/form-data">
+    <div class="article-add-field">
+        <input type="text" name="title" class="article-add-title-input" placeholder="Введите название статьи" required>
+    </div>
+
+    <div class="article-add-field">
+        <div class="article-add-image-card">
+            <label class="article-add-image-dropzone">
+                <input type="file" name="image" class="article-add-image-input" accept="image/*">
+                <span class="article-add-image-placeholder">Загрузите фото</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="article-add-field">
+        <textarea name="content" class="article-add-content-textarea" placeholder="Введите текст статьи..." rows="10" required></textarea>
+    </div>
+
+    <div class="article-add-submit-wrapper">
+        <button type="submit" class="article-add-submit-btn">Опубликовать</button>
+    </div>
+</form>
+{% endblock %}

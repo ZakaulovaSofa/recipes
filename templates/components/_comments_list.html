@@ -1,0 +1,21 @@
+<div class="comments-title-wrapper">
+    <div class="comments-title-pill">Комментарии</div>
+</div>
+
+<div class="comments-container">
+    {# Цикл, который проходит по всем комментариям, которые передаст бэкенд #}
+    {% for comment in comments %}
+        
+        {# Проверяем: если автор комментария — это текущий вошедший пользователь #}
+        {% if current_user.is_authenticated and comment.author_id == current_user.id %}
+            {% include 'components/_comment_self.html' %}
+        {% else %}
+            {% include 'components/_comment_other.html' %}
+        {% endif %}
+
+    {% else %}
+        {# Если список комментариев пуст #}
+        <p class="no-comments-text">Комментариев пока нет. Будьте первым!</p>
+        
+    {% endfor %}
+</div>

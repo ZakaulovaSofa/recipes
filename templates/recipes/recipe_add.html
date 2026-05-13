@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Добавить рецепт{% endblock %}
+
+{% block main_class %}recipe-add-main{% endblock %}
+{% block container_class %}recipe-add-container{% endblock %}
+
+{% block content %}
+<div class="recipe-add-header-wrapper">
+    <div class="recipe-add-header-pill">Добавить рецепт</div>
+</div>
+
+{# Указываем url_for для отправки формы #}
+<form class="recipe-add-form" action="{{ url_for('recipe_add') }}" method="post" enctype="multipart/form-data">
+    
+    {# 1. Название #}
+    <div class="recipe-add-field">
+        <input type="text" name="title" class="recipe-add-title-input" placeholder="Введите название рецепта" required>
+    </div>
+
+    {# 2. Главное фото #}
+    <div class="recipe-add-field">
+        <div class="recipe-add-photo-card">
+            <label class="recipe-add-photo-dropzone">
+                <input type="file" name="main_photo" class="recipe-add-photo-input" accept="image/*" required>
+                <span class="recipe-add-photo-placeholder">Загрузите главное фото</span>
+            </label>
+        </div>
+    </div>
+
+    {# 3. Ингредиенты #}
+    <div class="recipe-add-field">
+        <div class="recipe-add-ingredients-card">
+            <div class="recipe-add-ingredients-title">Ингредиенты</div>
+            <div class="recipe-add-ingredients-list" id="ingredients-container">
+                {# Подключаем твой компонент строки ингредиента #}
+                {% include 'components/_add_ingredient_row.html' %}
+            </div>
+            {# id для JS, чтобы добавлять новые строки #}
+            <button type="button" class="recipe-add-plus-btn" id="add-ingredient">+</button>
+        </div>
+    </div>
+
+    {# 4. Описание #}
+    <div class="recipe-add-field">
+        <textarea name="description" class="recipe-add-description-textarea" placeholder="Введите описание рецепта..." rows="5" required></textarea>
+    </div>
+
+    {# 5. Шаги приготовления #}
+    <div class="recipe-add-field">
+        <div class="recipe-add-steps-card">
+            <div class="recipe-add-steps-title">Шаги приготовления</div>
+            <div class="recipe-add-steps-list" id="steps-container">
+                {# Подключаем твой компонент блока шага #}
+                {% include 'components/_add_step_block.html' %}
+            </div>
+            {# id для JS #}
+            <button type="button" class="recipe-add-plus-btn" id="add-step">+</button>
+        </div>
+    </div>
+
+    {# 6. Публикация #}
+    <div class="recipe-add-submit-wrapper">
+        <button type="submit" class="recipe-add-submit-btn">Опубликовать</button>
+    </div>
+</form>
+{% endblock %}

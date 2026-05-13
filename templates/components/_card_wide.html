@@ -1,0 +1,11 @@
+<div class="card-wide">
+    <a href="{{ url_for(detail_endpoint, id=item_id) }}" class="card-wide-link">
+        <div class="card-inner-wide">
+            <div class="card-image-wide">
+                <img src="{{ image_url if image_url else 'https://placehold.co/600x400/E9D7C1/76A8A9?text=Карточка' }}" 
+                     alt="{{ title }}">
+            </div>
+            <div class="card-text-wide">{{ title }}</div>
+        </div>
+    </a>
+</div>

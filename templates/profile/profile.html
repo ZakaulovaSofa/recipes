@@ -1,0 +1,95 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Профиль {{ user.login }}{% endblock %}
+
+{% block main_class %}profile-main{% endblock %}
+
+{% block content %}
+<!-- 1. Логин -->
+<div class="profile-login-wrapper">
+    <div class="profile-login-pill">
+        <span class="profile-login-text">{{ user.login }}</span>
+    </div>
+</div>
+
+<!-- 2. Статус -->
+<div class="profile-status-wrapper">
+    <div class="profile-status-pill">
+        <span class="profile-status-text">{{ user.rank if user.rank else 'Новичок' }}</span>
+    </div>
+</div>
+
+<!-- 3. Аватар -->
+<div class="profile-avatar-section">
+    <div class="avatar-card">
+        <div class="avatar-image-placeholder">
+            <img src="{{ user.avatar_url if user.avatar_url else 'https://placehold.co' }}" alt="Аватар">
+        </div>
+    </div>
+    <div class="avatar-change-btn-wrapper">
+        {# Для разработчика: форма для загрузки фото #}
+        <form action="{{ url_for('update_avatar') }}" method="POST" enctype="multipart/form-data">
+            <label class="avatar-change-btn" style="cursor:pointer;">
+                Изменить фото
+                <input type="file" name="avatar" style="display:none;" onchange="this.form.submit()">
+            </label>
+        </form>
+    </div>
+</div>
+
+<!-- 4. Быстрые действия -->
+<div class="profile-actions">
+    <a href="{{ url_for('cart') }}" class="action-btn action-btn-red" style="text-decoration:none; text-align:center;">Моя корзина</a>
+    <a href="{{ url_for('favorites') }}" class="action-btn action-btn-teal" style="text-decoration:none; text-align:center;">Избранные рецепты</a>
+</div>
+
+<!-- 5. Секция: Избранное -->
+<div class="profile-section">
+    <div class="section-title-wrapper">
+        <h2 class="section-title section-title-wide">Избранные рецепты</h2>
+    </div>
+    <div class="profile-cards-row">
+        {% for recipe in user.favorite_recipes[:3] %}
+            {# Совет: создай в компонентах _card_wide.html и используй здесь #}
+            <div class="card-wide">
+                <a href="{{ url_for('recipe_detail', id=recipe.id) }}">
+                    <div class="card-inner-wide">
+                        <div class="card-image-wide">
+                            <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
+                        </div>
+                        <div class="card-text-wide">{{ recipe.title }}</div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- 6. Секция: Мои рецепты -->
+<div class="profile-section">
+    <div class="section-title-wrapper">
+        <h2 class="section-title section-title-wide">Мои рецепты</h2>
+    </div>
+    <div class="profile-cards-row">
+        {% for recipe in user.my_recipes[:3] %}
+            <div class="card-wide">
+                <a href="{{ url_for('recipe_manage', id=recipe.id) }}">
+                    <div class="card-inner-wide">
+                        <div class="card-image-wide">
+                            <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
+                        </div>
+                        <div class="card-text-wide">{{ recipe.title }}</div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- 7. Футер -->
+<div class="profile-footer">
+    <a href="{{ url_for('recipe_add') }}" class="create-recipe-btn" style="text-decoration:none; text-align:center;">
+        Создать новый рецепт
+    </a>
+</div>
+{% endblock %}

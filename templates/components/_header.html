@@ -1,0 +1,36 @@
+<header class="header">
+    <div class="header-container container">
+        <button class="burger-btn" id="burgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav class="nav-menu" id="navMenu">
+            <ul class="nav-list">
+                {# Макрос для автоматической подсвеки активной ссылки #}
+                {% set endpoint = request.endpoint %}
+                
+                <li><a href="{{ url_for('index') }}" class="nav-link {% if endpoint == 'index' %}active{% endif %}">Главная</a></li>
+                
+                {# Если пользователь вошел, показываем Профиль, если нет - можно скрыть или оставить #}
+                <li><a href="{{ url_for('profile') }}" class="nav-link {% if endpoint == 'profile' %}active{% endif %}">Профиль</a></li>
+                
+                <li><a href="{{ url_for('recipes') }}" class="nav-link {% if endpoint == 'recipes' %}active{% endif %}">Рецепты</a></li>
+                <li><a href="{{ url_for('articles') }}" class="nav-link {% if endpoint == 'articles' %}active{% endif %}">Статьи</a></li>
+                <li><a href="{{ url_for('chefs') }}" class="nav-link {% if endpoint == 'chefs' %}active{% endif %}">Повара</a></li>
+                <li><a href="{{ url_for('cart') }}" class="nav-link {% if endpoint == 'cart' %}active{% endif %}">Корзина</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-buttons">
+            <a href="{{ url_for('index') }}" class="header-btn">Главная</a>
+            
+            {# Логика для БД: если юзер авторизован - кнопка Профиль, если нет - Вход #}
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('profile') }}" class="header-btn">Профиль</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="header-btn">Вход</a>
+            {% endif %}
+        </div>
+    </div>
+</header>

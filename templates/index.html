@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Главная{% endblock %}
+
+{% block content %}
+<!-- СЕКЦИЯ 1: НОВЫЕ РЕЦЕПТЫ -->
+<section class="section">
+    <div class="section-title-wrapper">
+        <h2 class="section-title">Новые рецепты</h2>
+    </div>
+    <div class="cards-grid">
+        {% for i in range(9) %}
+            {% include 'components/_card.html' %}
+        {% endfor %}
+    </div>
+</section>
+
+<!-- СЕКЦИЯ 2: НОВЫЕ СТАТЬИ -->
+<section class="section">
+    <div class="section-title-wrapper">
+        <h2 class="section-title">Новые статьи</h2>
+    </div>
+    <div class="cards-grid">
+        {% for i in range(9) %}
+            {% include 'components/_card.html' %}
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

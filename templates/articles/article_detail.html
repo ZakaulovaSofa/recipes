@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — {{ article.title }}{% endblock %}
+
+{% block main_class %}article-detail-main{% endblock %}
+{% block container_class %}article-detail-container{% endblock %}
+
+{% block content %}
+<!-- Заголовок и автор -->
+<div class="article-header-block">
+    <div class="article-title-wrapper">
+        <h1 class="article-title-pill">{{ article.title }}</h1>
+    </div>
+    <div class="article-author-wrapper">
+        <div class="article-author-pill">{{ article.author }}</div>
+    </div>
+</div>
+
+<!-- Медиа-блок -->
+<div class="article-media-block">
+    <div class="article-media-card">
+        <div class="article-media-inner">
+            {# Добавил заглушку на случай, если фото не прогрузится #}
+            <img src="{{ article.image_url if article.image_url else 'https://placehold.co' }}" alt="{{ article.title }}">
+        </div>
+    </div>
+</div>
+
+<!-- Текст статьи -->
+<div class="article-content-block">
+    <div class="article-content-card">
+        {# Фильтр |safe позволяет отображать переносы строк или HTML из базы #}
+        <div class="article-content-text">{{ article.content|safe }}</div>
+    </div>
+</div>
+
+<!-- Комментарии -->
+{% include 'components/_comments_list.html' %}
+
+<!-- Нижняя панель (Обернул в форму) -->
+<form action="{{ url_for('add_comment', article_id=article.id) }}" method="POST" class="article-footer-panel">
+    <div class="footer-input-wrapper">
+        {# Добавил name="text" #}
+        <input type="text" name="text" class="footer-comment-input" placeholder="Ввести комментарий..." required>
+    </div>
+    <div class="footer-submit-wrapper">
+        <button type="submit" class="footer-submit-btn">Опубликовать</button>
+    </div>
+</form>
+{% endblock %}

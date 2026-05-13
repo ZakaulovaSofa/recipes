@@ -1,0 +1,13 @@
+<div class="note-item">
+    <div class="note-title-pill">{{ note.title }}</div>
+    <div class="note-body-card">
+        <div class="note-body-text">{{ note.text }}</div>
+    </div>
+    <div class="note-actions">
+        <a href="{{ url_for('edit_note', id=note.id) }}" class="note-action-btn note-edit-btn" style="text-decoration:none;">Редактировать</a>
+        
+        <form action="{{ url_for('delete_note', id=note.id) }}" method="POST" style="display:inline;">
+            <button type="submit" class="note-action-btn note-delete-btn" onclick="return confirm('Удалить заметку?')">Удалить</button>
+        </form>
+    </div>
+</div>

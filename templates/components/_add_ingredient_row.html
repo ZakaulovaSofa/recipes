@@ -1,0 +1,15 @@
+<div class="ingredient-row">
+    <input type="text" 
+           name="ingredients[]" 
+           class="ingredient-name-input" 
+           placeholder="Ингредиент" 
+           value="{{ ingredient.name if ingredient else '' }}" required>
+           
+    <input type="text" 
+           name="amounts[]" 
+           class="ingredient-amount-input" 
+           placeholder="Кол-во" 
+           value="{{ ingredient.amount if ingredient else '' }}" required>
+           
+    <button type="button" class="ingredient-delete-btn" title="Удалить">×</button>
+</div>

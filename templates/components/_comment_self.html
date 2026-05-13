@@ -1,0 +1,21 @@
+<div class="comment-item comment-self">
+    <div class="comment-author-pill user-comment-author">{{ comment.author_name }}</div>
+    <div class="comment-text-card">
+        <div class="comment-text-content">{{ comment.text }}</div>
+    </div>
+    
+    <div class="comment-actions">
+        {# Кнопка редактирования #}
+        <button class="comment-action-btn comment-edit-btn" data-comment-id="{{ comment.id }}">
+            Редактировать
+        </button>
+        
+        {# Кнопка удаления #}
+        <form action="{{ url_for('delete_comment', id=comment.id) }}" method="POST" style="display:inline;">
+            <button type="submit" class="comment-action-btn comment-delete-btn" 
+                    onclick="return confirm('Удалить комментарий?')">
+                Удалить
+            </button>
+        </form>
+    </div>
+</div>

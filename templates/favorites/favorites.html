@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Избранные рецепты{% endblock %}
+
+{% block main_class %}favorites-main{% endblock %}
+{% block container_class %}favorites-container{% endblock %}
+
+{% block content %}
+<div class="favorites-header-wrapper">
+    <h1 class="favorites-title">Избранные рецепты</h1>
+</div>
+
+<div class="favorites-grid">
+    {% for recipe in favorites %}
+        {# Передаем данные конкретного рецепта в универсальный компонент #}
+        {% with 
+            item = recipe, 
+            title = recipe.title, 
+            image_url = recipe.image_url, 
+            detail_endpoint = 'recipe_detail', 
+            item_id = recipe.id 
+        %}
+            {% include 'components/_favorite_card.html' %}
+        {% endwith %}
+    {% else %}
+        <div class="empty-state">
+            <p>В избранном пока пусто. Сохраняйте лучшие рецепты, чтобы не потерять!</p>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="gallery-pagination">
+    <a href="{{ url_for('favorites', page=current_page-1) }}" class="pagination-btn {% if current_page == 1 %}disabled{% endif %}">←</a>
+    <a href="{{ url_for('favorites', page=current_page+1) }}" class="pagination-btn {% if not has_next %}disabled{% endif %}">→</a>
+</div>
+{% endblock %}

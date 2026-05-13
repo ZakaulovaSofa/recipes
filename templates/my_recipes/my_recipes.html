@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Мои рецепты{% endblock %}
+
+{% block main_class %}my-recipes-main{% endblock %}
+{% block container_class %}my-recipes-container{% endblock %}
+
+{% block content %}
+<div class="my-recipes-header-wrapper">
+    <h1 class="my-recipes-title">Мои рецепты</h1>
+</div>
+
+<div class="my-recipes-filter-wrapper">
+    <div class="dropdown">
+        <button class="filter-status-btn">Фильтр по статусу</button>
+    </div>
+</div>
+
+<div class="my-recipes-grid">
+    {% for recipe in my_recipes %}
+        {% with 
+            title = recipe.title, 
+            image_url = recipe.image_url, 
+            detail_endpoint = 'recipe_manage', 
+            item_id = recipe.id 
+        %}
+            {% include 'components/_card.html' %}
+        {% endwith %}
+    {% else %}
+        <p>Вы еще не создали ни одного рецепта.</p>
+    {% endfor %}
+</div>
+
+{# Пагинация #}
+<div class="my-recipes-pagination">
+    <a href="{{ url_for('my_recipes', page=current_page-1) }}" class="pagination-btn {% if current_page == 1 %}disabled{% endif %}">←</a>
+    <a href="{{ url_for('my_recipes', page=current_page+1) }}" class="pagination-btn {% if not has_next %}disabled{% endif %}">→</a>
+</div>
+
+<div class="my-recipes-footer">
+    {# Ссылка на форму создания нового рецепта #}
+    <a href="{{ url_for('recipe_add') }}" class="create-recipe-btn-footer" style="text-decoration: none; display: inline-block;">
+        Создать новый рецепт
+    </a>
+</div>
+{% endblock %}

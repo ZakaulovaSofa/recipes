@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Повара{% endblock %}
+
+{% block main_class %}gallery-main{% endblock %}
+{% block container_class %}gallery-container{% endblock %}
+
+{% block content %}
+<div class="gallery-header-wrapper">
+    <h1 class="gallery-title">Повара</h1>
+</div>
+
+<div class="gallery-grid">
+    {# Заменяем диапазон на реальный список поваров #}
+    {% for chef in chefs %}
+        {% with 
+            title = chef.full_name, 
+            image_url = chef.photo_url, 
+            detail_endpoint = 'chef_profile', 
+            item_id = chef.id 
+        %}
+            {% include 'components/_card.html' %}
+        {% endwith %}
+    {% else %}
+        <p>Поваров пока нет, но скоро они появятся!</p>
+    {% endfor %}
+</div>
+
+<div class="gallery-pagination">
+    {# Бэкенд-разработчик подставит сюда логику страниц #}
+    <a href="{{ url_for('chefs', page=current_page-1) }}" class="pagination-btn {% if current_page == 1 %}disabled{% endif %}">←</a>
+    <a href="{{ url_for('chefs', page=current_page+1) }}" class="pagination-btn {% if not has_next %}disabled{% endif %}">→</a>
+</div>
+{% endblock %}

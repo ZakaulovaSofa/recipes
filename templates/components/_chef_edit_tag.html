@@ -1,0 +1,6 @@
+<div class="chef-edit-tag-item">
+    <span class="chef-edit-tag-pill">{{ tag_name }}</span>
+    {# Скрытое поле передаст название тега на сервер при сохранении формы #}
+    <input type="hidden" name="tags[]" value="{{ tag_name }}">
+    <button type="button" class="chef-edit-tag-remove" aria-label="Удалить тег">×</button>
+</div>

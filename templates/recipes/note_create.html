@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Новая заметка{% endblock %}
+
+{% block main_class %}note-create-main{% endblock %}
+{% block container_class %}note-create-container{% endblock %}
+
+{% block content %}
+<div class="note-create-header-wrapper">
+    <div class="note-create-header-pill">Новая заметка</div>
+</div>
+
+<form class="note-create-form" method="post">
+    <div class="note-create-field">
+        <input type="text" name="title" class="note-create-title-input" placeholder="Введите название заметки" required>
+    </div>
+
+    <div class="note-create-field">
+        <textarea name="content" class="note-create-body-textarea" placeholder="Введите текст заметки" rows="6" required></textarea>
+    </div>
+
+    <div class="note-create-submit-wrapper">
+        <button type="submit" class="note-create-submit-btn">Сохранить</button>
+    </div>
+</form>
+{% endblock %}

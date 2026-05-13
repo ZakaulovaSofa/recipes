@@ -1,0 +1,14 @@
+<div class="recipe-step-item">
+    {# Jinja сама подставит 1, 2, 3 вместо loop.index #}
+    <div class="step-number-pill">Шаг {{ loop.index }}</div>
+    
+    <div class="step-card">
+        <div class="step-image">
+            {# Проверяем, есть ли фото шага в базе, если нет — ставим заглушку #}
+            <img src="{{ step.image_url if step.image_url else 'https://placehold.co/600x400/D4C5B0/76A8A9?text=Шаг' }}" 
+                 alt="Шаг {{ loop.index }}">
+        </div>
+        {# Текст из базы данных #}
+        <div class="step-text">{{ step.description }}</div>
+    </div>
+</div>

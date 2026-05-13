@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — {{ recipe.title }}{% endblock %}
+
+{% block main_class %}recipe-detail-main{% endblock %}
+{% block container_class %}recipe-detail-container{% endblock %}
+
+{% block content %}
+<!-- 1. Панель действий -->
+<div class="recipe-actions-bar">
+    <form action="{{ url_for('toggle_favorite', id=recipe.id) }}" method="POST">
+        <button type="submit" class="recipe-favorite-ribbon {{ 'is-active' if is_favorite else '' }}" id="favoriteBtn">
+            <svg width="28" height="32" viewBox="0 0 24 28" fill="none">
+                <path d="M2 2H22V24L12 18L2 24V2Z" fill="currentColor" stroke="white" stroke-width="1.5"/>
+            </svg>
+        </button>
+    </form>
+    
+    <div class="recipe-action-buttons">
+        <form action="{{ url_for('add_to_cart', id=recipe.id) }}" method="POST" style="display:inline;">
+            <button type="submit" class="recipe-action-btn action-cart">Добавить в корзину</button>
+        </form>
+        <a href="{{ url_for('recipe_notes', id=recipe.id) }}" class="recipe-action-btn action-notes" style="text-decoration:none;">Перейти к заметкам</a>
+    </div>
+</div>
+
+<!-- 2. Инфо-блок -->
+<div class="recipe-info-block">
+    <div class="recipe-title-wrapper">
+        <div class="recipe-title-pill">{{ recipe.title }}</div>
+    </div>
+    <div class="recipe-author-wrapper">
+        <div class="recipe-author-pill">{{ recipe.author_name }}</div>
+    </div>
+
+    <div class="recipe-ingredients-photo-row">
+        <div class="recipe-ingredients-box">
+            <div class="recipe-ingredients-title">Ингредиенты</div>
+            <ul class="recipe-ingredients-list">
+                {% for ingredient in recipe.ingredients %}
+                <li class="recipe-ingredient-item">
+                    <span class="ingredient-name">{{ ingredient.name }}</span>
+                    <span class="ingredient-amount">{{ ingredient.amount }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="recipe-photo-box">
+            <div class="recipe-photo-inner">
+                <img src="{{ recipe.image_url if recipe.image_url else 'https://placehold.co' }}" alt="{{ recipe.title }}">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Описание -->
+<div class="recipe-description-block">
+    <div class="recipe-description-card">
+        <div class="recipe-description-content">{{ recipe.description|safe }}</div>
+    </div>
+</div>
+
+<!-- 4. Шаги -->
+<div class="recipe-steps-block">
+    {% for step in recipe.steps %}
+        {% include 'components/_step_block.html' %}
+    {% endfor %}
+</div>
+
+<!-- 5. Комментарии (используем общий список) -->
+{% include 'components/_comments_list.html' %}
+
+<!-- 6. Форма нового комментария -->
+<form action="{{ url_for('add_recipe_comment', id=recipe.id) }}" method="POST" class="recipe-footer-panel">
+    <div class="footer-input-wrapper">
+        <input type="text" name="text" class="footer-comment-input" placeholder="Ввести комментарий" required>
+    </div>
+    <div class="footer-submit-wrapper">
+        <button type="submit" class="footer-submit-btn">Опубликовать</button>
+    </div>
+</form>
+{% endblock %}

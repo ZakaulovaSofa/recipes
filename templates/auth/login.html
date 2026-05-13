@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Вход в систему{% endblock %}
+
+{# Добавляем специальные классы, чтобы через CSS отцентровать форму по центру экрана без шапки #}
+{% block main_class %}login-main{% endblock %}
+{% block container_class %}login-container{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+    {# Блок для вывода ошибок (неверный пароль и т.д.) #}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-error">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('login') }}" method="post" class="login-form">
+        <input type="text" name="login" class="pill-input" placeholder="Логин" autocomplete="username" required>
+        <input type="password" name="password" class="pill-input" placeholder="Пароль" autocomplete="current-password" required>
+        <button type="submit" class="pill-btn">Вход в систему</button>
+    </form>
+</div>
+{% endblock %}

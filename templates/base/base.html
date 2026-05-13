@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>{% block title %}Be cooking{% endblock %}</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {# Показываем шапку только если мы НЕ на странице логина #}
+    {% if request.endpoint != 'login' %}
+        {% include 'components/_header.html' %}
+    {% endif %}
+
+    <main class="main {% block main_class %}{% endblock %}">
+        <div class="container {% block container_class %}{% endblock %}">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    {# Футер обычно на логине тоже скрывают для чистоты экрана #}
+    {% if request.endpoint != 'login' %}
+        {% include 'components/_footer.html' %}
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='js/burger.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

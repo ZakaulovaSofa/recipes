@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — {{ chef.name }}{% endblock %}
+
+{% block main_class %}chef-profile-main{% endblock %}
+{% block container_class %}chef-profile-container{% endblock %}
+
+{% block content %}
+<!-- 1. Блок главной фотографии -->
+<div class="chef-photo-wrapper">
+    <div class="chef-photo-card">
+        <div class="chef-photo-inner">
+            {# Добавили проверку на наличие фото #}
+            <img src="{{ chef.photo_url if chef.photo_url else 'https://placehold.co' }}" 
+                 alt="{{ chef.name }}">
+        </div>
+    </div>
+</div>
+
+<!-- 2. Заголовок (Имя повара) -->
+<div class="chef-name-wrapper">
+    <div class="chef-name-pill">{{ chef.name }}</div>
+</div>
+
+<!-- 3. Блок тегов (категории) -->
+<div class="chef-tags-wrapper">
+    {% for tag in chef.tags %}
+        {# Используем твой компонент тега #}
+        {% with tag_name = tag %}
+            {% include 'components/_chef_tag.html' %}
+        {% endwith %}
+    {% else %}
+        <p>Категории не указаны</p>
+    {% endfor %}
+</div>
+
+<!-- 4. Основной текстовый блок (Биография) -->
+<div class="chef-bio-wrapper">
+    <div class="chef-bio-card">
+        <div class="chef-bio-content">
+            {# Фильтр |safe на случай, если там есть HTML-разметка абзацев #}
+            {{ chef.bio|safe }}
+        </div>
+    </div>
+</div>
+{% endblock %}

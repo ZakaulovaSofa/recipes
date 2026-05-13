@@ -1,0 +1,13 @@
+<div class="total-row">
+    <div class="total-name-pill">{{ item.name }}</div>
+    <div class="total-amount-pill">{{ item.total_amount }}</div>
+    
+    {# Скрытый чекбокс с кастомным стилем #}
+    <label class="total-checkbox-wrapper">
+        <input type="checkbox" 
+               name="bought_{{ item.id }}" 
+               class="total-checkbox-input" 
+               {% if item.is_checked %}checked{% endif %}>
+        <div class="total-checkbox" role="presentation"></div>
+    </label>
+</div>

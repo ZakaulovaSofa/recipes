@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Статьи{% endblock %}
+
+{% block main_class %}gallery-main{% endblock %}
+{% block container_class %}gallery-container{% endblock %}
+
+{% block content %}
+
+<div class="gallery-grid">
+    {# Бэкенд сам пришлет ровно 9 (или меньше) статей для текущей страницы #}
+    {% for article in articles %}
+        {% with 
+            title = article.title, 
+            image_url = article.image_url, 
+            detail_endpoint = 'article_detail', 
+            item_id = article.id 
+        %}
+            {% include 'components/_card.html' %}
+        {% endwith %}
+    {% endfor %}
+</div>
+
+<div class="gallery-pagination">
+    {# Ссылки для перехода по страницам #}
+    <a href="{{ url_for('articles', page=current_page-1) }}" 
+       class="pagination-btn prev-btn {% if current_page == 1 %}disabled{% endif %}">←</a>
+    
+    <a href="{{ url_for('articles', page=current_page+1) }}" 
+       class="pagination-btn next-btn {% if not has_next %}disabled{% endif %}">→</a>
+</div>
+
+{% endblock %}

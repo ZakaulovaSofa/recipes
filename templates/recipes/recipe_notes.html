@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Заметки{% endblock %}
+
+{% block main_class %}notes-main{% endblock %}
+{% block container_class %}notes-container{% endblock %}
+
+{% block content %}
+<div class="notes-header-wrapper">
+    <div class="notes-header-pill">Заметки к рецепту</div>
+</div>
+
+<div class="notes-list">
+    {# Используем цикл по заметкам #}
+    {% for note in notes %}
+        {# Подключаем твой компонент заметки #}
+        {% include 'components/_note_item.html' %}
+    {% else %}
+        {# Если заметок нет (встроенная фишка Jinja) #}
+        <div class="notes-empty">
+            <div class="notes-empty-text">У вас пока нет заметок</div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="notes-footer">
+    {# Ссылка на создание новой заметки с привязкой к ID рецепта #}
+    <a href="{{ url_for('note_create', recipe_id=recipe_id) }}" class="notes-create-btn" style="text-decoration:none; text-align:center; display:flex; align-items:center; justify-content:center;">
+        Создать новую заметку
+    </a>
+</div>
+{% endblock %}
