@@ -10,8 +10,13 @@
     </div>
     <div class="cards-grid">
         {% for recipe in recipes %}
+        {% with
+        detail_endpoint = 'recipe_detail',
+        item_id = recipe.id
+        %}
         {% set card_name = recipe %}
         {% include 'components/_card.html' with context %}
+        {% endwith %}
         {% endfor %}
     </div>
 </section>

@@ -12,34 +12,62 @@
 
 <div class="my-recipes-filter-wrapper">
     <div class="dropdown">
-        <button class="filter-status-btn">Фильтр по статусу</button>
+        <button class="filter-status-btn" type="button">
+            {% if current_status %}
+            {{ status_labels[current_status] }}
+            {% else %}
+            Все рецепты
+            {% endif %}
+        </button>
+
+        <div class="dropdown-content">
+            <a href="{{ url_for('my_recipes') }}">Все рецепты</a>
+            <a href="{{ url_for('my_recipes', status='published') }}">Опубликованные</a>
+            <a href="{{ url_for('my_recipes', status='pending') }}">На модерации</a>
+            <a href="{{ url_for('my_recipes', status='rejected') }}">Отклонённые</a>
+        </div>
     </div>
 </div>
 
 <div class="my-recipes-grid">
     {% for recipe in my_recipes %}
-        {% with 
-            title = recipe.title, 
-            image_url = recipe.image_url, 
-            detail_endpoint = 'recipe_manage', 
-            item_id = recipe.id 
+    <div class="my-recipe-card">
+        {% with
+        detail_endpoint = 'recipe_manage',
+        item_id = recipe.id
         %}
-            {% include 'components/_card.html' %}
+        {% set card_name = recipe %}
+        {% include 'components/_card.html' with context %}
         {% endwith %}
+
+        {% if recipe.status.value == 'published' %}
+        <div class="recipe-status recipe-status-published">Опубликован</div>
+        {% elif recipe.status.value == 'pending' %}
+        <div class="recipe-status recipe-status-pending">На модерации</div>
+        {% elif recipe.status.value == 'rejected' %}
+        <div class="recipe-status recipe-status-rejected">Отказано</div>
+        {% endif %}
+    </div>
     {% else %}
-        <p>Вы еще не создали ни одного рецепта.</p>
+    <p>У вас нет рецептов с таким статусом</p>
     {% endfor %}
 </div>
 
-{# Пагинация #}
 <div class="my-recipes-pagination">
-    <a href="{{ url_for('my_recipes', page=current_page-1) }}" class="pagination-btn {% if current_page == 1 %}disabled{% endif %}">←</a>
-    <a href="{{ url_for('my_recipes', page=current_page+1) }}" class="pagination-btn {% if not has_next %}disabled{% endif %}">→</a>
+    {% if has_prev %}
+    <a href="{{ url_for('my_recipes', limit=limit, offset=offset-limit, status=current_status) }}"
+       class="pagination-btn">←</a>
+    {% endif %}
+
+    {% if has_next %}
+    <a href="{{ url_for('my_recipes', limit=limit, offset=offset+limit, status=current_status) }}"
+       class="pagination-btn">→</a>
+    {% endif %}
 </div>
 
 <div class="my-recipes-footer">
-    {# Ссылка на форму создания нового рецепта #}
-    <a href="{{ url_for('recipe_add') }}" class="create-recipe-btn-footer" style="text-decoration: none; display: inline-block;">
+    <a href="{{ url_for('recipe_add') }}" class="create-recipe-btn-footer"
+       style="text-decoration: none; display: inline-block;">
         Создать новый рецепт
     </a>
 </div>

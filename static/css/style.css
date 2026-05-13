@@ -285,39 +285,110 @@ body {
 
 /* ========== АДАПТИВ (ГЛАВНАЯ) ========== */
 @media (max-width: 1024px) {
-    .cards-grid { gap: 20px; }
-    .section-title { font-size: 1.6rem; padding: 10px 40px; }
+    .cards-grid {
+        gap: 20px;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+        padding: 10px 40px;
+    }
 }
 
 @media (max-width: 768px) {
-    .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    .section-title { font-size: 1.4rem; padding: 10px 32px; }
-    .section { margin-bottom: 50px; }
-    .header-btn { padding: 6px 16px; font-size: 0.9rem; }
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+        padding: 10px 32px;
+    }
+
+    .section {
+        margin-bottom: 50px;
+    }
+
+    .header-btn {
+        padding: 6px 16px;
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 640px) {
-    .cards-grid { grid-template-columns: 1fr; gap: 20px; }
-    .section-title { font-size: 1.3rem; padding: 8px 24px; }
-    .section-title-wrapper { margin-bottom: 30px; }
-    .main { margin-top: 70px; padding: 20px 0 40px; }
-    .header-btn { padding: 5px 14px; font-size: 0.85rem; }
-    .card-text { padding: 16px 16px 20px 16px; min-height: 75px; }
-    .card-image { padding: 12px 12px 0 12px; }
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+        padding: 8px 24px;
+    }
+
+    .section-title-wrapper {
+        margin-bottom: 30px;
+    }
+
+    .main {
+        margin-top: 70px;
+        padding: 20px 0 40px;
+    }
+
+    .header-btn {
+        padding: 5px 14px;
+        font-size: 0.85rem;
+    }
+
+    .card-text {
+        padding: 16px 16px 20px 16px;
+        min-height: 75px;
+    }
+
+    .card-image {
+        padding: 12px 12px 0 12px;
+    }
 }
 
 @media (max-width: 400px) {
-    .container { padding: 0 15px; }
-    .header-container { padding: 10px 15px; }
-    .header-btn { padding: 5px 12px; font-size: 0.8rem; }
-    .section-title { font-size: 1.2rem; padding: 6px 20px; }
+    .container {
+        padding: 0 15px;
+    }
+
+    .header-container {
+        padding: 10px 15px;
+    }
+
+    .header-btn {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        padding: 6px 20px;
+    }
 }
 
 @media (max-width: 480px) {
-    .login-container { max-width: 300px; }
-    .login-form { gap: 20px; }
-    .pill-btn { font-size: 1.2rem; padding: 14px 20px; }
-    .pill-input { padding: 13px 20px; font-size: 0.95rem; }
+    .login-container {
+        max-width: 300px;
+    }
+
+    .login-form {
+        gap: 20px;
+    }
+
+    .pill-btn {
+        font-size: 1.2rem;
+        padding: 14px 20px;
+    }
+
+    .pill-input {
+        padding: 13px 20px;
+        font-size: 0.95rem;
+    }
 }
 
 body.menu-open {
@@ -563,30 +634,101 @@ body.menu-open::before {
 
 /* Адаптив профиля */
 @media (max-width: 768px) {
-    .profile-cards-row { flex-wrap: wrap; justify-content: space-between; }
-    .card-wide { flex: 0 1 calc(50% - 12px); }
-    .profile-login-text { font-size: 1.4rem; }
-    .profile-status-text { font-size: 1.1rem; }
-    .action-btn { font-size: 1.2rem; padding: 16px 25px; }
-    .section-title-wide { font-size: 1.3rem; padding: 10px 25px; }
-    .create-recipe-btn { font-size: 1.2rem; padding: 18px 35px; }
+    .profile-cards-row {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .card-wide {
+        flex: 0 1 calc(50% - 12px);
+    }
+
+    .profile-login-text {
+        font-size: 1.4rem;
+    }
+
+    .profile-status-text {
+        font-size: 1.1rem;
+    }
+
+    .action-btn {
+        font-size: 1.2rem;
+        padding: 16px 25px;
+    }
+
+    .section-title-wide {
+        font-size: 1.3rem;
+        padding: 10px 25px;
+    }
+
+    .create-recipe-btn {
+        font-size: 1.2rem;
+        padding: 18px 35px;
+    }
 }
 
 @media (max-width: 540px) {
-    .profile-main { padding: 20px 16px 40px; }
-    .profile-cards-row { flex-direction: column; gap: 20px; }
-    .card-wide { flex: 1 1 100%; }
-    .profile-login-text { font-size: 1.2rem; }
-    .profile-status-text { font-size: 1rem; }
-    .profile-login-pill { padding: 14px 16px; }
-    .profile-status-pill { padding: 10px 16px; }
-    .avatar-card { max-width: 100%; padding: 16px; }
-    .avatar-change-btn-wrapper { max-width: 100%; }
-    .action-btn { font-size: 1.1rem; padding: 14px 20px; }
-    .section-title-wide { font-size: 1.1rem; padding: 8px 20px; }
-    .create-recipe-btn { font-size: 1.1rem; padding: 16px 25px; }
-    .card-text-wide { padding: 16px 16px 20px 16px; min-height: 75px; }
-    .card-image-wide { padding: 12px 12px 0 12px; }
+    .profile-main {
+        padding: 20px 16px 40px;
+    }
+
+    .profile-cards-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .card-wide {
+        flex: 1 1 100%;
+    }
+
+    .profile-login-text {
+        font-size: 1.2rem;
+    }
+
+    .profile-status-text {
+        font-size: 1rem;
+    }
+
+    .profile-login-pill {
+        padding: 14px 16px;
+    }
+
+    .profile-status-pill {
+        padding: 10px 16px;
+    }
+
+    .avatar-card {
+        max-width: 100%;
+        padding: 16px;
+    }
+
+    .avatar-change-btn-wrapper {
+        max-width: 100%;
+    }
+
+    .action-btn {
+        font-size: 1.1rem;
+        padding: 14px 20px;
+    }
+
+    .section-title-wide {
+        font-size: 1.1rem;
+        padding: 8px 20px;
+    }
+
+    .create-recipe-btn {
+        font-size: 1.1rem;
+        padding: 16px 25px;
+    }
+
+    .card-text-wide {
+        padding: 16px 16px 20px 16px;
+        min-height: 75px;
+    }
+
+    .card-image-wide {
+        padding: 12px 12px 0 12px;
+    }
 }
 
 /* ========== СТРАНИЦА КОРЗИНЫ ========== */
@@ -845,42 +987,51 @@ body.menu-open::before {
     .cart-container {
         max-width: 100%;
     }
+
     .cart-header-pill {
         font-size: 1.3rem;
         padding: 12px 30px;
     }
+
     .recipe-name-pill,
     .recipe-servings-pill {
         font-size: 0.95rem;
         padding: 10px 16px;
     }
+
     .ingredient-name-pill,
     .ingredient-amount-pill {
         font-size: 0.85rem;
         padding: 8px 14px;
     }
+
     .recipe-to-recipe-pill,
     .recipe-delete-pill {
         font-size: 0.9rem;
         padding: 10px 16px;
     }
+
     .total-name-pill {
         font-size: 0.85rem;
         padding: 8px 14px;
     }
+
     .total-amount-pill {
         font-size: 0.85rem;
         padding: 8px 14px;
     }
+
     .total-checkbox {
         width: 30px;
         height: 30px;
         border-radius: 10px;
     }
+
     .total-header-pill {
         font-size: 1rem;
         padding: 8px 24px;
     }
+
     .clear-cart-btn {
         padding: 12px 24px;
         font-size: 1rem;
@@ -891,12 +1042,15 @@ body.menu-open::before {
     .ingredient-row {
         gap: 10px;
     }
+
     .total-row {
         gap: 10px;
     }
+
     .recipe-header-row {
         gap: 10px;
     }
+
     .recipe-footer-row {
         gap: 10px;
     }
@@ -983,7 +1137,7 @@ body.menu-open::before {
         grid-template-columns: repeat(2, 1fr);
         gap: 25px;
     }
-    
+
     .gallery-title {
         font-size: 1.5rem;
         padding: 10px 35px;
@@ -998,19 +1152,19 @@ body.menu-open::before {
         margin-left: auto;
         margin-right: auto;
     }
-    
+
     .gallery-title {
         font-size: 1.3rem;
         padding: 8px 28px;
     }
-    
+
     .pagination-btn {
         width: 45px;
         height: 45px;
         font-size: 1.5rem;
         border-radius: 14px;
     }
-    
+
     .gallery-pagination {
         gap: 15px;
     }
@@ -1020,7 +1174,7 @@ body.menu-open::before {
     .gallery-grid {
         max-width: 280px;
     }
-    
+
     .gallery-title {
         font-size: 1.2rem;
         padding: 8px 24px;
@@ -1144,36 +1298,36 @@ body.menu-open::before {
     .chef-profile-container {
         max-width: 100%;
     }
-    
+
     .chef-photo-card {
         border-radius: 30px;
         padding: 15px;
     }
-    
+
     .chef-photo-inner {
         border-radius: 20px;
     }
-    
+
     .chef-name-pill {
         font-size: 1.1rem;
         padding: 10px 24px;
     }
-    
+
     .chef-tag-pill {
         font-size: 0.85rem;
         padding: 6px 18px;
     }
-    
+
     .chef-tags-wrapper {
         gap: 12px;
     }
-    
+
     .chef-bio-card {
         border-radius: 24px;
         padding: 20px;
         min-height: 160px;
     }
-    
+
     .chef-bio-content {
         font-size: 0.9rem;
     }
@@ -1184,20 +1338,21 @@ body.menu-open::before {
         font-size: 1rem;
         padding: 8px 20px;
     }
-    
+
     .chef-tag-pill {
         font-size: 0.8rem;
         padding: 5px 14px;
     }
-    
+
     .chef-tags-wrapper {
         gap: 10px;
     }
-    
+
     .chef-bio-card {
         padding: 16px;
     }
 }
+
 /* ========== СТРАНИЦА ДОБАВЛЕНИЯ/РЕДАКТИРОВАНИЯ ПОВАРА ========== */
 
 .chef-edit-main {
@@ -1494,41 +1649,41 @@ body.menu-open::before {
     .chef-edit-container {
         max-width: 100%;
     }
-    
+
     .chef-edit-photo-card {
         border-radius: 30px;
         padding: 15px;
     }
-    
+
     .chef-edit-photo-dropzone {
         border-radius: 20px;
     }
-    
+
     .chef-edit-photo-placeholder {
         font-size: 1rem;
     }
-    
+
     .chef-edit-name-input {
         font-size: 1.1rem;
         padding: 12px 20px;
     }
-    
+
     .chef-edit-tag-pill {
         font-size: 0.85rem;
         padding: 6px 16px;
     }
-    
+
     .chef-edit-tag-add {
         width: 38px;
         height: 38px;
         font-size: 1.4rem;
     }
-    
+
     .chef-edit-submit-btn {
         font-size: 1.1rem;
         padding: 14px 32px;
     }
-    
+
     .chef-edit-bio-textarea {
         padding: 16px;
         min-height: 140px;
@@ -1539,22 +1694,22 @@ body.menu-open::before {
     .chef-edit-tags-wrapper {
         gap: 10px;
     }
-    
+
     .chef-edit-tags-list {
         gap: 10px;
     }
-    
+
     .chef-edit-tag-pill {
         font-size: 0.8rem;
         padding: 5px 12px;
     }
-    
+
     .chef-edit-tag-add {
         width: 34px;
         height: 34px;
         font-size: 1.2rem;
     }
-    
+
     .chef-edit-submit-btn {
         font-size: 1rem;
         padding: 12px 24px;
@@ -2030,6 +2185,7 @@ body.menu-open::before {
     transform: scale(1.02);
     box-shadow: 0 8px 20px rgba(238, 65, 65, 0.3);
 }
+
 /* ========== АДАПТИВ ДЛЯ КАРТОЧКИ РЕЦЕПТА ========== */
 
 @media (max-width: 768px) {
@@ -2037,26 +2193,26 @@ body.menu-open::before {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .recipe-title-pill {
         font-size: 1.3rem;
         padding: 12px 30px;
     }
-    
+
     .recipe-author-pill {
         font-size: 1rem;
         padding: 6px 22px;
     }
-    
+
     .recipe-actions-bar {
         flex-wrap: wrap;
         gap: 15px;
     }
-    
+
     .recipe-action-buttons {
         flex-direction: row;
     }
-    
+
     .steps-grid {
         grid-template-columns: 1fr;
     }
@@ -2066,46 +2222,46 @@ body.menu-open::before {
     .recipe-detail-container {
         max-width: 100%;
     }
-    
+
     .recipe-title-pill {
         font-size: 1.2rem;
         padding: 10px 24px;
     }
-    
+
     .recipe-author-pill {
         font-size: 0.9rem;
         padding: 6px 18px;
     }
-    
+
     .recipe-ingredients-title {
         font-size: 1.1rem;
     }
-    
+
     .ingredient-name,
     .ingredient-amount {
         font-size: 0.85rem;
     }
-    
+
     .step-number-pill {
         font-size: 0.95rem;
         padding: 6px 22px;
     }
-    
+
     .comments-title-pill {
         font-size: 1.1rem;
         padding: 10px 28px;
     }
-    
+
     .footer-comment-pill {
         font-size: 1rem;
         padding: 12px 24px;
     }
-    
+
     .footer-submit-btn {
         font-size: 1.1rem;
         padding: 14px 32px;
     }
-    
+
     .comment-action-btn {
         padding: 6px 16px;
         font-size: 0.8rem;
@@ -2117,16 +2273,16 @@ body.menu-open::before {
         flex-direction: column;
         width: 100%;
     }
-    
+
     .recipe-actions-bar {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .recipe-favorite-ribbon {
         align-self: flex-start;
     }
-    
+
     .recipe-action-btn {
         width: 100%;
     }
@@ -2297,30 +2453,30 @@ body.menu-open::before {
     .notes-container {
         max-width: 100%;
     }
-    
+
     .notes-header-pill {
         font-size: 1.3rem;
         padding: 12px 30px;
     }
-    
+
     .note-title-pill {
         font-size: 1rem;
         padding: 8px 22px;
     }
-    
+
     .note-body-card {
         padding: 20px;
     }
-    
+
     .note-body-text {
         font-size: 0.95rem;
     }
-    
+
     .note-action-btn {
         padding: 8px 22px;
         font-size: 0.9rem;
     }
-    
+
     .notes-create-btn {
         font-size: 1.1rem;
         padding: 14px 32px;
@@ -2331,17 +2487,18 @@ body.menu-open::before {
     .note-actions {
         gap: 12px;
     }
-    
+
     .note-action-btn {
         padding: 8px 18px;
         font-size: 0.85rem;
     }
-    
+
     .notes-create-btn {
         font-size: 1rem;
         padding: 12px 24px;
     }
 }
+
 /* ========== СТРАНИЦА СОЗДАНИЯ НОВОЙ ЗАМЕТКИ ========== */
 
 .note-create-main {
@@ -2484,23 +2641,23 @@ body.menu-open::before {
     .note-create-container {
         max-width: 100%;
     }
-    
+
     .note-create-header-pill {
         font-size: 1.3rem;
         padding: 12px 30px;
     }
-    
+
     .note-create-title-input {
         font-size: 1rem;
         padding: 12px 20px;
     }
-    
+
     .note-create-body-textarea {
         padding: 16px;
         font-size: 0.95rem;
         min-height: 150px;
     }
-    
+
     .note-create-submit-btn {
         font-size: 1.1rem;
         padding: 14px 32px;
@@ -2513,23 +2670,24 @@ body.menu-open::before {
         font-size: 0.9rem;
         padding: 10px 16px;
     }
-    
+
     .note-create-body-textarea {
         padding: 14px;
         font-size: 0.9rem;
         min-height: 130px;
     }
-    
+
     .note-create-submit-btn {
         font-size: 1rem;
         padding: 12px 24px;
         max-width: 220px;
     }
-    
+
     .note-create-form {
         gap: 20px;
     }
 }
+
 /* ========== СТРАНИЦА ПРОСМОТРА СТАТЬИ ========== */
 
 .article-detail-main {
@@ -2836,49 +2994,49 @@ body.menu-open::before {
     .article-detail-container {
         max-width: 100%;
     }
-    
+
     .article-title-pill {
         font-size: 1.3rem;
         padding: 12px 30px;
     }
-    
+
     .article-author-pill {
         font-size: 1rem;
         padding: 8px 24px;
     }
-    
+
     .article-media-card {
         border-radius: 24px;
         padding: 15px;
     }
-    
+
     .article-media-inner {
         border-radius: 20px;
     }
-    
+
     .article-content-card {
         padding: 24px;
     }
-    
+
     .article-content-text {
         font-size: 0.95rem;
     }
-    
+
     .comments-title-pill {
         font-size: 1.2rem;
         padding: 10px 28px;
     }
-    
+
     .comment-text-card {
         max-width: 90%;
     }
-    
+
     .footer-comment-input {
         font-size: 0.95rem;
         padding: 12px 20px;
         max-width: 350px;
     }
-    
+
     .footer-submit-btn {
         font-size: 1.1rem;
         padding: 14px 32px;
@@ -2891,45 +3049,45 @@ body.menu-open::before {
         font-size: 1.1rem;
         padding: 10px 24px;
     }
-    
+
     .article-author-pill {
         font-size: 0.9rem;
         padding: 6px 20px;
     }
-    
+
     .article-content-card {
         padding: 20px;
     }
-    
+
     .comment-author-pill {
         font-size: 0.85rem;
         padding: 6px 18px;
     }
-    
+
     .comment-text-card {
         padding: 16px;
     }
-    
+
     .comment-text-content {
         font-size: 0.9rem;
     }
-    
+
     .comment-action-btn {
         padding: 6px 16px;
         font-size: 0.8rem;
     }
-    
+
     .comments-title-pill {
         font-size: 1rem;
         padding: 8px 24px;
     }
-    
+
     .footer-comment-input {
         font-size: 0.9rem;
         padding: 10px 18px;
         max-width: 300px;
     }
-    
+
     .footer-submit-btn {
         font-size: 1rem;
         padding: 12px 24px;
@@ -2941,11 +3099,11 @@ body.menu-open::before {
     .comment-text-card {
         max-width: 95%;
     }
-    
+
     .comment-actions {
         gap: 10px;
     }
-    
+
     .comment-action-btn {
         padding: 6px 14px;
         font-size: 0.75rem;
@@ -3135,42 +3293,42 @@ body.menu-open::before {
     .article-add-container {
         max-width: 100%;
     }
-    
+
     .article-add-header-pill {
         font-size: 1.3rem;
         padding: 12px 30px;
     }
-    
+
     .article-add-title-input {
         font-size: 1rem;
         padding: 12px 20px;
     }
-    
+
     .article-add-image-card {
         border-radius: 24px;
         padding: 15px;
     }
-    
+
     .article-add-image-dropzone {
         border-radius: 20px;
     }
-    
+
     .article-add-image-placeholder {
         font-size: 1rem;
     }
-    
+
     .article-add-content-textarea {
         padding: 16px;
         font-size: 0.95rem;
         min-height: 200px;
     }
-    
+
     .article-add-submit-btn {
         font-size: 1.1rem;
         padding: 14px 32px;
         max-width: 250px;
     }
-    
+
     .article-add-form {
         gap: 25px;
     }
@@ -3181,24 +3339,24 @@ body.menu-open::before {
         font-size: 1.1rem;
         padding: 10px 24px;
     }
-    
+
     .article-add-title-input {
         font-size: 0.9rem;
         padding: 10px 16px;
     }
-    
+
     .article-add-content-textarea {
         padding: 14px;
         font-size: 0.9rem;
         min-height: 160px;
     }
-    
+
     .article-add-submit-btn {
         font-size: 1rem;
         padding: 12px 24px;
         max-width: 220px;
     }
-    
+
     .article-add-form {
         gap: 20px;
     }
@@ -3472,26 +3630,26 @@ body.menu-open::before {
     .recipe-manage-container {
         max-width: 100%;
     }
-    
+
     .recipe-manage-ingredients-photo-row {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .recipe-manage-title-pill {
         font-size: 1.3rem;
         padding: 12px 30px;
     }
-    
+
     .recipe-manage-author-pill {
         font-size: 1rem;
         padding: 8px 24px;
     }
-    
+
     .recipe-manage-actions-bar {
         gap: 15px;
     }
-    
+
     .recipe-manage-action-btn {
         padding: 10px 24px;
         font-size: 0.9rem;
@@ -3503,29 +3661,29 @@ body.menu-open::before {
         font-size: 1.1rem;
         padding: 10px 24px;
     }
-    
+
     .recipe-manage-author-pill {
         font-size: 0.9rem;
         padding: 6px 20px;
     }
-    
+
     .recipe-manage-ingredients-title {
         font-size: 1.1rem;
     }
-    
+
     .recipe-manage-ingredients-box {
         padding: 20px;
     }
-    
+
     .recipe-manage-step-item .step-number-pill {
         font-size: 0.95rem;
         padding: 6px 22px;
     }
-    
+
     .recipe-manage-step-item .step-text {
         font-size: 0.95rem;
     }
-    
+
     .comments-title-pill {
         font-size: 1.1rem;
         padding: 10px 28px;
@@ -3538,32 +3696,33 @@ body.menu-open::before {
         align-items: center;
         gap: 12px;
     }
-    
+
     .recipe-manage-action-btn {
         width: 100%;
         max-width: 250px;
         text-align: center;
     }
-    
+
     .recipe-manage-title-pill {
         font-size: 1rem;
         padding: 8px 20px;
     }
-    
+
     .recipe-manage-step-item .step-number-pill {
         font-size: 0.9rem;
         padding: 6px 18px;
     }
-    
+
     .recipe-manage-step-item .step-text {
         font-size: 0.9rem;
         padding: 0;
     }
-    
+
     .comment-text-card {
         max-width: 95%;
     }
 }
+
 /* ========== СТРАНИЦА ДОБАВЛЕНИЯ РЕЦЕПТА ========== */
 
 .recipe-add-main {
@@ -3978,29 +4137,29 @@ body.menu-open::before {
     .recipe-add-container {
         max-width: 100%;
     }
-    
+
     .recipe-add-header-pill {
         font-size: 1.3rem;
         padding: 12px 30px;
     }
-    
+
     .ingredient-row {
         flex-wrap: wrap;
     }
-    
+
     .ingredient-name-input {
         flex: 100%;
     }
-    
+
     .ingredient-amount-input {
         flex: 1;
     }
-    
+
     .step-delete-btn {
         top: -10px;
         right: -10px;
     }
-    
+
     .recipe-add-submit-btn {
         font-size: 1.1rem;
         padding: 14px 32px;
@@ -4012,36 +4171,36 @@ body.menu-open::before {
     .ingredient-row {
         gap: 10px;
     }
-    
+
     .ingredient-name-input,
     .ingredient-amount-input {
         font-size: 0.85rem;
         padding: 10px 14px;
     }
-    
+
     .ingredient-delete-btn {
         width: 32px;
         height: 32px;
         font-size: 1.1rem;
     }
-    
+
     .step-number-pill {
         font-size: 0.9rem;
         padding: 6px 18px;
     }
-    
+
     .step-delete-btn {
         width: 32px;
         height: 32px;
         font-size: 1.1rem;
     }
-    
+
     .recipe-add-plus-btn {
         width: 44px;
         height: 44px;
         font-size: 1.8rem;
     }
-    
+
     .recipe-add-submit-btn {
         font-size: 1rem;
         padding: 12px 24px;
@@ -4145,7 +4304,7 @@ body.menu-open::before {
         grid-template-columns: repeat(2, 1fr);
         gap: 25px;
     }
-    
+
     .favorites-title {
         font-size: 1.5rem;
         padding: 10px 35px;
@@ -4160,17 +4319,17 @@ body.menu-open::before {
         margin-left: auto;
         margin-right: auto;
     }
-    
+
     .favorites-title {
         font-size: 1.3rem;
         padding: 8px 28px;
     }
-    
+
     .favorite-flag-btn {
         width: 36px;
         height: 36px;
     }
-    
+
     .favorite-flag-btn svg {
         width: 16px;
         height: 20px;
@@ -4181,12 +4340,12 @@ body.menu-open::before {
     .favorites-grid {
         max-width: 280px;
     }
-    
+
     .favorites-title {
         font-size: 1.2rem;
         padding: 8px 24px;
     }
-    
+
     .pagination-btn {
         width: 45px;
         height: 45px;
@@ -4308,12 +4467,12 @@ body.menu-open::before {
         grid-template-columns: repeat(2, 1fr);
         gap: 25px;
     }
-    
+
     .my-recipes-title {
         font-size: 1.5rem;
         padding: 10px 35px;
     }
-    
+
     .filter-status-btn {
         font-size: 0.9rem;
         padding: 10px 24px;
@@ -4328,23 +4487,23 @@ body.menu-open::before {
         margin-left: auto;
         margin-right: auto;
     }
-    
+
     .my-recipes-title {
         font-size: 1.3rem;
         padding: 8px 28px;
     }
-    
+
     .filter-status-btn {
         font-size: 0.85rem;
         padding: 8px 20px;
     }
-    
+
     .create-recipe-btn-footer {
         font-size: 1rem;
         padding: 14px 30px;
         max-width: 280px;
     }
-    
+
     .pagination-btn {
         width: 45px;
         height: 45px;
@@ -4357,20 +4516,187 @@ body.menu-open::before {
     .my-recipes-grid {
         max-width: 280px;
     }
-    
+
     .my-recipes-title {
         font-size: 1.2rem;
         padding: 8px 24px;
     }
-    
+
     .filter-status-btn {
         font-size: 0.8rem;
         padding: 8px 18px;
     }
-    
+
     .create-recipe-btn-footer {
         font-size: 0.9rem;
         padding: 12px 24px;
         max-width: 250px;
     }
+}
+
+.recipe-status {
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.recipe-status-published {
+    background-color: #d9f2df;
+    color: #237a3b;
+}
+
+.recipe-status-pending {
+    background-color: #fff0cc;
+    color: #b36b00;
+}
+
+.recipe-status-rejected {
+    background-color: #ffe0e0;
+    color: #b42323;
+}
+
+.profile-empty-text {
+    font-size: 16px;
+    color: #777;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.filter-status-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 180px;
+    background: #fff;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    border-radius: 14px;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-content a:hover {
+    background: #f3f3f3;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.my-recipe-card {
+    position: relative;
+}
+
+.recipe-status {
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.recipe-status-published {
+    background-color: #d9f2df;
+    color: #237a3b;
+}
+
+.recipe-status-pending {
+    background-color: #fff0cc;
+    color: #b36b00;
+}
+
+.recipe-status-rejected {
+    background-color: #ffe0e0;
+    color: #b42323;
+}
+
+.delete-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.delete-modal-overlay-active {
+    display: flex;
+}
+
+.delete-modal {
+    width: 90%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.delete-modal-title {
+    margin: 0 0 14px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.delete-modal-text {
+    margin: 0 0 28px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555;
+}
+
+.delete-modal-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+}
+
+.delete-modal-cancel,
+.delete-modal-confirm {
+    border: none;
+    border-radius: 999px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.delete-modal-cancel {
+    background: #eeeeee;
+    color: #333333;
+}
+
+.delete-modal-confirm {
+    background: #d94141;
+    color: #ffffff;
+}
+
+.delete-modal-cancel:hover {
+    background: #dddddd;
+}
+
+.delete-modal-confirm:hover {
+    background: #bd2f2f;
 }
