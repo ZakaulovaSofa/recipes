@@ -4,7 +4,7 @@ import os
 from werkzeug.utils import secure_filename
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, current_user, login_required
-from models import db, User, Recipe, RecipeStatusEnum
+from models import db, User, Recipe, RecipeStatusEnum, Favorite
 
 ALLOWED_AVATAR_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'svg'}
 
@@ -55,11 +55,21 @@ def profile():
         Recipe.created_at.desc()
     ).limit(3).all()
 
+    favorite_recipes = (
+        Recipe.query
+        .join(Favorite, Favorite.recipe_id == Recipe.id)
+        .filter(Favorite.user_id == current_user.id)
+        .order_by(Favorite.created_at.desc())
+        .limit(3)
+        .all()
+    )
+
     return render_template(
         'profile/profile.html',
         user=current_user,
         rank=rank,
-        my_recipes=my_recipes
+        my_recipes=my_recipes,
+        favorite_recipes=favorite_recipes
     )
 
 

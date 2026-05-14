@@ -53,32 +53,33 @@
 
 
 <!-- 4. Быстрые действия -->
-<!--<div class="profile-actions">-->
-<!--    <a href="{{ url_for('cart') }}" class="action-btn action-btn-red" style="text-decoration:none; text-align:center;">Моя корзина</a>-->
-<!--    <a href="{{ url_for('favorites') }}" class="action-btn action-btn-teal" style="text-decoration:none; text-align:center;">Избранные рецепты</a>-->
-<!--</div>-->
+<div class="profile-actions">
+    <a href="{{ url_for('cart') }}" class="action-btn action-btn-red" style="text-decoration:none; text-align:center;">Моя
+        корзина</a>
+</div>
 
 <!-- 5. Секция: Избранное -->
-<!--<div class="profile-section">-->
-<!--    <div class="section-title-wrapper">-->
-<!--        <h2 class="section-title section-title-wide">Избранные рецепты</h2>-->
-<!--    </div>-->
-<!--    <div class="profile-cards-row">-->
-<!--        {% for recipe in user.favorite_recipes[:3] %}-->
-<!--            {# Совет: создай в компонентах _card_wide.html и используй здесь #}-->
-<!--            <div class="card-wide">-->
-<!--                <a href="{{ url_for('recipe_detail', id=recipe.id) }}">-->
-<!--                    <div class="card-inner-wide">-->
-<!--                        <div class="card-image-wide">-->
-<!--                            <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">-->
-<!--                        </div>-->
-<!--                        <div class="card-text-wide">{{ recipe.title }}</div>-->
-<!--                    </div>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        {% endfor %}-->
-<!--    </div>-->
-<!--</div>-->
+<div class="profile-section">
+    <div class="section-title-wrapper">
+        <a href="{{ url_for('favorites') }}" style="text-decoration: none;">
+            <h2 class="section-title section-title-wide">Избранные рецепты</h2>
+        </a>
+    </div>
+    <div class="profile-cards-row">
+        {% for recipe in favorite_recipes %}
+        <div class="card-wide">
+            <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
+                <div class="card-inner-wide">
+                    <div class="card-image-wide">
+                        <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
+                    </div>
+                    <div class="card-text-wide">{{ recipe.title }}</div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 <!-- 6. Секция: Мои рецепты -->
 <div class="profile-section">

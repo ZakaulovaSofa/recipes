@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 from app import app
-from models import db, Recipe, RecipeStep, RecipeStatusEnum
+from models import db, Recipe, RecipeStep, RecipeStatusEnum, Favorite
 
 
 # GET /recipes?limit=X&offset=Y
@@ -34,9 +34,17 @@ def recipes():
 @app.route('/recipes/<int:recipe_id>')
 def recipe_detail(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
+    is_favorite = False
+    if current_user.is_authenticated:
+        favorite = Favorite.query.filter_by(
+            user_id=current_user.id,
+            recipe_id=recipe.id
+        ).first()
+        is_favorite = favorite is not None
     return render_template(
         'recipes/recipe_detail.html',
-        recipe=recipe
+        recipe=recipe,
+        is_favorite=is_favorite
     )
 
 
@@ -256,3 +264,65 @@ def recipe_delete(recipe_id):
     db.session.commit()
     flash('Рецепт удалён.')
     return redirect(url_for('my_recipes'))
+
+
+@app.route('/recipes/<int:recipe_id>/favorite', methods=['POST'])
+@login_required
+def toggle_favorite(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    favorite = Favorite.query.filter_by(
+        user_id=current_user.id,
+        recipe_id=recipe.id
+    ).first()
+
+    if favorite:
+        db.session.delete(favorite)
+        flash('Рецепт удалён из избранного.')
+    else:
+        favorite = Favorite(
+            user_id=current_user.id,
+            recipe_id=recipe.id
+        )
+        db.session.add(favorite)
+        flash('Рецепт добавлен в избранное.')
+    db.session.commit()
+    return redirect(url_for('recipe_detail', recipe_id=recipe.id))
+
+
+@app.route('/favorites')
+@login_required
+def favorites():
+    limit = request.args.get('limit', 9, type=int)
+    offset = request.args.get('offset', 0, type=int)
+    favorites_query = (
+        Recipe.query
+        .join(Favorite, Favorite.recipe_id == Recipe.id)
+        .filter(Favorite.user_id == current_user.id)
+        .order_by(Favorite.created_at.desc())
+    )
+    total = favorites_query.count()
+    favorite_recipes = favorites_query.offset(offset).limit(limit).all()
+
+    has_next = offset + limit < total
+    has_prev = offset > 0
+    return render_template(
+        'favorites/favorites.html',
+        favorites=favorite_recipes,
+        limit=limit,
+        offset=offset,
+        has_next=has_next,
+        has_prev=has_prev
+    )
+
+
+@app.route('/recipes/<int:recipe_id>/favorite/remove', methods=['POST'])
+@login_required
+def remove_favorite(recipe_id):
+    favorite = Favorite.query.filter_by(
+        user_id=current_user.id,
+        recipe_id=recipe_id
+    ).first_or_404()
+    db.session.delete(favorite)
+    db.session.commit()
+    flash('Рецепт удалён из избранного.')
+    return redirect(url_for('favorites'))
