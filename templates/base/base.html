@@ -11,7 +11,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% if request.endpoint != 'login' %}
+    {% if request.endpoint != 'auth' %}
         {% include 'components/_header.html' %}
     {% endif %}
 
@@ -22,7 +22,7 @@
     </main>
 
     {# Футер обычно на логине тоже скрывают для чистоты экрана #}
-    {% if request.endpoint != 'login' %}
+    {% if request.endpoint != 'auth' %}
         {% include 'components/_footer.html' %}
     {% endif %}
 

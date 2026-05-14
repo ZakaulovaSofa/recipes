@@ -1,10 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — Редактировать рецепт{% endblock %}
+
+{% block main_class %}recipe-add-main{% endblock %}
+{% block container_class %}recipe-add-container{% endblock %}
+
+{% block content %}
+<div class="recipe-add-header-wrapper">
+    <div class="recipe-add-header-pill">Редактировать рецепт</div>
+</div>
+
+<form class="recipe-add-form" action="{{ url_for('recipe_edit', recipe_id=recipe.id) }}" method="post"
+      enctype="multipart/form-data">
+
+    <div class="recipe-add-field">
+        <input type="text" name="title" class="recipe-add-title-input"
+               value="{{ recipe.title }}" required>
+    </div>
+
+    <div class="recipe-add-field">
+        <div class="recipe-add-photo-card">
+            {% if recipe.main_image_url %}
+            <img src="{{ recipe.main_image_url }}" alt="{{ recipe.title }}" style="max-width: 250px;">
+            {% endif %}
+
+            <label class="recipe-add-photo-dropzone">
+                <input type="file" name="main_photo" class="recipe-add-photo-input" accept="image/*">
+                <span class="recipe-add-photo-placeholder">Загрузите новое главное фото</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="recipe-add-field">
+        <div class="recipe-add-ingredients-card">
+            <div class="recipe-add-ingredients-title">Ингредиенты</div>
+
+            <div class="recipe-add-ingredients-list" id="ingredients-container">
+                {% for ingredient in recipe.ingredients %}
+                <div class="ingredient-row">
+                    <input type="text" name="ingredient_name"
+                           class="ingredient-name-input"
+                           value="{{ ingredient.name }}" required>
+
+                    <input type="text" name="ingredient_amount"
+                           class="ingredient-amount-input"
+                           value="{{ ingredient.amount }}" required>
+
+                    <input type="text" name="ingredient_unit"
+                           class="ingredient-unit-input"
+                           value="{{ ingredient.unit }}" required>
+
+                    <button type="button" class="ingredient-delete-btn" title="Удалить">×</button>
+                </div>
+                {% else %}
+                {% include 'components/_add_ingredient_row.html' %}
+                {% endfor %}
+            </div>
+
+            <button type="button" class="recipe-add-plus-btn" id="add-ingredient">+</button>
+        </div>
+    </div>
+
+    <div class="recipe-add-field">
+        <textarea name="description" class="recipe-add-description-textarea"
+                  rows="5" required>{{ recipe.description }}</textarea>
+    </div>
+
+    <div class="recipe-add-field">
+        <div class="recipe-add-steps-card">
+            <div class="recipe-add-steps-title">Шаги приготовления</div>
+
+            <div class="recipe-add-steps-list" id="steps-container">
+                {% for step in recipe.steps.order_by(RecipeStep.step_number).all() %}
+                <div class="step-block">
+                    <div class="step-number-pill">
+                        Шаг {{ step.step_number }}
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-image-dropzone">
+                            {% if step.image_url %}
+                            <img src="{{ step.image_url }}" alt="Шаг {{ step.step_number }}" style="max-width: 180px;">
+                            {% endif %}
+
+                            <label class="step-image-label">
+                                <input type="file"
+                                       name="step_images[]"
+                                       class="step-image-input"
+                                       accept="image/*">
+                                <span class="step-image-placeholder">
+                                        Загрузите новое фото шага
+                                    </span>
+                            </label>
+                        </div>
+
+                        <textarea name="step_descriptions[]"
+                                  class="step-description-textarea"
+                                  rows="3"
+                                  required>{{ step.text }}</textarea>
+                    </div>
+
+                    <button type="button" class="step-delete-btn" title="Удалить шаг">×</button>
+                </div>
+                {% else %}
+                {% include 'components/_add_step_block.html' %}
+                {% endfor %}
+            </div>
+
+            <button type="button" class="recipe-add-plus-btn" id="add-step">+</button>
+        </div>
+    </div>
+
+    <div class="recipe-add-submit-wrapper">
+        <button type="submit" class="recipe-add-submit-btn">Сохранить изменения</button>
+    </div>
+</form>
+{% endblock %}

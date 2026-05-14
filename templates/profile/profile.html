@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Be cooking — Профиль {{ user.login }}{% endblock %}
+{% block title %}Be cooking — Профиль {{ user.username }}{% endblock %}
 
 {% block main_class %}profile-main{% endblock %}
 
@@ -8,18 +8,19 @@
 <!-- 1. Логин -->
 <div class="profile-login-wrapper">
     <div class="profile-login-pill">
-        <span class="profile-login-text">{{ user.login }}</span>
+        <span class="profile-login-text">{{ user.username }}</span>
     </div>
 </div>
 
 <!-- 2. Статус -->
 <div class="profile-status-wrapper">
     <div class="profile-status-pill">
-        <span class="profile-status-text">{{ user.rank if user.rank else 'Новичок' }}</span>
+        <span class="profile-status-text">{{ rank }}</span>
     </div>
 </div>
 
 <!-- 3. Аватар -->
+{% if user.avatar_url %}
 <div class="profile-avatar-section">
     <div class="avatar-card">
         <div class="avatar-image-placeholder">
@@ -36,52 +37,83 @@
         </form>
     </div>
 </div>
+{% else %}
+<div class="profile-avatar-section">
+    <div class="avatar-change-btn-wrapper">
+        {# Для разработчика: форма для загрузки фото #}
+        <form action="{{ url_for('update_avatar') }}" method="POST" enctype="multipart/form-data">
+            <label class="avatar-change-btn" style="cursor:pointer;">
+                Добавить фото
+                <input type="file" name="avatar" style="display:none;" onchange="this.form.submit()">
+            </label>
+        </form>
+    </div>
+</div>
+{% endif %}
+
 
 <!-- 4. Быстрые действия -->
-<div class="profile-actions">
-    <a href="{{ url_for('cart') }}" class="action-btn action-btn-red" style="text-decoration:none; text-align:center;">Моя корзина</a>
-    <a href="{{ url_for('favorites') }}" class="action-btn action-btn-teal" style="text-decoration:none; text-align:center;">Избранные рецепты</a>
-</div>
+<!--<div class="profile-actions">-->
+<!--    <a href="{{ url_for('cart') }}" class="action-btn action-btn-red" style="text-decoration:none; text-align:center;">Моя корзина</a>-->
+<!--    <a href="{{ url_for('favorites') }}" class="action-btn action-btn-teal" style="text-decoration:none; text-align:center;">Избранные рецепты</a>-->
+<!--</div>-->
 
 <!-- 5. Секция: Избранное -->
-<div class="profile-section">
-    <div class="section-title-wrapper">
-        <h2 class="section-title section-title-wide">Избранные рецепты</h2>
-    </div>
-    <div class="profile-cards-row">
-        {% for recipe in user.favorite_recipes[:3] %}
-            {# Совет: создай в компонентах _card_wide.html и используй здесь #}
-            <div class="card-wide">
-                <a href="{{ url_for('recipe_detail', id=recipe.id) }}">
-                    <div class="card-inner-wide">
-                        <div class="card-image-wide">
-                            <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
-                        </div>
-                        <div class="card-text-wide">{{ recipe.title }}</div>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
-</div>
+<!--<div class="profile-section">-->
+<!--    <div class="section-title-wrapper">-->
+<!--        <h2 class="section-title section-title-wide">Избранные рецепты</h2>-->
+<!--    </div>-->
+<!--    <div class="profile-cards-row">-->
+<!--        {% for recipe in user.favorite_recipes[:3] %}-->
+<!--            {# Совет: создай в компонентах _card_wide.html и используй здесь #}-->
+<!--            <div class="card-wide">-->
+<!--                <a href="{{ url_for('recipe_detail', id=recipe.id) }}">-->
+<!--                    <div class="card-inner-wide">-->
+<!--                        <div class="card-image-wide">-->
+<!--                            <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">-->
+<!--                        </div>-->
+<!--                        <div class="card-text-wide">{{ recipe.title }}</div>-->
+<!--                    </div>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<!--</div>-->
 
 <!-- 6. Секция: Мои рецепты -->
 <div class="profile-section">
     <div class="section-title-wrapper">
-        <h2 class="section-title section-title-wide">Мои рецепты</h2>
+        <a href="{{ url_for('my_recipes') }}" style="text-decoration: none;">
+            <h2 class="section-title section-title-wide">Мои рецепты</h2>
+        </a>
     </div>
+
     <div class="profile-cards-row">
-        {% for recipe in user.my_recipes[:3] %}
-            <div class="card-wide">
-                <a href="{{ url_for('recipe_manage', id=recipe.id) }}">
-                    <div class="card-inner-wide">
-                        <div class="card-image-wide">
-                            <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
-                        </div>
-                        <div class="card-text-wide">{{ recipe.title }}</div>
+        {% for recipe in my_recipes %}
+        <div class="card-wide">
+            <a href="{{ url_for('recipe_manage', recipe_id=recipe.id) }}" style="text-decoration: none;">
+                <div class="card-inner-wide">
+                    <div class="card-image-wide">
+                        <img
+                                src="{{ recipe.main_image_url if recipe.main_image_url else 'https://placehold.co/300x200' }}"
+                                alt="{{ recipe.title }}"
+                        >
                     </div>
-                </a>
-            </div>
+
+                    <div class="card-text-wide">{{ recipe.title }}</div>
+
+                    {% if recipe.status.value == 'published' %}
+                    <div class="recipe-status recipe-status-published">Опубликован</div>
+                    {% elif recipe.status.value == 'pending' %}
+                    <div class="recipe-status recipe-status-pending">На модерации</div>
+                    {% elif recipe.status.value == 'rejected' %}
+                    <div class="recipe-status recipe-status-rejected">Отклонён</div>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+        {% else %}
+        <p class="profile-empty-text">У вас пока нет рецептов.</p>
         {% endfor %}
     </div>
 </div>
@@ -91,5 +123,34 @@
     <a href="{{ url_for('recipe_add') }}" class="create-recipe-btn" style="text-decoration:none; text-align:center;">
         Создать новый рецепт
     </a>
+    <form id="logout-form" action="{{ url_for('logout') }}" method="POST">
+        <button type="button" class="logout-btn" id="open-logout-modal">
+            Выйти из профиля
+        </button>
+    </form>
 </div>
+
+<div class="logout-modal-overlay" id="logout-modal-overlay">
+    <div class="logout-modal">
+        <h2 class="logout-modal-title">Выйти из профиля?</h2>
+
+        <p class="logout-modal-text">
+            Вы уверены, что хотите выйти из своего аккаунта?
+        </p>
+
+        <div class="logout-modal-actions">
+            <button type="button" class="logout-modal-cancel" id="cancel-logout">
+                Остаться
+            </button>
+
+            <button type="button" class="logout-modal-confirm" id="confirm-logout">
+                Выйти
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 {% endblock %}

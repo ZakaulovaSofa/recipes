@@ -5,7 +5,7 @@
 from app import app
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, current_user, login_required
-from models import db, User
+from models import db, User, UserRoleEnum
 from forms import AuthForm
 
 
@@ -29,7 +29,7 @@ def auth():
                 flash('Неверный пароль для этого пользователя.')
         else:
             # СЦЕНАРИЙ 2: Пользователя нет -> РЕГИСТРАЦИЯ
-            new_user = User(username=form.username.data)
+            new_user = User(username=form.username.data, role=UserRoleEnum.USER)
             new_user.set_password(form.password.data)
 
             db.session.add(new_user)
