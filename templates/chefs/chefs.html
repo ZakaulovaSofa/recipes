@@ -10,8 +10,9 @@
     <h1 class="gallery-title">Повара</h1>
 </div>
 
+<!-- Должно заработать! Пока нет нормальный путей, закомментировала -->
+{#
 <div class="gallery-grid">
-    {# Заменяем диапазон на реальный список поваров #}
     {% for chef in chefs %}
         {% with 
             title = chef.full_name, 
@@ -27,8 +28,8 @@
 </div>
 
 <div class="gallery-pagination">
-    {# Бэкенд-разработчик подставит сюда логику страниц #}
     <a href="{{ url_for('chefs', page=current_page-1) }}" class="pagination-btn {% if current_page == 1 %}disabled{% endif %}">←</a>
     <a href="{{ url_for('chefs', page=current_page+1) }}" class="pagination-btn {% if not has_next %}disabled{% endif %}">→</a>
 </div>
+#}
 {% endblock %}

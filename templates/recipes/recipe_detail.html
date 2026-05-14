@@ -8,7 +8,7 @@
 {% block content %}
 <!-- 1. Панель действий -->
 <div class="recipe-actions-bar">
-    <form action="{{ url_for('toggle_favorite', id=recipe.id) }}" method="POST">
+    <form action="{{ url_for('toggle_favorite', recipe_id=recipe.id) }}" method="POST">
         <button type="submit" class="recipe-favorite-ribbon {{ 'is-active' if is_favorite else '' }}" id="favoriteBtn">
             <svg width="28" height="32" viewBox="0 0 24 28" fill="none">
                 <path d="M2 2H22V24L12 18L2 24V2Z" fill="currentColor" stroke="white" stroke-width="1.5"/>
@@ -17,11 +17,30 @@
     </form>
     
     <div class="recipe-action-buttons">
-        <form action="{{ url_for('add_to_cart', id=recipe.id) }}" method="POST" style="display:inline;">
-            <button type="submit" class="recipe-action-btn action-cart">Добавить в корзину</button>
-        </form>
-        <a href="{{ url_for('recipe_notes', id=recipe.id) }}" class="recipe-action-btn action-notes" style="text-decoration:none;">Перейти к заметкам</a>
-    </div>
+    <form action="{{ url_for('add_to_cart', recipe_id=recipe.id) }}" method="POST" class="add-to-cart-form">
+        <div class="servings-control">
+            <button type="button" class="servings-btn" data-action="minus">−</button>
+
+            <input
+                type="number"
+                name="servings"
+                class="servings-input"
+                value="{{ cart_servings }}"
+                min="1"
+            >
+
+            <button type="button" class="servings-btn" data-action="plus">+</button>
+        </div>
+
+        <button type="submit" class="recipe-action-btn action-cart">
+            {% if is_in_cart %}
+                Обновить корзину
+            {% else %}
+                Добавить в корзину
+            {% endif %}
+        </button>
+    </form>
+</div>
 </div>
 
 <!-- 2. Инфо-блок -->
@@ -30,7 +49,7 @@
         <div class="recipe-title-pill">{{ recipe.title }}</div>
     </div>
     <div class="recipe-author-wrapper">
-        <div class="recipe-author-pill">{{ recipe.author_name }}</div>
+        <div class="recipe-author-pill">{{ recipe.author.username }}</div>
     </div>
 
     <div class="recipe-ingredients-photo-row">
@@ -41,15 +60,19 @@
                 <li class="recipe-ingredient-item">
                     <span class="ingredient-name">{{ ingredient.name }}</span>
                     <span class="ingredient-amount">{{ ingredient.amount }}</span>
+                    <span class="ingredient-unit">{{ ingredient.unit }}</span>
                 </li>
                 {% endfor %}
             </ul>
         </div>
+        {% if recipe.main_image_url %}
         <div class="recipe-photo-box">
             <div class="recipe-photo-inner">
-                <img src="{{ recipe.image_url if recipe.image_url else 'https://placehold.co' }}" alt="{{ recipe.title }}">
+                <img src="{{ recipe.main_image_url }}"
+                     alt="{{ recipe.title }}">
             </div>
         </div>
+        {% endif %}
     </div>
 </div>
 
@@ -63,14 +86,20 @@
 <!-- 4. Шаги -->
 <div class="recipe-steps-block">
     {% for step in recipe.steps %}
-        {% include 'components/_step_block.html' %}
+    {% set step_index = loop.index %}
+    {% include 'components/_step_block.html' with context %}
     {% endfor %}
 </div>
 
 <!-- 5. Комментарии (используем общий список) -->
+<!-- Потом нужно сделать так, чтобы оно норм работало -->
+{#
 {% include 'components/_comments_list.html' %}
+#}
 
 <!-- 6. Форма нового комментария -->
+<!-- Потом нужно сделать так, чтобы оно норм работало -->
+{#
 <form action="{{ url_for('add_recipe_comment', id=recipe.id) }}" method="POST" class="recipe-footer-panel">
     <div class="footer-input-wrapper">
         <input type="text" name="text" class="footer-comment-input" placeholder="Ввести комментарий" required>
@@ -79,4 +108,10 @@
         <button type="submit" class="footer-submit-btn">Опубликовать</button>
     </div>
 </form>
+#}
 {% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/recipes.js') }}"></script>
+{% endblock %}
+

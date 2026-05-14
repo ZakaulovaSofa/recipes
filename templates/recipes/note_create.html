@@ -24,3 +24,7 @@
     </div>
 </form>
 {% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/recipes.js') }}"></script>
+{% endblock %}

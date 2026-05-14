@@ -9,12 +9,32 @@
 <!-- 1. Верхняя панель управления (Активируем кнопки) -->
 <div class="recipe-manage-actions-bar">
     {# Ссылка на страницу редактирования #}
-    <a href="{{ url_for('recipe_edit', id=recipe.id) }}" class="recipe-manage-action-btn action-edit" style="text-decoration: none; text-align: center;">Редактировать</a>
-    
-    {# Форма для удаления рецепта #}
-    <form action="{{ url_for('recipe_delete', id=recipe.id) }}" method="POST" style="display:inline;">
-        <button type="submit" class="recipe-manage-action-btn action-delete" onclick="return confirm('Вы уверены, что хотите удалить этот рецепт?')">Удалить рецепт</button>
+    <a href="{{ url_for('recipe_edit', recipe_id=recipe.id) }}" class="recipe-manage-action-btn action-edit"
+       style="text-decoration: none; text-align: center;">Редактировать</a>
+
+    <form id="delete-recipe-form" action="{{ url_for('recipe_delete', recipe_id=recipe.id) }}" method="POST"
+          style="display:inline;">
+        <button type="button" class="recipe-manage-action-btn action-delete" id="open-delete-modal">
+            Удалить рецепт
+        </button>
     </form>
+
+    <div class="delete-modal-overlay" id="delete-modal-overlay">
+        <div class="delete-modal">
+            <h2 class="delete-modal-title">Удалить рецепт?</h2>
+            <p class="delete-modal-text">
+                Это действие нельзя отменить. Рецепт будет удалён навсегда.
+            </p>
+            <div class="delete-modal-actions">
+                <button type="button" class="delete-modal-cancel" id="cancel-delete">
+                    Отмена
+                </button>
+                <button type="button" class="delete-modal-confirm" id="confirm-delete">
+                    Удалить
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- 2. Инфо-блок -->
@@ -23,7 +43,7 @@
         <div class="recipe-manage-title-pill">{{ recipe.title }}</div>
     </div>
     <div class="recipe-manage-author-wrapper">
-        <div class="recipe-manage-author-pill">{{ recipe.author }}</div>
+        <div class="recipe-manage-author-pill">{{ recipe.author.username }}</div>
     </div>
 
     <div class="recipe-manage-ingredients-photo-row">
@@ -40,7 +60,8 @@
         </div>
         <div class="recipe-manage-photo-box">
             <div class="recipe-manage-photo-inner">
-                <img src="{{ recipe.image_url if recipe.image_url else 'https://placehold.co' }}" alt="{{ recipe.title }}">
+                <img src="{{ recipe.main_image_url if recipe.main_image_url else 'https://placehold.co' }}"
+                     alt="{{ recipe.title }}">
             </div>
         </div>
     </div>
@@ -56,20 +77,32 @@
 <!-- 4. Шаги (Используем компонент!) -->
 <div class="recipe-manage-steps-block">
     {% for step in recipe.steps %}
-        {% include 'components/_step_block.html' %}
+    {% include 'components/_step_block.html' %}
     {% endfor %}
 </div>
 
 <!-- 5. Комментарии -->
+<!-- Потом нужно сделать так, чтобы оно норм работало -->
+{#
 {% include 'components/_comments_list.html' %}
+#}
 
 <!-- 6. Форма комментария -->
-<form action="{{ url_for('add_recipe_comment', id=recipe.id) }}" method="POST" class="recipe-manage-footer-panel">
+
+<!-- 6. Форма нового комментария -->
+<!-- Потом нужно сделать так, чтобы оно норм работало -->
+{#
+<form action="{{ url_for('add_recipe_comment', id=recipe.id) }}" method="POST" class="recipe-footer-panel">
     <div class="footer-input-wrapper">
-        <input type="text" name="text" class="footer-comment-input" placeholder="Ввести комментарий..." required>
+        <input type="text" name="text" class="footer-comment-input" placeholder="Ввести комментарий" required>
     </div>
     <div class="footer-submit-wrapper">
         <button type="submit" class="footer-submit-btn">Опубликовать</button>
     </div>
 </form>
+#}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/recipes.js') }}"></script>
 {% endblock %}

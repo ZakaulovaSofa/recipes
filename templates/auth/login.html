@@ -8,17 +8,6 @@
 
 {% block content %}
 <div class="login-wrapper">
-    {# Блок для вывода ошибок (неверный пароль и т.д.) #}
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <div class="flash-messages">
-        {% for message in messages %}
-        <div class="flash-error">{{ message }}</div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
-
     <form action="{{ url_for('auth') }}" method="post" class="login-form">
         {{ form.hidden_tag() }}
         {{ form.username(class="pill-input", placeholder="Логин", autocomplete="username") }}
