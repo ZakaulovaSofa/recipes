@@ -1,24 +1,43 @@
 <div class="recipe-block">
     <div class="recipe-header-row">
-        {# Переменная для названия и количества порций #}
         <div class="recipe-name-pill">{{ recipe.name }}</div>
-        <div class="recipe-servings-pill">{{ recipe.servings }} порц.</div>
+
+        <form action="{{ url_for('update_cart_servings', recipe_id=recipe.id) }}" method="POST"
+              class="add-to-cart-form">
+            <div class="servings-control">
+                <button type="button" class="servings-btn" data-action="minus">−</button>
+                <input
+                        type="number"
+                        name="servings"
+                        class="servings-input"
+                        value="{{ recipe.servings }}"
+                        min="1"
+                >
+                <button type="button" class="servings-btn" data-action="plus">+</button>
+            </div>
+            <button type="submit" class="recipe-action-btn action-cart">
+               Обновить число порций
+            </button>
+        </form>
     </div>
-    
+
     <div class="ingredients-card">
-        {# Здесь нужен цикл по ингредиентам этого конкретного рецепта #}
         {% for ingredient in recipe.ingredients %}
-            {% include 'components/_cart_ingredient_row.html' %}
+        {% include 'components/_cart_ingredient_row.html' %}
         {% endfor %}
     </div>
 
     <div class="recipe-footer-row">
-        {# Ссылка на детальную страницу рецепта через ID #}
-        <a href="{{ url_for('recipe_detail', id=recipe.id) }}" class="recipe-to-recipe-pill" style="text-decoration: none; text-align: center; display: flex; align-items: center;">К рецепту</a>
-        
-        {# Форма или кнопка для удаления #}
-        <form action="{{ url_for('delete_from_cart', id=recipe.id) }}" method="POST" style="display:inline;">
-            <button type="submit" class="recipe-delete-pill">Удалить из корзины</button>
+        <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}"
+           class="recipe-to-recipe-pill"
+           style="text-decoration: none; text-align: center; display: flex; align-items: center;">
+            К рецепту
+        </a>
+
+        <form action="{{ url_for('delete_from_cart', recipe_id=recipe.id) }}" method="POST" style="display:inline;">
+            <button type="submit" class="recipe-delete-pill">
+                Удалить из корзины
+            </button>
         </form>
     </div>
 </div>

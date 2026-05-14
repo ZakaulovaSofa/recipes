@@ -108,4 +108,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    const servingsControls = document.querySelectorAll('.servings-control');
+
+    servingsControls.forEach((control) => {
+        const input = control.querySelector('.servings-input');
+        const minusBtn = control.querySelector('[data-action="minus"]');
+        const plusBtn = control.querySelector('[data-action="plus"]');
+
+        if (!input || !minusBtn || !plusBtn) {
+            return;
+        }
+
+        minusBtn.addEventListener('click', () => {
+            const currentValue = parseInt(input.value, 10) || 1;
+
+            if (currentValue > 1) {
+                input.value = currentValue - 1;
+            }
+        });
+
+        plusBtn.addEventListener('click', () => {
+            const currentValue = parseInt(input.value, 10) || 1;
+            input.value = currentValue + 1;
+        });
+    });
 });

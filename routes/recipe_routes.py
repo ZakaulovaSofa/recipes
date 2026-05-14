@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 from app import app
-from models import db, Recipe, RecipeStep, RecipeStatusEnum, Favorite
+from models import db, Recipe, RecipeStep, RecipeStatusEnum, Favorite, CartItem
 
 
 # GET /recipes?limit=X&offset=Y
@@ -32,19 +32,33 @@ def recipes():
 
 # GET /recipes/{recipeId}
 @app.route('/recipes/<int:recipe_id>')
+@app.route('/recipes/<int:recipe_id>')
 def recipe_detail(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     is_favorite = False
+    cart_servings = 1
+    is_in_cart = False
+
     if current_user.is_authenticated:
         favorite = Favorite.query.filter_by(
             user_id=current_user.id,
             recipe_id=recipe.id
         ).first()
         is_favorite = favorite is not None
+        cart_item = CartItem.query.filter_by(
+            user_id=current_user.id,
+            recipe_id=recipe.id
+        ).first()
+        if cart_item:
+            is_in_cart = True
+            cart_servings = cart_item.servings or 1
+
     return render_template(
         'recipes/recipe_detail.html',
         recipe=recipe,
-        is_favorite=is_favorite
+        is_favorite=is_favorite,
+        cart_servings=cart_servings,
+        is_in_cart=is_in_cart
     )
 
 

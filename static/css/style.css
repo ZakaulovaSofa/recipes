@@ -4803,3 +4803,102 @@ body.menu-open::before {
 .logout-modal-confirm:hover {
     background: #ad3737;
 }
+
+.add-to-cart-form {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.servings-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.servings-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.servings-input {
+    width: 70px;
+    height: 36px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+}
+
+.cart-servings-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cart-servings-input {
+    width: 70px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.cart-servings-save-btn {
+    border: none;
+    border-radius: 999px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.total-checkbox-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.total-checkbox-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.total-checkbox {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #c7cf45;
+    position: relative;
+    transition: 0.2s ease;
+}
+
+.total-checkbox::after {
+    content: "";
+    position: absolute;
+    left: 11px;
+    top: 6px;
+    width: 9px;
+    height: 16px;
+    border: solid #ffffff;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg) scale(0);
+    opacity: 0;
+    transition: 0.2s ease;
+}
+
+.total-checkbox-input:checked + .total-checkbox::after {
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
+}
+
+.total-checkbox-input:checked + .total-checkbox {
+    background: #aeb83d;
+}

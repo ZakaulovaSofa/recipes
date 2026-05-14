@@ -3,16 +3,13 @@
 {% block title %}Be cooking — Продуктовая корзина{% endblock %}
 
 {% block main_class %}cart-main{% endblock %}
-{# Убираем container_class, если в base.html уже есть <div class="container"> вокруг контента #}
 
 {% block content %}
 <div class="cart-header-wrapper">
     <div class="cart-header-pill">Продуктовая корзина</div>
 </div>
 
-{# 1. Блоки рецептов #}
 {% for recipe in cart.recipes %}
-    {# Используем созданный компонент блока рецепта #}
     {% include 'components/_cart_recipe_block.html' %}
 {% else %}
     <div class="cart-empty-message">
@@ -20,22 +17,18 @@
     </div>
 {% endfor %}
 
-{# 2. Сводный список "Итого" (показываем, только если корзина не пуста) #}
 {% if cart.recipes %}
 <div class="total-block">
     <div class="total-header-wrapper">
         <div class="total-header-pill">Итого</div>
     </div>
-    <div class="total-card">
-        {% for item in cart.total_items %}
-            {# Используем созданный компонент строки "Итого" #}
-            {% include 'components/_cart_total_row.html' %}
-        {% endfor %}
+
+    <div class="total-card" id="cart-total-card">
+        {# JS сам добавит строки итоговой сводки #}
     </div>
 </div>
 
 <div class="cart-footer">
-    {# Добавляем форму для очистки корзины #}
     <form action="{{ url_for('clear_cart') }}" method="POST">
         <button type="submit" class="clear-cart-btn">Очистить корзину</button>
     </form>
@@ -43,3 +36,8 @@
 {% endif %}
 
 {% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+{% endblock %}
+
