@@ -32,7 +32,6 @@ def recipes():
 
 # GET /recipes/{recipeId}
 @app.route('/recipes/<int:recipe_id>')
-@app.route('/recipes/<int:recipe_id>')
 def recipe_detail(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     is_favorite = False
