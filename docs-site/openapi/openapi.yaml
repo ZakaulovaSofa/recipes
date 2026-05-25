@@ -1,0 +1,787 @@
+openapi: 3.0.3
+
+info:
+  title: Be cooking API
+  version: 1.0.0
+  description: |
+    REST API для веб-платформы Be cooking — онлайн-кулинарной книги.
+
+    API предоставляет программный доступ к сущности рецепта:
+    получение списка рецептов, получение детальной информации,
+    создание, редактирование и удаление рецептов.
+
+    Основной пользовательский интерфейс приложения реализован через
+    HTML-страницы Flask/Jinja2, а данный API-слой используется для
+    обмена данными в формате JSON.
+
+servers:
+  - url: http://127.0.0.1:5050
+    description: Локальный сервер разработки
+
+tags:
+  - name: Recipes
+    description: Операции с рецептами
+
+paths:
+  /api/recipes:
+    get:
+      tags:
+        - Recipes
+      summary: Получить список рецептов
+      description: |
+        Возвращает список рецептов с пагинацией.
+
+        По умолчанию возвращаются только опубликованные рецепты со статусом `published`.
+        Если передан query-параметр `status`, API фильтрует рецепты по указанному статусу.
+      operationId: getRecipes
+      parameters:
+        - name: limit
+          in: query
+          description: Количество рецептов на странице
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          example: 20
+
+        - name: offset
+          in: query
+          description: Смещение для пагинации
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          example: 0
+
+        - name: status
+          in: query
+          description: Фильтр по статусу рецепта
+          required: false
+          schema:
+            $ref: '#/components/schemas/RecipeStatus'
+          example: published
+
+      responses:
+        '200':
+          description: Список рецептов успешно получен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeListResponse'
+              examples:
+                success:
+                  summary: Успешный ответ
+                  value:
+                    success: true
+                    items:
+                      - id: 1
+                        title: Омлет с сыром
+                        description: Простой завтрак из яиц и сыра.
+                        status: published
+                        main_image_url: /static/uploads/recipes/omelet.jpg
+                        ingredients:
+                          - name: Яйцо
+                            amount: "2"
+                            unit: шт
+                          - name: Сыр
+                            amount: "50"
+                            unit: г
+                        author:
+                          id: 1
+                          username: admin
+                        created_at: "2026-05-14T08:03:05"
+                        updated_at: "2026-05-14T08:03:05"
+                    pagination:
+                      limit: 20
+                      offset: 0
+                      total: 1
+                      has_next: false
+                      has_prev: false
+
+        '400':
+          description: Некорректные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidLimit:
+                  summary: Некорректный limit
+                  value:
+                    success: false
+                    error: Параметр limit должен быть от 1 до 100.
+                invalidOffset:
+                  summary: Некорректный offset
+                  value:
+                    success: false
+                    error: Параметр offset не может быть отрицательным.
+                invalidStatus:
+                  summary: Некорректный статус
+                  value:
+                    success: false
+                    error: Некорректный статус рецепта.
+
+    post:
+      tags:
+        - Recipes
+      summary: Создать новый рецепт
+      description: |
+        Создаёт новый рецепт на основе JSON-данных.
+
+        Требуется авторизация пользователя.
+        После создания рецепт получает статус `pending`, так как он должен пройти модерацию.
+      operationId: createRecipe
+      security:
+        - cookieAuth: [ ]
+      requestBody:
+        required: true
+        description: JSON-данные нового рецепта
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeCreateRequest'
+            examples:
+              createRecipe:
+                summary: Пример создания рецепта
+                value:
+                  title: Омлет с сыром
+                  description: Простой завтрак из яиц и сыра.
+                  main_image_url: /static/uploads/recipes/omelet.jpg
+                  ingredients:
+                    - name: Яйцо
+                      amount: "2"
+                      unit: шт
+                    - name: Сыр
+                      amount: "50"
+                      unit: г
+                  steps:
+                    - text: Взбить яйца.
+                      image_url: null
+                    - text: Добавить сыр и обжарить на сковороде.
+                      image_url: null
+
+      responses:
+        '201':
+          description: Рецепт успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeDetailResponse'
+              examples:
+                created:
+                  summary: Рецепт создан
+                  value:
+                    success: true
+                    message: Рецепт создан и отправлен на модерацию.
+                    item:
+                      id: 1
+                      title: Омлет с сыром
+                      description: Простой завтрак из яиц и сыра.
+                      status: pending
+                      main_image_url: /static/uploads/recipes/omelet.jpg
+                      ingredients:
+                        - name: Яйцо
+                          amount: "2"
+                          unit: шт
+                      author:
+                        id: 1
+                        username: admin
+                      created_at: "2026-05-14T08:03:05"
+                      updated_at: "2026-05-14T08:03:05"
+                      steps:
+                        - id: 1
+                          step_number: 1
+                          text: Взбить яйца.
+                          image_url: null
+
+        '400':
+          description: Ошибка валидации JSON
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingField:
+                  summary: Нет обязательного поля
+                  value:
+                    success: false
+                    error: "Обязательное поле отсутствует: description."
+                invalidTitle:
+                  summary: Некорректный title
+                  value:
+                    success: false
+                    error: Поле title должно быть непустой строкой.
+                invalidIngredients:
+                  summary: Некорректные ингредиенты
+                  value:
+                    success: false
+                    error: Поле ingredients должно быть массивом.
+
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error: Необходима авторизация.
+
+  /api/recipes/{recipe_id}:
+    get:
+      tags:
+        - Recipes
+      summary: Получить рецепт по id
+      description: Возвращает детальную информацию о рецепте, включая шаги приготовления.
+      operationId: getRecipeById
+      parameters:
+        - name: recipe_id
+          in: path
+          required: true
+          description: ID рецепта
+          schema:
+            type: integer
+            minimum: 1
+          example: 1
+
+      responses:
+        '200':
+          description: Рецепт успешно найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeDetailResponse'
+              examples:
+                success:
+                  summary: Детальный рецепт
+                  value:
+                    success: true
+                    item:
+                      id: 1
+                      title: Омлет с сыром
+                      description: Простой завтрак из яиц и сыра.
+                      status: published
+                      main_image_url: /static/uploads/recipes/omelet.jpg
+                      ingredients:
+                        - name: Яйцо
+                          amount: "2"
+                          unit: шт
+                        - name: Сыр
+                          amount: "50"
+                          unit: г
+                      author:
+                        id: 1
+                        username: admin
+                      created_at: "2026-05-14T08:03:05"
+                      updated_at: "2026-05-14T08:03:05"
+                      steps:
+                        - id: 1
+                          step_number: 1
+                          text: Взбить яйца.
+                          image_url: null
+                        - id: 2
+                          step_number: 2
+                          text: Добавить сыр и обжарить на сковороде.
+                          image_url: null
+
+        '404':
+          description: Рецепт не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error: Рецепт не найден.
+
+    patch:
+      tags:
+        - Recipes
+      summary: Обновить рецепт
+      description: |
+        Частично обновляет рецепт.
+
+        Пользователь может редактировать только собственные рецепты.
+        После редактирования статус рецепта автоматически становится `pending`.
+      operationId: updateRecipe
+      security:
+        - cookieAuth: [ ]
+      parameters:
+        - name: recipe_id
+          in: path
+          required: true
+          description: ID рецепта
+          schema:
+            type: integer
+            minimum: 1
+          example: 1
+
+      requestBody:
+        required: true
+        description: JSON-данные для частичного обновления рецепта
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeUpdateRequest'
+            examples:
+              updateTitle:
+                summary: Обновление названия
+                value:
+                  title: Омлет с сыром и зеленью
+
+              updateFullRecipe:
+                summary: Обновление нескольких полей
+                value:
+                  title: Омлет с сыром и зеленью
+                  description: Обновлённое описание рецепта.
+                  ingredients:
+                    - name: Яйцо
+                      amount: "3"
+                      unit: шт
+                    - name: Сыр
+                      amount: "70"
+                      unit: г
+                    - name: Зелень
+                      amount: "10"
+                      unit: г
+                  steps:
+                    - text: Взбить яйца с сыром.
+                      image_url: null
+                    - text: Добавить зелень.
+                      image_url: null
+                    - text: Обжарить на сковороде.
+                      image_url: null
+
+      responses:
+        '200':
+          description: Рецепт успешно обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeDetailResponse'
+              example:
+                success: true
+                message: Рецепт обновлён и отправлен на модерацию.
+                item:
+                  id: 1
+                  title: Омлет с сыром и зеленью
+                  description: Обновлённое описание рецепта.
+                  status: pending
+                  main_image_url: /static/uploads/recipes/omelet.jpg
+                  ingredients:
+                    - name: Яйцо
+                      amount: "3"
+                      unit: шт
+                  author:
+                    id: 1
+                    username: admin
+                  created_at: "2026-05-14T08:03:05"
+                  updated_at: "2026-05-14T08:10:20"
+                  steps:
+                    - id: 1
+                      step_number: 1
+                      text: Взбить яйца с сыром.
+                      image_url: null
+
+        '400':
+          description: Ошибка валидации JSON
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidBody:
+                  summary: Тело запроса не является JSON-объектом
+                  value:
+                    success: false
+                    error: Тело запроса должно быть JSON-объектом.
+                invalidStep:
+                  summary: Некорректный шаг
+                  value:
+                    success: false
+                    error: У каждого шага должно быть непустое поле text.
+
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error: Необходима авторизация.
+
+        '403':
+          description: Нет прав на изменение рецепта
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error: Нет прав на изменение этого рецепта.
+
+        '404':
+          description: Рецепт не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error: Рецепт не найден.
+
+    delete:
+      tags:
+        - Recipes
+      summary: Удалить рецепт
+      description: |
+        Удаляет рецепт по id.
+
+        Пользователь может удалить только собственный рецепт.
+      operationId: deleteRecipe
+      security:
+        - cookieAuth: [ ]
+      parameters:
+        - name: recipe_id
+          in: path
+          required: true
+          description: ID рецепта
+          schema:
+            type: integer
+            minimum: 1
+          example: 1
+
+      responses:
+        '200':
+          description: Рецепт успешно удалён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessageResponse'
+              example:
+                success: true
+                message: Рецепт удалён.
+
+        '401':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error: Необходима авторизация.
+
+        '403':
+          description: Нет прав на удаление рецепта
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error: Нет прав на удаление этого рецепта.
+
+        '404':
+          description: Рецепт не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error: Рецепт не найден.
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
+      description: |
+        Авторизация через session cookie Flask-Login.
+        Для защищённых методов пользователь должен быть авторизован в приложении.
+
+  schemas:
+    RecipeStatus:
+      type: string
+      description: Статус рецепта
+      enum:
+        - published
+        - pending
+        - rejected
+      example: published
+
+    Author:
+      type: object
+      description: Автор рецепта
+      required:
+        - id
+        - username
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: admin
+
+    Ingredient:
+      type: object
+      description: Ингредиент рецепта
+      required:
+        - name
+        - amount
+        - unit
+      properties:
+        name:
+          type: string
+          description: Название ингредиента
+          example: Яйцо
+        amount:
+          oneOf:
+            - type: string
+            - type: number
+          description: Количество ингредиента
+          example: "2"
+        unit:
+          type: string
+          description: Единица измерения
+          example: шт
+
+    RecipeStepInput:
+      type: object
+      description: Шаг приготовления при создании или обновлении рецепта
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: Описание шага приготовления
+          example: Взбить яйца.
+        image_url:
+          type: string
+          nullable: true
+          description: Ссылка на изображение шага
+          example: /static/uploads/recipe_steps/step1.jpg
+
+    RecipeStep:
+      type: object
+      description: Шаг приготовления рецепта
+      required:
+        - id
+        - step_number
+        - text
+      properties:
+        id:
+          type: integer
+          example: 1
+        step_number:
+          type: integer
+          example: 1
+        text:
+          type: string
+          example: Взбить яйца.
+        image_url:
+          type: string
+          nullable: true
+          example: /static/uploads/recipe_steps/step1.jpg
+
+    RecipeShort:
+      type: object
+      description: Краткое представление рецепта
+      required:
+        - id
+        - title
+        - description
+        - status
+        - ingredients
+        - author
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Омлет с сыром
+        description:
+          type: string
+          example: Простой завтрак из яиц и сыра.
+        status:
+          $ref: '#/components/schemas/RecipeStatus'
+        main_image_url:
+          type: string
+          nullable: true
+          example: /static/uploads/recipes/omelet.jpg
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        author:
+          $ref: '#/components/schemas/Author'
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-05-14T08:03:05"
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2026-05-14T08:03:05"
+
+    RecipeDetail:
+      allOf:
+        - $ref: '#/components/schemas/RecipeShort'
+        - type: object
+          required:
+            - steps
+          properties:
+            steps:
+              type: array
+              items:
+                $ref: '#/components/schemas/RecipeStep'
+
+    RecipeCreateRequest:
+      type: object
+      description: Данные для создания рецепта
+      required:
+        - title
+        - description
+        - ingredients
+        - steps
+      properties:
+        title:
+          type: string
+          maxLength: 200
+          example: Омлет с сыром
+        description:
+          type: string
+          example: Простой завтрак из яиц и сыра.
+        main_image_url:
+          type: string
+          nullable: true
+          example: /static/uploads/recipes/omelet.jpg
+        ingredients:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        steps:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/RecipeStepInput'
+
+    RecipeUpdateRequest:
+      type: object
+      description: Данные для частичного обновления рецепта
+      properties:
+        title:
+          type: string
+          maxLength: 200
+          example: Омлет с сыром и зеленью
+        description:
+          type: string
+          example: Обновлённое описание рецепта.
+        main_image_url:
+          type: string
+          nullable: true
+          example: /static/uploads/recipes/updated-omelet.jpg
+        ingredients:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        steps:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/RecipeStepInput'
+
+    Pagination:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - has_next
+        - has_prev
+      properties:
+        limit:
+          type: integer
+          example: 20
+        offset:
+          type: integer
+          example: 0
+        total:
+          type: integer
+          example: 42
+        has_next:
+          type: boolean
+          example: true
+        has_prev:
+          type: boolean
+          example: false
+
+    RecipeListResponse:
+      type: object
+      required:
+        - success
+        - items
+        - pagination
+      properties:
+        success:
+          type: boolean
+          example: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeShort'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    RecipeDetailResponse:
+      type: object
+      required:
+        - success
+        - item
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Рецепт создан и отправлен на модерацию.
+        item:
+          $ref: '#/components/schemas/RecipeDetail'
+
+    SuccessMessageResponse:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Рецепт удалён.
+
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: Рецепт не найден.

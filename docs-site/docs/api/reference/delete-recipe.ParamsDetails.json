@@ -1,0 +1,1 @@
+{"parameters":[{"name":"recipe_id","in":"path","required":true,"description":"ID рецепта","schema":{"type":"integer","minimum":1},"example":1}]}

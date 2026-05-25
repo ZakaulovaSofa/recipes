@@ -1,0 +1,72 @@
+---
+id: delete-recipe
+title: "Удалить рецепт"
+description: "Удаляет рецепт по id."
+sidebar_label: "Удалить рецепт"
+hide_title: true
+hide_table_of_contents: true
+api: eJztV81u20YQfpXFnFqAluQ0QQHeXMRFnSZtYLsnSyhoaWMzlkiGpIIYAgH9JGkDp0gL5FakLdAXkBWzpmWLeoXZV+iTFDNL6seSkqBAgR5ykURxd+abb2bnm21BaB0EYO7BtqzangygYkBNBlXf9kLbdcAE/BPPsI+X6hXGqitUG2P1HGMcq67AMabCrhXKTtnB3zHFS/USzzHFAfZVF2N6FniFKf6lN/e0LUxUV70UqpttGWIqVAdTPFUd1cUBxjjCkTrBizl/hbIDBrie9C0Ct1UDE2qyLkOp0YMBgaw2fTs8BnOvBVXXPbLlRjM8BHOvElUM8CzfashQ+gEvcKyGBBN83v29XQMDbIrZs8JDMMCXj5q2L2tghn5TXidm6/YcOOyT++qhbFhgtiA89si07YTyQPpgQMN27EazAeZ6ZIB8YjW8uqSHCvkJPNcJZEAbb5RK9HUtCX/MsK56qoNjjNWPOCLiMlLVLzgCA6quE0onJBuW59XtKnNVfBiQodYiQnf/oayGc9HuQdCsVmUQEGwZBNaBpLrwfKI+tDXOfMnU0r7r1qVFKZqER7xFUyPTtUHo287B7NLrMU6DKkAUGRDaIS/b0X7vaZPbGXUwS+oMOJ24if93OyE3N0vrS+hfWdsjjAX2cUClrNqY5Cv+i1RI33f9f5mIB1Y9oExoGx+eBx3gCPt4gWd0LOeTsUnm3pcD9j1xDfgGYz7qzzDFM0zwCvvXOeyr55ioV9OkfLYkKW+4p+BYtWk3o5x2GOogCcaLR/RjUlYl5QPI/Ilb9lvqOnO8ThN18z3NawH7x5SsSsl77TPlDRkeulMlBEOrlwlFy7OLWtqCYmuicRGrpP8418CmXwcTDsPQM4vF9RufF0qFUmHdvFW6VYKFWeBXTHHILfNlrs8djFWbJFu1BRfPOX+eYqq6OMQESOFyWd6hVOp0zIrzhGbLs7+Wx7kM6yVg5DodyCAgIAuwfl7WPIT6gaHFeC6ynUJbFF/WreBo7a57YDuFsoOvaboRvPMFJuoF6QGFp57R8BJzzZ9RX+eBZ7kQ0PtLGnNwJPBUnfCAs1wZBBvi/y71aMTHK6HxhjJqOw9c5iQrni+kxu0ciI37W2AA5U5Hvk7ZWuBje3Nnl5YSKo6MBqrTNRzjJUFWTxnRlToRM6b/br8WmOKI1uAFjtZwqHo0qlHVqTaNGnghcMhY3zLassNOxkzyGaY8vPVxMBkW+VWKb7kirvAqq5l8rerhWOBQqI7qqRfkgS0k15qLWXYy3nuU0rwX0QyUqA7V4/yGFAeGWLKDDg4D5OrV4SQ4yunQdYOJUXZ4Fj3n5sdbDZGF2MchAeSoBvlbQYjfqTspDvSM/JvqsOdB7n9FPXFYSQ6wS3WsnmKMF6qzpHSo1gkfT9YzdTY9AGXnq917d9eY9LbGrZ6rE30Qinds56F1wxCkwzpmnaeN+1trqsOeCAkznsFVPeJSdai6uMjKDmk6HReWjhk7V5hQxc/Q3MVY3Nn59hsueAM8NwgbFrf67KDnd478njDD5fVib03V4/93Vcm6WiifhEWvbtkcLjfcVtal96jlsZLp65cB5vQ2UjHg0A1CWtVq7VuB/M6vRxH9/agpfbrjVAx4bPm2tU+NYq8FNTug37WJmKzk6pPtTDs/FcsuMkuR503aoQ792Ko36QkMOJLHc7eoqBIZcCitmvQZlX6/Ua1KL5zZuaD1pBQTObu9eXdzdxMMsBYk4oglIvtBDpYCm6qF9k+fkbFicaulpSeKJuv1q5U7svjy1cRQJYqifwAnbHDS
+sidebar_class_name: "delete api-method"
+info_path: api/reference/be-cooking-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Удалить рецепт"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/api/recipes/{recipe_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Удаляет рецепт по id.
+
+Пользователь может удалить только собственный рецепт.
+
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./delete-recipe.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./delete-recipe.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./delete-recipe.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      
