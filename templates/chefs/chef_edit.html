@@ -29,7 +29,7 @@
                placeholder="Добавьте ФИО" value="{{ chef.name if chef else '' }}" required>
     </div>
 
-    <!-- 3. Управление тегами (подключаем компонент) -->
+        <!-- 3. Управление тегами (подключаем компонент) -->
     <div class="chef-edit-tags-wrapper">
         <div class="chef-edit-tags-list" id="tagsList">
             {% if chef and chef.tags %}
@@ -41,8 +41,14 @@
                 {% endfor %}
             {% endif %}
         </div>
-        <button type="button" class="chef-edit-tag-add" id="addTagBtn">+</button>
+        
+        {# Добавили инпут для ввода тега, чтобы избавиться от prompt() #}
+        <div class="chef-edit-tag-add-container" style="display: flex; gap: 8px; align-items: center; margin-top: 10px;">
+            <input type="text" id="newTagInput" class="chef-edit-name-input" placeholder="Категория кухни (напр: итальянская)" style="margin: 0; padding: 6px 12px; font-size: 14px; max-width: 250px;">
+            <button type="button" class="chef-edit-tag-add" id="addTagBtn" style="margin: 0;">+</button>
+        </div>
     </div>
+
 
     <!-- 4. Биография -->
     <div class="chef-edit-bio-wrapper">
@@ -57,4 +63,7 @@
         </button>
     </div>
 </form>
+
+{# Изолированное подключение внешнего JS-скрипта управления тегами кухонь #}
+<script src="{{ url_for('static', filename='js/chef_edit.js') }}"></script>
 {% endblock %}

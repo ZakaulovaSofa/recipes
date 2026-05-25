@@ -15,3 +15,9 @@ class AuthForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired(), Length(min=6)])
     submit = SubmitField('Продолжить')
 
+class ChefForm(FlaskForm):
+    name = StringField('Имя повара', validators=[DataRequired(), Length(max=70)])
+    description = TextAreaField('Биография / Описание', validators=[DataRequired()])
+    image_url = StringField('Ссылка на фото повара', validators=[Length(max=300)])
+    tags = StringField('Теги (через запятую)', validators=[DataRequired()])
+    submit = SubmitField('Сохранить карточку повара')

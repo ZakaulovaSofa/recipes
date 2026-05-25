@@ -1,4 +1,4 @@
-{# Возможность кликнуть на тег, чтобы отфильтровать поваров по этой категории, если будет необходимо, а если не будет, то и так должно работать #}
-<a href="{{ url_for('chefs', category=tag.name) }}" class="chef-tag-link">
-    <div class="chef-tag-pill">{{ tag.name }}</div>
-</a>
+{# Используем tag_name, который передается через {% with %}, и проверяем, что это строка #}
+<div class="chef-tag-link">
+    <div class="chef-tag-pill">{{ tag_name }}</div>
+</div>

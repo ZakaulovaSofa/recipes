@@ -1,18 +1,32 @@
-{% if card_name == recipe %}
+{% if detail_endpoint == 'recipe_detail' or card_name == 'recipe' %}
 
 <div class="card">
     <a href="{{ url_for(detail_endpoint, recipe_id=item_id) }}"
        class="card-link">
         <div class="card-inner">
             <div class="card-image">
-                <img src="{{ recipe.main_image_url if recipe.main_image_url else 'https://placehold.co/400x300' }}"
-                     alt="{{ recipe.title }}">
+                <img src="{{ recipe.main_image_url if (recipe and recipe.main_image_url) else 'https://placehold.co/400x300' }}"
+                     alt="{{ recipe.title if recipe else 'Рецепт' }}">
             </div>
-            <div class="card-text">{{ recipe.title }}</div>
+            <div class="card-text">{{ recipe.title if recipe else 'Рецепт' }}</div>
         </div>
     </a>
 </div>
 
 {% else %}
+
+{# Блок для отображения поваров и других сущностей #}
+<div class="card">
+    <a href="{{ url_for(detail_endpoint, chef_id=item_id) }}"
+       class="card-link">
+        <div class="card-inner">
+            <div class="card-image">
+                <img src="{{ image_url if image_url else 'https://placehold.co/400x300' }}"
+                     alt="{{ title }}">
+            </div>
+            <div class="card-text">{{ title }}</div>
+        </div>
+    </a>
+</div>
 
 {% endif %}

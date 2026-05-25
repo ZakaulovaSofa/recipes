@@ -1,4 +1,4 @@
-# ─ главный файл приложения
+# ─ главного файл приложения
 # ─ создание Flask-приложения
 # ─ подключение БД
 # ─ регистрация роутов
@@ -6,7 +6,7 @@
 
 from flask import Flask, redirect, url_for, request
 from flask_login import LoginManager, current_user
-from flask_admin import Admin, AdminIndexView, expose
+from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 
 from models import db, User, Recipe, Article, Chef, Comment, RecipeStep, UserRoleEnum
@@ -33,27 +33,9 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class SecureAdminIndexView(AdminIndexView):
-    def is_accessible(self):
-        return (
-                current_user.is_authenticated
-                and current_user.role == UserRoleEnum.ADMIN
-        )
-
-    def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for('auth', next=request.url))
-
-
-class SecureModelView(ModelView):
-    def is_accessible(self):
-        return (
-                current_user.is_authenticated
-                and current_user.role == UserRoleEnum.ADMIN
-        )
-
-    def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for('auth', next=request.url))
-
+# Переносим импорт функции инициализации и защищенных представлений СЮДА.
+# Теперь admin_routes.py не делает импорты из app.py, что полностью решает проблему Circular Import.
+from routes.admin_routes import SecureAdminIndexView, SecureModelView, init_admin_views
 
 admin = Admin(
     app,
@@ -61,12 +43,17 @@ admin = Admin(
     index_view=SecureAdminIndexView()
 )
 
-admin.add_view(SecureModelView(User, db.session))
-admin.add_view(SecureModelView(Recipe, db.session))
-admin.add_view(SecureModelView(Article, db.session))
-admin.add_view(SecureModelView(Chef, db.session))
-admin.add_view(SecureModelView(Comment, db.session))
-admin.add_view(SecureModelView(RecipeStep, db.session))
+# Стандартные представления таблиц (Заменили db.session на db, чтобы убрать DeprecationWarning)
+admin.add_view(SecureModelView(User, db))
+admin.add_view(SecureModelView(Recipe, db))
+admin.add_view(SecureModelView(Article, db))
+
+# Подключаем кастомную админку для поваров из модуля admin_routes
+init_admin_views(admin, db)
+
+# Продолжение стандартных таблиц
+admin.add_view(SecureModelView(Comment, db))
+admin.add_view(SecureModelView(RecipeStep, db))
 
 
 def create_initial_admin():
@@ -89,10 +76,18 @@ def create_initial_admin():
     db.session.commit()
 
 
-# Создаем таблицы (в идеале это делать через миграции, но для начала ок)
+# Создаем таблицы
 with app.app_context():
     db.create_all()
     create_initial_admin()
+
+
+# Контекстный процессор для Jinja2 (Добавьте перед импортом роутов)
+@app.context_processor
+def inject_enums():
+    """Делает перечисление UserRoleEnum доступным во всех HTML-шаблонах."""
+    return dict(UserRoleEnum=UserRoleEnum)
+
 
 # импорт роутов
 from routes.main_routes import *

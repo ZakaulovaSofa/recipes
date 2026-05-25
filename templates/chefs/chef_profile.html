@@ -43,4 +43,29 @@
         </div>
     </div>
 </div>
+
+<!-- 5. Блок управления администратора (Добавлен) -->
+{% if current_user.is_authenticated and current_user.role.name == 'ADMIN' %}
+<div class="chef-admin-wrapper" style="margin-top: 2rem; display: flex; justify-content: center; gap: 15px;">
+    <!-- Кнопка редактирования -->
+    <a href="{{ url_for('chef_edit', chef_id=chef.id) }}" 
+       class="btn btn-warning shadow-sm" 
+       style="padding: 10px 20px; border-radius: 20px; font-weight: bold; text-decoration: none; color: #212529; background-color: #ffc107; border: none;">
+        Редактировать повара
+    </a>
+
+    <!-- Форма удаления -->
+    <form action="{{ url_for('admin_delete_chef', chef_id=chef.id) }}" 
+          method="POST" 
+          style="display: inline;" 
+          onsubmit="return confirm('Вы уверены, что хотите удалить карточку повара {{ chef.name }}?');">
+        <button type="submit" 
+                class="btn btn-danger shadow-sm" 
+                style="padding: 10px 20px; border-radius: 20px; font-weight: bold; color: #fff; background-color: #dc3545; border: none; cursor: pointer;">
+            Удалить повара
+        </button>
+    </form>
+</div>
+{% endif %}
+
 {% endblock %}
