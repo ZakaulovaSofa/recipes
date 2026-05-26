@@ -1,10 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('=== DOM загружен ===');
+    
     // INGREDIENTS
     const ingredientsContainer = document.getElementById('ingredients-container');
     const addIngredientBtn = document.getElementById('add-ingredient');
 
+    console.log('ingredientsContainer:', ingredientsContainer);
+    console.log('addIngredientBtn:', addIngredientBtn);
+
     if (ingredientsContainer && addIngredientBtn) {
+        console.log('Оба элемента найдены, добавляем обработчик');
         addIngredientBtn.addEventListener('click', () => {
+            console.log('КНОПКА НАЖАТА! Создаем новую строку');
             const ingredientRow = document.createElement('div');
             ingredientRow.classList.add('ingredient-row');
             ingredientRow.innerHTML = `
@@ -14,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button type="button" class="ingredient-delete-btn" title="Удалить">×</button>
             `;
             ingredientsContainer.appendChild(ingredientRow);
+            console.log('Строка добавлена, теперь строк:', ingredientsContainer.querySelectorAll('.ingredient-row').length);
         });
 
         ingredientsContainer.addEventListener('click', (event) => {
@@ -24,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+    } else {
+        console.error('Элементы не найдены! Проверьте ID');
     }
 
     // STEPS

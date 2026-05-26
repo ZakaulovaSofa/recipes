@@ -1,32 +1,77 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Be cooking — Заметки{% endblock %}
+{% block title %}Be cooking — Заметки к рецепту{% endblock %}
 
 {% block main_class %}notes-main{% endblock %}
 {% block container_class %}notes-container{% endblock %}
 
 {% block content %}
 <div class="notes-header-wrapper">
-    <div class="notes-header-pill">Заметки к рецепту</div>
+    <div class="notes-header-pill">Заметки к рецепту: {{ recipe.title }}</div>
+</div>
+
+<!-- КНОПКА ВЕРНУТЬСЯ К РЕЦЕПТУ -->
+<div class="notes-back-to-recipe">
+    <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="back-to-recipe-btn">
+        ← Вернуться к рецепту
+    </a>
 </div>
 
 <div class="notes-list">
-    {# Используем цикл по заметкам #}
     {% for note in notes %}
-        {# Подключаем твой компонент заметки #}
-        {% include 'components/_note_item.html' %}
-    {% else %}
-        {# Если заметок нет (встроенная фишка Jinja) #}
-        <div class="notes-empty">
-            <div class="notes-empty-text">У вас пока нет заметок</div>
+    <div class="note-card">
+        <div class="note-card-header">
+            <h3 class="note-title">{{ note.title }}</h3>
+            <div class="note-date">
+                {{ note.updated_at.strftime('%d.%m.%Y') if note.updated_at else note.created_at.strftime('%d.%m.%Y') }}
+            </div>
         </div>
+        <div class="note-card-body">
+            <p class="note-text">{{ note.text }}</p>
+        </div>
+        <div class="note-card-footer">
+            <!-- КНОПКА ПРОСМОТРА -->
+            <a href="{{ url_for('view_note', note_id=note.id) }}" class="note-btn note-btn-view">Просмотр</a>
+            <a href="{{ url_for('edit_note', note_id=note.id) }}" class="note-btn note-btn-edit">Редактировать заметку</a>
+            <button type="button" class="note-btn note-btn-delete" 
+                    data-note-id="{{ note.id }}" 
+                    data-note-title="{{ note.title }}">
+                Удалить заметку
+            </button>
+        </div>
+    </div>
+    {% else %}
+    <div class="notes-empty">
+        <div class="notes-empty-text">У вас пока нет заметок</div>
+    </div>
     {% endfor %}
 </div>
 
 <div class="notes-footer">
-    {# Ссылка на создание новой заметки с привязкой к ID рецепта #}
-    <a href="{{ url_for('note_create', recipe_id=recipe_id) }}" class="notes-create-btn" style="text-decoration:none; text-align:center; display:flex; align-items:center; justify-content:center;">
-        Создать новую заметку
-    </a>
+    <a href="{{ url_for('create_note', recipe_id=recipe.id) }}" class="notes-create-btn">Создать заметку</a>
 </div>
+
+<!-- МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ ЗАМЕТКИ -->
+<div class="delete-modal-overlay" id="delete-note-modal">
+    <div class="delete-modal">
+        <h2 class="delete-modal-title">Удалить заметку?</h2>
+        <p class="delete-modal-text" id="delete-note-text">
+            Это действие нельзя отменить. Заметка будет удалена навсегда.
+        </p>
+        <div class="delete-modal-actions">
+            <button type="button" class="delete-modal-cancel" id="cancel-note-delete">
+                Отмена
+            </button>
+            <form method="POST" action="" id="delete-note-form" style="display: inline;">
+                <button type="submit" class="delete-modal-confirm" id="confirm-note-delete">
+                    Удалить
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/notes.js') }}"></script>
 {% endblock %}

@@ -15,32 +15,38 @@
             </svg>
         </button>
     </form>
-    
+    <!-- Конпка заметок -->
+    <a href="{{ url_for('recipe_notes', recipe_id=recipe.id) }}" class="recipe-notes-icon" title="Мои заметки">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+        </svg>
+    </a>
+
     <div class="recipe-action-buttons">
-    <form action="{{ url_for('add_to_cart', recipe_id=recipe.id) }}" method="POST" class="add-to-cart-form">
-        <div class="servings-control">
-            <button type="button" class="servings-btn" data-action="minus">−</button>
+        <form action="{{ url_for('add_to_cart', recipe_id=recipe.id) }}" method="POST" class="add-to-cart-form">
+            <div class="servings-control">
+                <button type="button" class="servings-btn" data-action="minus">−</button>
 
-            <input
-                type="number"
-                name="servings"
-                class="servings-input"
-                value="{{ cart_servings }}"
-                min="1"
-            >
+                <input
+                    type="number"
+                    name="servings"
+                    class="servings-input"
+                    value="{{ cart_servings }}"
+                    min="1"
+                >
 
-            <button type="button" class="servings-btn" data-action="plus">+</button>
-        </div>
+                <button type="button" class="servings-btn" data-action="plus">+</button>
+            </div>
 
-        <button type="submit" class="recipe-action-btn action-cart">
-            {% if is_in_cart %}
-                Обновить корзину
-            {% else %}
-                Добавить в корзину
-            {% endif %}
-        </button>
-    </form>
-</div>
+            <button type="submit" class="recipe-action-btn action-cart">
+                {% if is_in_cart %}
+                    Обновить корзину
+                {% else %}
+                    Добавить в корзину
+                {% endif %}
+            </button>
+        </form>
+    </div>
 </div>
 
 <!-- 2. Инфо-блок -->
@@ -114,4 +120,3 @@
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/recipes.js') }}"></script>
 {% endblock %}
-

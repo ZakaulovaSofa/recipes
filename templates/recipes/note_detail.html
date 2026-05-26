@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — {{ note.title }}{% endblock %}
+
+{% block main_class %}note-detail-main{% endblock %}
+{% block container_class %}note-detail-container{% endblock %}
+
+{% block content %}
+<div class="note-detail-header">
+    <a href="{{ url_for('recipe_notes', recipe_id=note.recipe.id) }}" class="back-to-list">
+        ← Ко всем заметкам
+    </a>
+    <div class="note-actions">
+        <a href="{{ url_for('edit_note', note_id=note.id) }}" class="note-edit-btn">
+            Редактировать
+        </a>
+        <form method="POST" action="{{ url_for('delete_note', note_id=note.id) }}" 
+              onsubmit="return confirm('Удалить заметку «{{ note.title }}»?');"
+              style="display: inline;">
+            <button type="submit" class="note-delete-btn">Удалить</button>
+        </form>
+    </div>
+</div>
+
+<div class="note-detail-card">
+    <div class="note-detail-title">
+        <h1>{{ note.title }}</h1>
+        <div class="note-meta">
+            <span>Рецепт: <a href="{{ url_for('recipe_detail', recipe_id=note.recipe.id) }}">{{ note.recipe.title }}</a></span>
+            <span>Создано: {{ note.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+            {% if note.updated_at and note.updated_at != note.created_at %}
+                <span>Обновлено: {{ note.updated_at.strftime('%d.%m.%Y %H:%M') }}</span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="note-detail-content">
+        {{ note.text|replace('\n', '<br>')|safe }}
+    </div>
+</div>
+{% endblock %}

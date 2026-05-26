@@ -1,13 +1,24 @@
-<div class="note-item">
-    <div class="note-title-pill">{{ note.title }}</div>
-    <div class="note-body-card">
-        <div class="note-body-text">{{ note.text }}</div>
+<!-- templates/components/note_item.html -->
+<div class="note-card">
+    <div class="note-card-header">
+        <h3 class="note-title">{{ note.title }}</h3>
+        <div class="note-date">
+            {% if note.updated_at and note.updated_at != note.created_at %}
+                Обновлено: {{ note.updated_at.strftime('%d.%m.%Y') }}
+            else %}
+                Создано: {{ note.created_at.strftime('%d.%m.%Y') }}
+            {% endif %}
+        </div>
     </div>
-    <div class="note-actions">
-        <a href="{{ url_for('edit_note', id=note.id) }}" class="note-action-btn note-edit-btn" style="text-decoration:none;">Редактировать</a>
-        
-        <form action="{{ url_for('delete_note', id=note.id) }}" method="POST" style="display:inline;">
-            <button type="submit" class="note-action-btn note-delete-btn" onclick="return confirm('Удалить заметку?')">Удалить</button>
+    <div class="note-card-body">
+        <p class="note-preview">{{ note.text[:150] }}{% if note.text|length > 150 %}...{% endif %}</p>
+    </div>
+    <div class="note-card-footer">
+        <a href="{{ url_for('view_note', note_id=note.id) }}" class="note-btn note-btn-view">Просмотр</a>
+        <a href="{{ url_for('edit_note', note_id=note.id) }}" class="note-btn note-btn-edit">Редактировать</a>
+        <form method="POST" action="{{ url_for('delete_note', note_id=note.id) }}" class="note-delete-form" 
+              onsubmit="return confirm('Удалить заметку «{{ note.title }}»?');">
+            <button type="submit" class="note-btn note-btn-delete">Удалить</button>
         </form>
     </div>
 </div>

@@ -1,30 +1,40 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Be cooking — Новая заметка{% endblock %}
+{% block title %}Be cooking — {% if note %}Редактирование заметки{% else %}Создание заметки{% endif %}{% endblock %}
 
 {% block main_class %}note-create-main{% endblock %}
 {% block container_class %}note-create-container{% endblock %}
 
 {% block content %}
 <div class="note-create-header-wrapper">
-    <div class="note-create-header-pill">Новая заметка</div>
+    <div class="note-create-header-pill">
+        {% if note %}Редактирование заметки{% else %}Создание заметки{% endif %}
+    </div>
 </div>
 
-<form class="note-create-form" method="post">
+<form method="POST" class="note-create-form">
     <div class="note-create-field">
-        <input type="text" name="title" class="note-create-title-input" placeholder="Введите название заметки" required>
+        <input type="text" 
+               id="title" 
+               name="title" 
+               class="note-create-title-input"
+               value="{{ note.title if note else '' }}"
+               placeholder="Введите название заметки"
+               required>
     </div>
-
+    
     <div class="note-create-field">
-        <textarea name="content" class="note-create-body-textarea" placeholder="Введите текст заметки" rows="6" required></textarea>
+        <textarea id="text" 
+                  name="text" 
+                  class="note-create-body-textarea"
+                  placeholder="Введите текст заметки"
+                  required>{{ note.text if note else '' }}</textarea>
     </div>
-
+    
     <div class="note-create-submit-wrapper">
-        <button type="submit" class="note-create-submit-btn">Сохранить</button>
+        <button type="submit" class="note-create-submit-btn">
+            Сохранить заметку
+        </button>
     </div>
 </form>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/recipes.js') }}"></script>
 {% endblock %}

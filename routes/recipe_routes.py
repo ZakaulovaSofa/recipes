@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 from app import app
-from models import db, Recipe, RecipeStep, RecipeStatusEnum, Favorite, CartItem
+from models import db, Recipe, RecipeStep, RecipeStatusEnum, Favorite, CartItem, Note
 
 
 # GET /recipes?limit=X&offset=Y
@@ -273,6 +273,12 @@ def recipe_delete(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     if recipe.author_id != current_user.id:
         abort(403)
+        
+    RecipeStep.query.filter_by(recipe_id=recipe.id).delete()
+    Favorite.query.filter_by(recipe_id=recipe.id).delete()
+    CartItem.query.filter_by(recipe_id=recipe.id).delete()
+    Note.query.filter_by(recipe_id=recipe.id).delete()
+    
     db.session.delete(recipe)
     db.session.commit()
     flash('Рецепт удалён.')
@@ -339,3 +345,103 @@ def remove_favorite(recipe_id):
     db.session.commit()
     flash('Рецепт удалён из избранного.')
     return redirect(url_for('favorites'))
+
+@app.route('/recipes/<int:recipe_id>/notes')
+@login_required
+def recipe_notes(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    
+    notes = Note.query.filter_by(
+        user_id=current_user.id,
+        recipe_id=recipe_id
+    ).order_by(Note.updated_at.desc()).all()
+    
+    return render_template(
+        'recipes/recipe_notes.html',
+        recipe=recipe,
+        notes=notes
+    )
+
+
+@app.route('/recipes/<int:recipe_id>/notes/create', methods=['GET', 'POST'])
+@login_required
+def create_note(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    
+    if request.method == 'GET':
+        return render_template(
+            'recipes/note_create.html',
+            recipe=recipe,
+            note=None
+        )
+    
+    title = request.form.get('title', '').strip()
+    text = request.form.get('text', '').strip()
+    
+    if not title or not text:
+        flash('Название и текст заметки обязательны для заполнения.')
+        return redirect(url_for('create_note', recipe_id=recipe_id))
+    
+    note = Note(
+        title=title,
+        text=text,
+        user_id=current_user.id,
+        recipe_id=recipe_id
+    )
+    
+    db.session.add(note)
+    db.session.commit()
+    
+    flash('Заметка успешно создана!')
+    return redirect(url_for('recipe_notes', recipe_id=recipe_id))
+
+@app.route('/notes/<int:note_id>')
+@login_required
+def view_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    if note.user_id != current_user.id:
+        abort(403)
+    return render_template('recipes/note_detail.html', note=note)
+
+@app.route('/notes/<int:note_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    
+    if note.user_id != current_user.id:
+        abort(403)
+    
+    if request.method == 'GET':
+        return render_template(
+            'recipes/note_create.html',
+            recipe=note.recipe,
+            note=note
+        )
+    
+    title = request.form.get('title', '').strip()
+    text = request.form.get('text', '').strip()
+    
+    if not title or not text:
+        flash('Название и текст заметки обязательны для заполнения.')
+        return redirect(url_for('edit_note', note_id=note_id))
+    
+    note.title = title
+    note.text = text
+    
+    db.session.commit()
+    
+    flash('Заметка успешно обновлена!')
+    return redirect(url_for('recipe_notes', recipe_id=note.recipe_id))
+
+
+@app.route('/notes/<int:note_id>/delete', methods=['POST'])
+@login_required
+def delete_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    if note.user_id != current_user.id:
+        abort(403)
+    recipe_id = note.recipe_id
+    db.session.delete(note)
+    db.session.commit()
+    flash('Заметка успешно удалена!')
+    return redirect(url_for('recipe_notes', recipe_id=recipe_id))
