@@ -3,19 +3,47 @@
 </div>
 
 <div class="comments-container">
-    {# Цикл, который проходит по всем комментариям, которые передаст бэкенд #}
     {% for comment in comments %}
-        
-        {# Проверяем: если автор комментария — это текущий вошедший пользователь #}
-        {% if current_user.is_authenticated and comment.author_id == current_user.id %}
+        {% if current_user.is_authenticated and comment.user_id == current_user.id %}
             {% include 'components/_comment_self.html' %}
         {% else %}
             {% include 'components/_comment_other.html' %}
         {% endif %}
-
     {% else %}
-        {# Если список комментариев пуст #}
         <p class="no-comments-text">Комментариев пока нет. Будьте первым!</p>
-        
     {% endfor %}
+</div>
+
+<div class="comment-delete-modal-overlay" id="comment-delete-modal-overlay">
+    <div class="comment-delete-modal">
+        <h2 class="comment-delete-modal-title">
+            Удалить комментарий?
+        </h2>
+
+        <p class="comment-delete-modal-text">
+            Вы уверены, что хотите удалить комментарий? Это действие нельзя отменить.
+        </p>
+
+        <div class="comment-delete-preview">
+            <div class="comment-delete-preview-label">
+                Комментарий:
+            </div>
+
+            <div class="comment-delete-preview-text" id="comment-delete-preview-text"></div>
+        </div>
+
+        <div class="comment-delete-modal-actions">
+            <button type="button"
+                    class="comment-delete-modal-cancel"
+                    id="cancel-comment-delete">
+                Отмена
+            </button>
+
+            <button type="button"
+                    class="comment-delete-modal-confirm"
+                    id="confirm-comment-delete">
+                Удалить
+            </button>
+        </div>
+    </div>
 </div>

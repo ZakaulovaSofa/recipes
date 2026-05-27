@@ -98,6 +98,7 @@ from routes.auth_routes import *
 from routes.user_routes import *
 from routes.cart_routes import *
 from routes.api_recipe_routes import *
+from routes.comment_routes import *
 
 if __name__ == "__main__":
     app.run(debug=True, port=5050)

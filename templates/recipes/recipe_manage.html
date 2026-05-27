@@ -81,28 +81,34 @@
     {% endfor %}
 </div>
 
-<!-- 5. Комментарии -->
-<!-- Потом нужно сделать так, чтобы оно норм работало -->
-{#
 {% include 'components/_comments_list.html' %}
-#}
 
-<!-- 6. Форма комментария -->
+{% if current_user.is_authenticated %}
+<form action="{{ url_for('add_recipe_comment', recipe_id=recipe.id) }}" method="POST" class="recipe-footer-panel">
+    <input type="hidden" name="next" value="{{ request.path }}">
 
-<!-- 6. Форма нового комментария -->
-<!-- Потом нужно сделать так, чтобы оно норм работало -->
-{#
-<form action="{{ url_for('add_recipe_comment', id=recipe.id) }}" method="POST" class="recipe-footer-panel">
     <div class="footer-input-wrapper">
-        <input type="text" name="text" class="footer-comment-input" placeholder="Ввести комментарий" required>
+        <input
+                type="text"
+                name="text"
+                class="footer-comment-input"
+                placeholder="Ввести комментарий..."
+                required
+        >
     </div>
+
     <div class="footer-submit-wrapper">
-        <button type="submit" class="footer-submit-btn">Опубликовать</button>
+        <button type="submit" class="footer-submit-btn">
+            Опубликовать
+        </button>
     </div>
 </form>
-#}
+{% endif %}
+
+
 {% endblock %}
 
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/recipes.js') }}"></script>
+<script src="{{ url_for('static', filename='js/comments.js') }}"></script>
 {% endblock %}
