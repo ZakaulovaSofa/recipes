@@ -7,6 +7,11 @@
 
 {% block content %}
 <!-- 1. Верхняя панель управления (Активируем кнопки) -->
+
+{% with back_url=url_for('recipes'), back_text='К рецептам', back_class='recipe-back-btn' %}
+    {% include 'components/_back_button.html' %}
+{% endwith %}
+
 <div class="recipe-manage-actions-bar">
     {# Ссылка на страницу редактирования #}
     <a href="{{ url_for('recipe_edit', recipe_id=recipe.id) }}" class="recipe-manage-action-btn action-edit"
@@ -51,9 +56,10 @@
             <div class="recipe-manage-ingredients-title">Ингредиенты</div>
             <ul class="recipe-manage-ingredients-list">
                 {% for ingredient in recipe.ingredients %}
-                <li class="recipe-manage-ingredient-item">
+                <li class="recipe-ingredient-item">
                     <span class="ingredient-name">{{ ingredient.name }}</span>
                     <span class="ingredient-amount">{{ ingredient.amount }}</span>
+                    <span class="ingredient-unit">{{ ingredient.unit }}</span>
                 </li>
                 {% endfor %}
             </ul>

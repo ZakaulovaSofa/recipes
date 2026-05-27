@@ -6,6 +6,11 @@
 {% block container_class %}chef-profile-container{% endblock %}
 
 {% block content %}
+
+{% with back_url=url_for('chefs'), back_text='К поварам', back_class='chef-back-btn' %}
+    {% include 'components/_back_button.html' %}
+{% endwith %}
+
 <!-- 1. Блок главной фотографии -->
 <div class="chef-photo-wrapper">
     <div class="chef-photo-card">

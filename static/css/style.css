@@ -5523,3 +5523,66 @@ body.menu-open::before {
 .comment-delete-modal-confirm:hover {
     background: #bd2f2f;
 }
+
+.page-back-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 0 28px;
+}
+
+.page-back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 44px;
+    padding: 11px 24px;
+
+    border-radius: 999px;
+    border: 2px solid transparent;
+
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+
+    cursor: pointer;
+    user-select: none;
+
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.page-back-btn:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.page-back-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.page-back-btn:focus-visible {
+    outline: 3px solid rgba(159, 188, 68, 0.35);
+    outline-offset: 3px;
+}
+
+.page-back-btn {
+    background: #f1f1f1;
+    color: #333333;
+}
+
+.page-back-btn:hover {
+    background: #e4e4e4;
+    color: #222222;
+}

@@ -6,6 +6,11 @@
 {% block container_class %}chef-edit-container{% endblock %}
 
 {% block content %}
+
+{% with back_url=url_for('chefs'), back_text='К поварам', back_class='chef-back-btn' %}
+    {% include 'components/_back_button.html' %}
+{% endwith %}
+
 <div class="chef-edit-header-wrapper">
     <div class="chef-edit-header-pill">{{ 'Редактировать' if chef else 'Добавить' }} повара</div>
 </div>

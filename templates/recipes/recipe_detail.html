@@ -6,6 +6,11 @@
 {% block container_class %}recipe-detail-container{% endblock %}
 
 {% block content %}
+
+{% with back_url=url_for('recipes'), back_text='К рецептам', back_class='recipe-back-btn' %}
+    {% include 'components/_back_button.html' %}
+{% endwith %}
+
 <!-- 1. Панель действий -->
 <div class="recipe-actions-bar">
     <form action="{{ url_for('toggle_favorite', recipe_id=recipe.id) }}" method="POST">
