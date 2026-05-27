@@ -24,9 +24,23 @@
             <img src="{{ recipe.main_image_url }}" alt="{{ recipe.title }}" style="max-width: 250px;">
             {% endif %}
 
-            <label class="recipe-add-photo-dropzone">
-                <input type="file" name="main_photo" class="recipe-add-photo-input" accept="image/*">
-                <span class="recipe-add-photo-placeholder">Загрузите новое главное фото</span>
+            <label class="recipe-add-photo-dropzone file-upload-dropzone">
+                <input
+                        type="file"
+                        name="main_photo"
+                        class="recipe-add-photo-input file-upload-input"
+                        accept="image/*"
+                >
+
+                <span class="recipe-add-photo-placeholder file-upload-placeholder">Загрузите новое главное фото</span>
+                {% if recipe.main_image_url %}
+                <img class="file-upload-preview is-visible"
+                     src="{{ recipe.main_image_url }}"
+                     alt="{{ recipe.title }}"
+                >
+                {% else %}
+                <img class="file-upload-preview" alt="Предпросмотр главного фото">
+                {% endif %}
             </label>
         </div>
     </div>

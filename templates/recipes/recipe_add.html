@@ -20,9 +20,16 @@
     {# 2. Главное фото #}
     <div class="recipe-add-field">
         <div class="recipe-add-photo-card">
-            <label class="recipe-add-photo-dropzone">
-                <input type="file" name="main_photo" class="recipe-add-photo-input" accept="image/*" required>
-                <span class="recipe-add-photo-placeholder">Загрузите главное фото</span>
+            <label class="recipe-add-photo-dropzone file-upload-dropzone">
+                <input
+                        type="file"
+                        name="main_photo"
+                        class="recipe-add-photo-input file-upload-input"
+                        accept="image/*"
+                        required
+                >
+                <span class="recipe-add-photo-placeholder file-upload-placeholder">Загрузите главное фото</span>
+                <img class="file-upload-preview" alt="Предпросмотр главного фото">
             </label>
         </div>
     </div>
@@ -42,7 +49,8 @@
 
     {# 4. Описание #}
     <div class="recipe-add-field">
-        <textarea name="description" class="recipe-add-description-textarea" placeholder="Введите описание рецепта..." rows="5" required></textarea>
+        <textarea name="description" class="recipe-add-description-textarea" placeholder="Введите описание рецепта..."
+                  rows="5" required></textarea>
     </div>
 
     {# 5. Шаги приготовления #}
@@ -66,4 +74,5 @@
 {% endblock %}
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/recipes.js') }}"></script>
+<script src="{{ url_for('static', filename='js/file_upload_preview.js') }}"></script>
 {% endblock %}

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('=== DOM загружен ===');
-    
+
     // INGREDIENTS
     const ingredientsContainer = document.getElementById('ingredients-container');
     const addIngredientBtn = document.getElementById('add-ingredient');
@@ -49,12 +49,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="step-number-pill">Шаг ${stepsCount}</div>
                 <div class="step-card">
                     <div class="step-image-dropzone">
-                        <label class="step-image-label">
-                            <input type="file" name="step_images[]" class="step-image-input" accept="image/*">
-                            <span class="step-image-placeholder">Загрузите фото шага</span>
+                        <label class="step-image-label file-upload-dropzone">
+                            <input 
+                                type="file" 
+                                name="step_images[]" 
+                                class="step-image-input file-upload-input" 
+                                accept="image/*"
+                            >
+                            <span class="step-image-placeholder file-upload-placeholder">
+                                Загрузите фото шага
+                            </span>
+                            <img class="file-upload-preview" alt="Предпросмотр фото шага">
                         </label>
                     </div>
-                    <textarea name="step_descriptions[]" class="step-description-textarea" placeholder="Описание шага..." rows="3" required></textarea>
+                    <textarea 
+                        name="step_descriptions[]" 
+                        class="step-description-textarea" 
+                        placeholder="Описание шага..." 
+                        rows="3" 
+                        required
+                    ></textarea>
                 </div>
                 <button type="button" class="step-delete-btn" title="Удалить шаг">×</button>
             `;

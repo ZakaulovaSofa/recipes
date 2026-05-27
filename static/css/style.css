@@ -5191,3 +5191,57 @@ body.menu-open::before {
 .total-checkbox-input:checked + .total-checkbox {
     background: #aeb83d;
 }
+
+.file-upload-dropzone {
+    position: relative;
+    overflow: hidden;
+}
+
+.file-upload-dropzone.has-file {
+    border-color: #9fbc44;
+}
+
+.file-upload-placeholder {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: 0.2s ease;
+}
+
+.file-upload-dropzone.has-file .file-upload-placeholder {
+    background: rgba(255, 255, 255, 0.88);
+    color: #4f6f1f;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 999px;
+}
+
+.file-upload-preview {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+.file-upload-preview.is-visible {
+    display: block;
+}
+
+.file-upload-dropzone.has-file .file-upload-preview {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.file-upload-dropzone.has-file::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+}

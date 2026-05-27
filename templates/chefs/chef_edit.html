@@ -14,37 +14,51 @@
     <!-- 1. Фотография -->
     <div class="chef-edit-photo-wrapper">
         <div class="chef-edit-photo-card">
-            <label class="chef-edit-photo-dropzone">
-                <input type="file" name="photo" class="chef-edit-photo-input" accept="image/*">
-                <span class="chef-edit-photo-placeholder">
-                    {{ 'Изменить фото' if chef else 'Загрузите фото' }}
-                </span>
+            <label class="chef-edit-photo-dropzone file-upload-dropzone">
+                <input
+                        type="file"
+                        name="photo"
+                        class="chef-edit-photo-input file-upload-input"
+                        accept="image/*"
+                >
+                <span class="chef-edit-photo-placeholder file-upload-placeholder">{{ 'Изменить фото' if chef else 'Загрузите фото' }}</span>
+                {% if chef and chef.image_url %}
+                <img class="file-upload-preview is-visible"
+                     src="{{ chef.image_url }}"
+                     alt="{{ chef.name }}"
+                >
+                {% else %}
+                <img class="file-upload-preview" alt="Предпросмотр фото повара">
+                {% endif %}
             </label>
         </div>
     </div>
 
     <!-- 2. ФИО (обязательно name="name") -->
     <div class="chef-edit-name-wrapper">
-        <input type="text" name="name" class="chef-edit-name-input" 
+        <input type="text" name="name" class="chef-edit-name-input"
                placeholder="Добавьте ФИО" value="{{ chef.name if chef else '' }}" required>
     </div>
 
-        <!-- 3. Управление тегами (подключаем компонент) -->
+    <!-- 3. Управление тегами (подключаем компонент) -->
     <div class="chef-edit-tags-wrapper">
         <div class="chef-edit-tags-list" id="tagsList">
             {% if chef and chef.tags %}
-                {% for tag in chef.tags %}
-                    {# Используем компонент с инпутом внутри #}
-                    {% with tag_name = tag %}
-                        {% include 'components/_chef_edit_tag.html' %}
-                    {% endwith %}
-                {% endfor %}
+            {% for tag in chef.tags %}
+            {# Используем компонент с инпутом внутри #}
+            {% with tag_name = tag %}
+            {% include 'components/_chef_edit_tag.html' %}
+            {% endwith %}
+            {% endfor %}
             {% endif %}
         </div>
-        
+
         {# Добавили инпут для ввода тега, чтобы избавиться от prompt() #}
-        <div class="chef-edit-tag-add-container" style="display: flex; gap: 8px; align-items: center; margin-top: 10px;">
-            <input type="text" id="newTagInput" class="chef-edit-name-input" placeholder="Категория кухни (напр: итальянская)" style="margin: 0; padding: 6px 12px; font-size: 14px; max-width: 250px;">
+        <div class="chef-edit-tag-add-container"
+             style="display: flex; gap: 8px; align-items: center; margin-top: 10px;">
+            <input type="text" id="newTagInput" class="chef-edit-name-input"
+                   placeholder="Категория кухни (напр: итальянская)"
+                   style="margin: 0; padding: 6px 12px; font-size: 14px; max-width: 250px;">
             <button type="button" class="chef-edit-tag-add" id="addTagBtn" style="margin: 0;">+</button>
         </div>
     </div>
@@ -52,7 +66,7 @@
 
     <!-- 4. Биография -->
     <div class="chef-edit-bio-wrapper">
-        <textarea name="bio" class="chef-edit-bio-textarea" 
+        <textarea name="bio" class="chef-edit-bio-textarea"
                   placeholder="Информация о поваре" rows="6" required>{{ chef.bio if chef else '' }}</textarea>
     </div>
 
@@ -64,6 +78,9 @@
     </div>
 </form>
 
-{# Изолированное подключение внешнего JS-скрипта управления тегами кухонь #}
+{% endblock %}
+
+{% block extra_js %}
 <script src="{{ url_for('static', filename='js/chef_edit.js') }}"></script>
+<script src="{{ url_for('static', filename='js/file_upload_preview.js') }}"></script>
 {% endblock %}
