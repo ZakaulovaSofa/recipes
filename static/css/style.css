@@ -5682,3 +5682,151 @@ body.menu-open::before {
     overflow-wrap: break-word;
     white-space: normal;
 }
+
+.recipe-favorite-ribbon {
+    width: 54px;
+    height: 58px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid rgba(159, 188, 68, 0.35);
+    border-radius: 18px;
+
+    background: #ffffff;
+    cursor: pointer;
+
+    color: #9fbc44;
+
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.recipe-favorite-ribbon svg {
+    display: block;
+}
+
+.recipe-favorite-ribbon svg path {
+    fill: transparent;
+    stroke: #9fbc44;
+    stroke-width: 1.8;
+    transition:
+        fill 0.2s ease,
+        stroke 0.2s ease;
+}
+
+.recipe-favorite-ribbon:hover {
+    transform: scale(1.06);
+    background: #f4f7e8;
+    border-color: rgba(159, 188, 68, 0.65);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.recipe-favorite-ribbon:hover svg path {
+    fill: rgba(159, 188, 68, 0.12);
+    stroke: #8fa83d;
+}
+
+.recipe-favorite-ribbon.is-active svg path {
+    fill: #9fbc44;
+    stroke: #9fbc44;
+}
+
+.recipe-favorite-ribbon.is-active:hover {
+    background: #f0f5dd;
+    border-color: rgba(143, 168, 61, 0.75);
+}
+
+.recipe-favorite-ribbon.is-active:hover svg path {
+    fill: #8fa83d;
+    stroke: #8fa83d;
+}
+
+.recipe-favorite-ribbon:active {
+    transform: scale(0.98);
+}
+
+.recipe-favorite-ribbon:focus-visible {
+    outline: 3px solid rgba(159, 188, 68, 0.3);
+    outline-offset: 3px;
+}
+
+.favorite-card {
+    position: relative;
+}
+
+.favorite-card .favorite-flag-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+
+    width: 42px;
+    height: 46px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid rgba(159, 188, 68, 0.35);
+    border-radius: 14px;
+
+    background: #ffffff;
+    cursor: pointer;
+
+    color: #9fbc44;
+
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.favorite-card .favorite-flag-btn svg {
+    display: block;
+}
+
+.favorite-card .favorite-flag-btn svg path {
+    fill: transparent;
+    stroke: #9fbc44;
+    stroke-width: 1.8;
+
+    transition:
+        fill 0.2s ease,
+        stroke 0.2s ease;
+}
+
+.favorite-card .favorite-flag-btn.is-active svg path {
+    fill: #9fbc44;
+    stroke: #9fbc44;
+}
+
+.favorite-card .favorite-flag-btn:hover {
+    transform: scale(1.06);
+    background: #f4f7e8;
+    border-color: rgba(159, 188, 68, 0.65);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.favorite-card .favorite-flag-btn.is-active:hover svg path {
+    fill: #8fa83d;
+    stroke: #8fa83d;
+}
+
+.favorite-card .favorite-flag-btn:active {
+    transform: scale(0.98);
+}
+
+.favorite-card .favorite-flag-btn:focus-visible {
+    outline: 3px solid rgba(159, 188, 68, 0.3);
+    outline-offset: 3px;
+}

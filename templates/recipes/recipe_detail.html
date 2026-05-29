@@ -8,15 +8,20 @@
 {% block content %}
 
 {% with back_url=url_for('recipes'), back_text='К рецептам', back_class='recipe-back-btn' %}
-    {% include 'components/_back_button.html' %}
+{% include 'components/_back_button.html' %}
 {% endwith %}
 
 <!-- 1. Панель действий -->
 <div class="recipe-actions-bar">
     <form action="{{ url_for('toggle_favorite', recipe_id=recipe.id) }}" method="POST">
-        <button type="submit" class="recipe-favorite-ribbon {{ 'is-active' if is_favorite else '' }}" id="favoriteBtn">
-            <svg width="28" height="32" viewBox="0 0 24 28" fill="none">
-                <path d="M2 2H22V24L12 18L2 24V2Z" fill="currentColor" stroke="white" stroke-width="1.5"/>
+        <button
+                type="submit"
+                class="recipe-favorite-ribbon js-favorite-toggle {{ 'is-active' if is_favorite else '' }}"
+                aria-label="{{ 'Удалить из избранного' if is_favorite else 'Добавить в избранное' }}"
+                title="{{ 'Удалить из избранного' if is_favorite else 'Добавить в избранное' }}"
+        >
+            <svg width="28" height="32" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 2H22V24L12 18L2 24V2Z"/>
             </svg>
         </button>
     </form>
@@ -33,11 +38,11 @@
                 <button type="button" class="servings-btn" data-action="minus">−</button>
 
                 <input
-                    type="number"
-                    name="servings"
-                    class="servings-input"
-                    value="{{ cart_servings }}"
-                    min="1"
+                        type="number"
+                        name="servings"
+                        class="servings-input"
+                        value="{{ cart_servings }}"
+                        min="1"
                 >
 
                 <button type="button" class="servings-btn" data-action="plus">+</button>
@@ -45,9 +50,9 @@
 
             <button type="submit" class="recipe-action-btn action-cart">
                 {% if is_in_cart %}
-                    Обновить корзину
+                Обновить корзину
                 {% else %}
-                    Добавить в корзину
+                Добавить в корзину
                 {% endif %}
             </button>
         </form>
@@ -111,11 +116,11 @@
 
     <div class="footer-input-wrapper">
         <input
-            type="text"
-            name="text"
-            class="footer-comment-input"
-            placeholder="Ввести комментарий..."
-            required
+                type="text"
+                name="text"
+                class="footer-comment-input"
+                placeholder="Ввести комментарий..."
+                required
         >
     </div>
 

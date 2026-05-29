@@ -1,9 +1,13 @@
 <div class="favorite-card" id="favorite-{{ item.id }}">
-    {# Форма для удаления из избранного без перезагрузки (или с ней) #}
     <form action="{{ url_for('remove_favorite', recipe_id=item.id) }}" method="POST">
-        <button type="submit" class="favorite-flag-btn" aria-label="Удалить из избранного">
+        <button
+            type="submit"
+            class="favorite-flag-btn is-active"
+            aria-label="Удалить из избранного"
+            title="Удалить из избранного"
+        >
             <svg width="20" height="24" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 2H22V24L12 18L2 24V2Z" fill="currentColor" stroke="white" stroke-width="1.5"/>
+                <path d="M2 2H22V24L12 18L2 24V2Z"/>
             </svg>
         </button>
     </form>

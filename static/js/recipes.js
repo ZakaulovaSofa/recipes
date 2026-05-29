@@ -147,4 +147,15 @@ document.addEventListener('DOMContentLoaded', () => {
             input.value = currentValue + 1;
         });
     });
+
+    // FAVORITE TOGGLE VISUAL STATE
+    document.addEventListener('click', (event) => {
+        const favoriteButton = event.target.closest('.js-favorite-toggle');
+
+        if (!favoriteButton) {
+            return;
+        }
+
+        favoriteButton.classList.toggle('is-active');
+    });
 });
