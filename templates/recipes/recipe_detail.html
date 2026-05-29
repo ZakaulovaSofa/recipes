@@ -108,6 +108,7 @@
 </div>
 
 
+{% if comments_allowed %}
 {% include 'components/_comments_list.html' %}
 
 {% if current_user.is_authenticated %}
@@ -134,6 +135,7 @@
 <div class="comment-login-hint">
     <a href="{{ url_for('auth') }}">Войдите</a>, чтобы оставить комментарий.
 </div>
+{% endif %}
 {% endif %}
 {% endblock %}
 

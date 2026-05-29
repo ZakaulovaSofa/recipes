@@ -64,6 +64,7 @@ def recipe_detail(recipe_id):
         if cart_item:
             is_in_cart = True
             cart_servings = cart_item.servings or 1
+    comments_allowed = recipe.status == RecipeStatusEnum.PUBLISHED
     comments = get_recipe_comments(recipe.id)
     return render_template(
         'recipes/recipe_detail.html',
@@ -71,7 +72,8 @@ def recipe_detail(recipe_id):
         is_favorite=is_favorite,
         cart_servings=cart_servings,
         is_in_cart=is_in_cart,
-        comments=comments
+        comments=comments,
+        comments_allowed=comments_allowed
     )
 
 
@@ -192,8 +194,7 @@ def recipe_add():
         )
         db.session.add(step)
     db.session.commit()
-    flash('Рецепт успешно создан!')
-    return redirect(url_for('recipe_detail', recipe_id=recipe.id))
+    return redirect(url_for('recipe_manage', recipe_id=recipe.id))
 
 
 @app.route('/recipes/<int:recipe_id>/manage')
@@ -202,11 +203,13 @@ def recipe_manage(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     if recipe.author_id != current_user.id:
         abort(403)
+    comments_allowed = recipe.status == RecipeStatusEnum.PUBLISHED
     comments = get_recipe_comments(recipe.id)
     return render_template(
         'recipes/recipe_manage.html',
         recipe=recipe,
-        comments=comments
+        comments=comments,
+        comments_allowed=comments_allowed
     )
 
 

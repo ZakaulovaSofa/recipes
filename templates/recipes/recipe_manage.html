@@ -9,7 +9,7 @@
 <!-- 1. Верхняя панель управления (Активируем кнопки) -->
 
 {% with back_url=url_for('recipes'), back_text='К рецептам', back_class='recipe-back-btn' %}
-    {% include 'components/_back_button.html' %}
+{% include 'components/_back_button.html' %}
 {% endwith %}
 
 <div class="recipe-manage-actions-bar">
@@ -46,6 +46,15 @@
 <div class="recipe-manage-info-block">
     <div class="recipe-manage-title-wrapper">
         <div class="recipe-manage-title-pill">{{ recipe.title }}</div>
+    </div>
+    <div class="recipe-manage-status-wrapper">
+        {% if recipe.status.value == 'published' %}
+        <div class="recipe-status recipe-status-published">Опубликован</div>
+        {% elif recipe.status.value == 'pending' %}
+        <div class="recipe-status recipe-status-pending">На модерации</div>
+        {% elif recipe.status.value == 'rejected' %}
+        <div class="recipe-status recipe-status-rejected">Отклонён</div>
+        {% endif %}
     </div>
     <div class="recipe-manage-author-wrapper">
         <div class="recipe-manage-author-pill">{{ recipe.author.username }}</div>
@@ -87,12 +96,12 @@
     {% endfor %}
 </div>
 
+{% if comments_allowed %}
 {% include 'components/_comments_list.html' %}
 
 {% if current_user.is_authenticated %}
 <form action="{{ url_for('add_recipe_comment', recipe_id=recipe.id) }}" method="POST" class="recipe-footer-panel">
     <input type="hidden" name="next" value="{{ request.path }}">
-
     <div class="footer-input-wrapper">
         <input
                 type="text"
@@ -102,13 +111,17 @@
                 required
         >
     </div>
-
     <div class="footer-submit-wrapper">
         <button type="submit" class="footer-submit-btn">
             Опубликовать
         </button>
     </div>
 </form>
+{% else %}
+<div class="comments-disabled-message">
+    Комментарии будут доступны после публикации рецепта.
+</div>
+{% endif %}
 {% endif %}
 
 
