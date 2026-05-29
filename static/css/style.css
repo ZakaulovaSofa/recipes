@@ -2977,7 +2977,357 @@ body.menu-open::before {
     color: var(--white);
 }
 
-/* ========== СТРАНИЦА ПРОСМОТРА СТАТЬИ ========== */
+/* ========== СТРАНИЦА ДОБАВЛЕНИЯ СТАТЬИ (article_add.html) ========== */
+
+.article-add-main {
+    margin-top: 80px;
+    padding: 30px 20px 60px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.article-add-container {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Заголовок страницы */
+.article-add-header-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 45px;
+}
+
+.article-add-header-pill {
+    background-color: var(--teal);
+    color: var(--white);
+    font-size: 1.6rem;
+    font-weight: 700;
+    padding: 14px 40px;
+    border-radius: 60px;
+    text-align: center;
+}
+
+/* Форма */
+.article-add-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.article-add-field {
+    width: 100%;
+}
+
+/* 1. Поле заголовка */
+.article-add-title-input {
+    width: 100%;
+    background-color: var(--orange);
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 60px;
+    border: 2px solid transparent;
+    text-align: center;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.article-add-title-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.article-add-title-input:focus {
+    outline: none;
+    border-color: var(--white);
+    background-color: #c07a64;
+}
+
+/* 2. Блок загрузки изображения */
+.article-add-image-card {
+    background-color: var(--white);
+    border-radius: 30px;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+.article-add-image-dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: var(--gray-bg);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px dashed transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.article-add-image-dropzone:hover {
+    background-color: #c8b99f;
+    transform: scale(0.98);
+}
+
+.article-add-image-input {
+    display: none;
+}
+
+.article-add-image-placeholder {
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    z-index: 2;
+}
+
+/* 3. Поле текста статьи */
+.article-add-content-textarea {
+    width: 100%;
+    background-color: var(--white);
+    color: var(--black);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    padding: 20px;
+    border-radius: 30px;
+    border: 2px solid transparent;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 300px;
+    transition: all 0.2s ease;
+}
+
+.article-add-content-textarea::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.article-add-content-textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(118, 168, 169, 0.2);
+}
+
+/* 4. Кнопка публикации */
+.article-add-submit-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.article-add-submit-btn {
+    background-color: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 16px 48px;
+    border-radius: 60px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.article-add-submit-btn:hover {
+    background-color: #d63a3a;
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(238, 65, 65, 0.3);
+}
+
+/* ========== СТРАНИЦА РЕДАКТИРОВАНИЯ СТАТЬИ (article_edit.html) ========== */
+
+.article-edit-main {
+    margin-top: 80px;
+    padding: 30px 20px 60px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.article-edit-container {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Заголовок страницы */
+.article-edit-header-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.article-edit-header-pill {
+    background-color: var(--teal);
+    color: var(--white);
+    font-size: 1.6rem;
+    font-weight: 700;
+    padding: 14px 40px;
+    border-radius: 60px;
+    text-align: center;
+}
+
+/* 1. Блок загрузки фотографии */
+.article-edit-photo-wrapper {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.article-edit-photo-card {
+    background-color: var(--white);
+    border-radius: 40px;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+.article-edit-photo-dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: var(--gray-bg);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px dashed transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.article-edit-photo-dropzone:hover {
+    background-color: #c8b99f;
+    transform: scale(0.98);
+}
+
+.article-edit-photo-input {
+    display: none;
+}
+
+.article-edit-photo-placeholder {
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    z-index: 2;
+}
+
+/* 2. Поле ввода заголовка */
+.article-edit-title-wrapper {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.article-edit-title-input {
+    width: 100%;
+    background-color: var(--orange);
+    color: var(--white);
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 60px;
+    border: 2px solid transparent;
+    text-align: center;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.article-edit-title-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.article-edit-title-input:focus {
+    outline: none;
+    border-color: var(--teal);
+    background-color: #c07a64;
+}
+
+/* 3. Поле содержания */
+.article-edit-content-wrapper {
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.article-edit-content-textarea {
+    width: 100%;
+    background-color: var(--white);
+    color: var(--black);
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 20px;
+    border-radius: 30px;
+    border: 2px solid transparent;
+    font-family: inherit;
+    line-height: 1.7;
+    resize: vertical;
+    min-height: 300px;
+    transition: all 0.2s ease;
+}
+
+.article-edit-content-textarea::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.article-edit-content-textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(118, 168, 169, 0.2);
+}
+
+/* 4. Кнопка действия */
+.article-edit-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.article-edit-submit-btn {
+    background-color: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 18px 48px;
+    border-radius: 60px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.article-edit-submit-btn:hover {
+    background-color: #d63a3a;
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(238, 65, 65, 0.3);
+}
+
+/* Счетчик символов */
+.article-char-counter {
+    text-align: right;
+    font-size: 12px;
+    color: #888;
+    margin-top: 8px;
+}
+
+/* ========== ДЕТАЛЬНАЯ СТРАНИЦА СТАТЬИ (article_detail.html) ========== */
 
 .article-detail-main {
     margin-top: 80px;
@@ -3084,571 +3434,284 @@ body.menu-open::before {
     line-height: 1.7;
 }
 
-/* 4. Блок комментариев (используем существующие стили из рецепта) */
+/* 4. Блок комментариев */
 .article-comments-block {
     width: 100%;
     margin-bottom: 40px;
 }
 
-/* Переиспользуем стили комментариев из recipe-detail */
-.comments-title-wrapper {
-    display: flex;
+/* ========== МОДАЛЬНОЕ ОКНО УДАЛЕНИЯ КОММЕНТАРИЯ ========== */
+
+.comment-delete-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
     justify-content: center;
-    margin-bottom: 30px;
+    z-index: 1200;
 }
 
-.comments-title-pill {
-    background-color: var(--orange);
-    color: var(--white);
-    font-size: 1.3rem;
-    font-weight: 600;
-    padding: 12px 35px;
-    border-radius: 60px;
+.comment-delete-modal-overlay-active {
+    display: flex;
+}
+
+.comment-delete-modal {
+    width: 90%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 32px;
     text-align: center;
-    display: inline-block;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
-.comment-item {
-    margin-bottom: 30px;
+.comment-delete-modal-title {
+    margin: 0 0 14px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2f2f2f;
 }
 
-.comment-other {
+.comment-delete-modal-text {
+    margin: 0 0 24px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555555;
+}
+
+.comment-delete-preview {
+    margin-bottom: 28px;
+    padding: 18px 20px;
+    border-radius: 22px;
+    background: #f7f3ed;
     text-align: left;
 }
 
-.comment-other .comment-author-pill,
-.comment-other .comment-text-card {
-    margin-left: 0;
-    margin-right: auto;
+.comment-delete-preview-label {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #777777;
 }
 
-.comment-self {
-    text-align: right;
+.comment-delete-preview-text {
+    max-height: 160px;
+    overflow-y: auto;
+    font-size: 16px;
+    line-height: 1.45;
+    color: #2f2f2f;
+    word-break: break-word;
+    white-space: pre-wrap;
 }
 
-.comment-self .comment-author-pill,
-.comment-self .comment-text-card,
-.comment-self .comment-actions {
-    margin-left: auto;
-    margin-right: 0;
+.comment-delete-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
 }
 
-.comment-self .comment-actions {
-    justify-content: flex-end;
-}
-
-.comment-author-pill {
-    background-color: var(--teal);
-    color: var(--white);
-    display: inline-block;
-    padding: 8px 24px;
-    border-radius: 60px;
-    font-size: 0.95rem;
+.comment-delete-modal-cancel,
+.comment-delete-modal-confirm {
+    border: none;
+    border-radius: 999px;
+    padding: 12px 26px;
+    font-size: 16px;
     font-weight: 600;
-    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
-.user-comment-author {
-    background-color: var(--green-lime);
-    color: var(--white);
+.comment-delete-modal-cancel {
+    background: #eeeeee;
+    color: #333333;
 }
 
+.comment-delete-modal-cancel:hover {
+    background: #dddddd;
+}
+
+.comment-delete-modal-confirm {
+    background: #d94141;
+    color: #ffffff;
+}
+
+.comment-delete-modal-confirm:hover {
+    background: #bd2f2f;
+}
+
+/* ========== АДАПТИВ ДЛЯ СТРАНИЦ СТАТЕЙ ========== */
+
+@media (max-width: 768px) {
+    .article-detail-container,
+    .article-add-container,
+    .article-edit-container {
+        max-width: 100%;
+    }
+    
+    .article-title-pill,
+    .article-add-header-pill,
+    .article-edit-header-pill {
+        font-size: 1.3rem;
+        padding: 12px 30px;
+    }
+    
+    .article-author-pill {
+        font-size: 1rem;
+        padding: 8px 24px;
+    }
+    
+    .article-media-card,
+    .article-add-image-card,
+    .article-edit-photo-card {
+        border-radius: 24px;
+        padding: 15px;
+    }
+    
+    .article-content-card {
+        padding: 24px;
+    }
+    
+    .article-content-text {
+        font-size: 0.95rem;
+    }
+    
+    .article-add-title-input,
+    .article-edit-title-input {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+    }
+    
+    .article-add-content-textarea,
+    .article-edit-content-textarea {
+        padding: 16px;
+        min-height: 200px;
+    }
+    
+    .article-add-submit-btn,
+    .article-edit-submit-btn {
+        font-size: 1.1rem;
+        padding: 14px 32px;
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 600px) {
+    .article-title-pill,
+    .article-add-header-pill,
+    .article-edit-header-pill {
+        font-size: 1.1rem;
+        padding: 10px 24px;
+    }
+    
+    .article-author-pill {
+        font-size: 0.9rem;
+        padding: 6px 20px;
+    }
+    
+    .article-content-card {
+        padding: 20px;
+    }
+    
+    .comment-delete-modal {
+        padding: 24px;
+    }
+    
+    .comment-delete-modal-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-add-header-pill,
+    .article-edit-header-pill {
+        font-size: 1rem;
+        padding: 8px 20px;
+    }
+    
+    .article-add-title-input,
+    .article-edit-title-input {
+        font-size: 0.9rem;
+        padding: 10px 16px;
+    }
+    
+    .article-add-content-textarea,
+    .article-edit-content-textarea {
+        padding: 14px;
+        font-size: 0.9rem;
+        min-height: 160px;
+    }
+    
+    .article-add-submit-btn,
+    .article-edit-submit-btn {
+        font-size: 1rem;
+        padding: 12px 24px;
+        max-width: 220px;
+    }
+    
+    .comment-delete-modal-actions {
+        flex-direction: column;
+    }
+    
+    .comment-delete-modal-cancel,
+    .comment-delete-modal-confirm {
+        width: 100%;
+    }
+}
+/* ========== КОММЕНТАРИИ - АДАПТИВНАЯ ШИРИНА ========== */
+
+/* Контейнер комментариев */
+.comments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin-bottom: 32px;
+    width: 100%;
+}
+
+/* Каждый комментарий - адаптивная ширина */
+.comment-item {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;  /* Максимальная ширина 85% */
+    width: auto;      /* Автоматическая ширина под контент */
+    min-width: 200px; /* Минимальная ширина, чтобы не было слишком узко */
+}
+
+/* Чужой комментарий - прижат влево */
+.comment-other {
+    align-self: flex-start;
+    align-items: flex-start;
+}
+
+/* Свой комментарий - прижат вправо */
+.comment-self {
+    align-self: flex-end;
+    align-items: flex-end;
+}
+
+/* Карточка текста комментария */
 .comment-text-card {
     background-color: var(--white);
     border-radius: 24px;
-    padding: 20px;
-    margin-bottom: 12px;
-    max-width: 85%;
+    padding: 16px 20px;
+    width: auto;           /* Автоматическая ширина */
+    max-width: 100%;       /* Не шире родителя */
+    word-wrap: break-word; /* Перенос длинных слов */
+    word-break: break-word; /* Принудительный перенос при необходимости */
+    white-space: normal;    /* Обычный перенос строк */
 }
 
-.comment-other .comment-text-card {
-    max-width: 85%;
-}
-
-.comment-self .comment-text-card {
-    max-width: 85%;
-}
-
+/* Текст комментария */
 .comment-text-content {
     color: var(--black);
     font-size: 0.95rem;
     font-weight: 400;
     line-height: 1.5;
-}
-
-.comment-actions {
-    display: flex;
-    gap: 15px;
-}
-
-.comment-action-btn {
-    padding: 8px 20px;
-    border-radius: 60px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.comment-edit-btn {
-    background-color: var(--teal);
-    color: var(--white);
-}
-
-.comment-edit-btn:hover {
-    background-color: #5c8a8b;
-    transform: translateY(-2px);
-}
-
-.comment-delete-btn {
-    background-color: var(--red);
-    color: var(--white);
-}
-
-.comment-delete-btn:hover {
-    background-color: #d63a3a;
-    transform: translateY(-2px);
-}
-
-/* 5. Нижняя панель ввода комментария */
-.article-footer-panel {
-    width: 100%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.footer-input-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-.footer-comment-input {
-    background-color: var(--green-lime);
-    color: var(--white);
-    font-size: 1rem;
-    font-weight: 500;
-    padding: 14px 24px;
-    border-radius: 60px;
-    border: none;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    font-family: inherit;
-    transition: all 0.2s ease;
-}
-
-.footer-comment-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
-}
-
-.footer-comment-input:focus {
-    outline: none;
-    transform: scale(1.02);
-    background-color: #b0b83a;
-}
-
-.footer-submit-wrapper {
-    display: flex;
-    justify-content: center;
-}
-
-.footer-submit-btn {
-    background-color: var(--red);
-    color: var(--white);
-    border: none;
-    padding: 16px 48px;
-    border-radius: 60px;
-    font-size: 1.3rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
-}
-
-.footer-submit-btn:hover {
-    background-color: #d63a3a;
-    transform: scale(1.02);
-    box-shadow: 0 8px 20px rgba(238, 65, 65, 0.3);
-}
-
-/* ========== АДАПТИВ ДЛЯ СТАТЬИ ========== */
-
-@media (max-width: 768px) {
-    .article-detail-container {
-        max-width: 100%;
-    }
-
-    .article-title-pill {
-        font-size: 1.3rem;
-        padding: 12px 30px;
-    }
-
-    .article-author-pill {
-        font-size: 1rem;
-        padding: 8px 24px;
-    }
-
-    .article-media-card {
-        border-radius: 24px;
-        padding: 15px;
-    }
-
-    .article-media-inner {
-        border-radius: 20px;
-    }
-
-    .article-content-card {
-        padding: 24px;
-    }
-
-    .article-content-text {
-        font-size: 0.95rem;
-    }
-
-    .comments-title-pill {
-        font-size: 1.2rem;
-        padding: 10px 28px;
-    }
-
-    .comment-text-card {
-        max-width: 90%;
-    }
-
-    .footer-comment-input {
-        font-size: 0.95rem;
-        padding: 12px 20px;
-        max-width: 350px;
-    }
-
-    .footer-submit-btn {
-        font-size: 1.1rem;
-        padding: 14px 32px;
-        max-width: 250px;
-    }
-}
-
-@media (max-width: 600px) {
-    .article-title-pill {
-        font-size: 1.1rem;
-        padding: 10px 24px;
-    }
-
-    .article-author-pill {
-        font-size: 0.9rem;
-        padding: 6px 20px;
-    }
-
-    .article-content-card {
-        padding: 20px;
-    }
-
-    .comment-author-pill {
-        font-size: 0.85rem;
-        padding: 6px 18px;
-    }
-
-    .comment-text-card {
-        padding: 16px;
-    }
-
-    .comment-text-content {
-        font-size: 0.9rem;
-    }
-
-    .comment-action-btn {
-        padding: 6px 16px;
-        font-size: 0.8rem;
-    }
-
-    .comments-title-pill {
-        font-size: 1rem;
-        padding: 8px 24px;
-    }
-
-    .footer-comment-input {
-        font-size: 0.9rem;
-        padding: 10px 18px;
-        max-width: 300px;
-    }
-
-    .footer-submit-btn {
-        font-size: 1rem;
-        padding: 12px 24px;
-        max-width: 220px;
-    }
-}
-
-@media (max-width: 480px) {
-    .comment-text-card {
-        max-width: 95%;
-    }
-
-    .comment-actions {
-        gap: 10px;
-    }
-
-    .comment-action-btn {
-        padding: 6px 14px;
-        font-size: 0.75rem;
-    }
-}
-
-/* ========== СТРАНИЦА ДОБАВЛЕНИЯ СТАТЬИ ========== */
-
-.article-add-main {
-    margin-top: 80px;
-    padding: 30px 20px 60px;
-    width: 100%;
-    max-width: 100%;
-}
-
-.article-add-container {
-    max-width: 700px;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Заголовок страницы */
-.article-add-header-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 45px;
-}
-
-.article-add-header-pill {
-    background-color: var(--teal);
-    color: var(--white);
-    font-size: 1.6rem;
-    font-weight: 700;
-    padding: 14px 40px;
-    border-radius: 60px;
-    text-align: center;
-}
-
-/* Форма */
-.article-add-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-}
-
-.article-add-field {
-    width: 100%;
-}
-
-/* 1. Поле заголовка (коричневая капсула) */
-.article-add-title-input {
-    width: 100%;
-    background-color: var(--orange);
-    color: var(--white);
-    font-size: 1.1rem;
-    font-weight: 500;
-    padding: 14px 24px;
-    border-radius: 60px;
-    border: 2px solid transparent;
-    text-align: center;
-    font-family: inherit;
-    transition: all 0.2s ease;
-}
-
-.article-add-title-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
-}
-
-.article-add-title-input:focus {
-    outline: none;
-    border-color: var(--white);
-    background-color: #c07a64;
-}
-
-/* 2. Блок загрузки изображения */
-.article-add-image-card {
-    background-color: var(--white);
-    border-radius: 30px;
-    padding: 20px;
-    width: 100%;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-}
-
-.article-add-image-dropzone {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background-color: var(--gray-bg);
-    border-radius: 24px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: 2px dashed transparent;
-}
-
-.article-add-image-dropzone:hover {
-    background-color: #c8b99f;
-    transform: scale(0.98);
-}
-
-.article-add-image-input {
-    display: none;
-}
-
-.article-add-image-placeholder {
-    color: var(--white);
-    font-size: 1.1rem;
-    font-weight: 500;
-    text-align: center;
-}
-
-/* 3. Поле основного текста (textarea) */
-.article-add-content-textarea {
-    width: 100%;
-    background-color: var(--white);
-    color: var(--black);
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.6;
-    padding: 20px;
-    border-radius: 30px;
-    border: 2px solid transparent;
-    font-family: inherit;
-    resize: vertical;
-    min-height: 250px;
-    transition: all 0.2s ease;
-}
-
-.article-add-content-textarea::placeholder {
-    color: rgba(0, 0, 0, 0.4);
-}
-
-.article-add-content-textarea:focus {
-    outline: none;
-    border-color: var(--teal);
-    box-shadow: 0 0 0 3px rgba(118, 168, 169, 0.2);
-}
-
-/* 4. Кнопка публикации */
-.article-add-submit-wrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.article-add-submit-btn {
-    background-color: var(--red);
-    color: var(--white);
-    border: none;
-    padding: 16px 48px;
-    border-radius: 60px;
-    font-size: 1.3rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
-}
-
-.article-add-submit-btn:hover {
-    background-color: #d63a3a;
-    transform: scale(1.02);
-    box-shadow: 0 8px 20px rgba(238, 65, 65, 0.3);
-}
-
-/* Состояние disabled (для бэкенда) */
-.article-add-submit-btn:disabled {
-    background-color: var(--teal);
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* ========== АДАПТИВ ДЛЯ ДОБАВЛЕНИЯ СТАТЬИ ========== */
-
-@media (max-width: 600px) {
-    .article-add-container {
-        max-width: 100%;
-    }
-
-    .article-add-header-pill {
-        font-size: 1.3rem;
-        padding: 12px 30px;
-    }
-
-    .article-add-title-input {
-        font-size: 1rem;
-        padding: 12px 20px;
-    }
-
-    .article-add-image-card {
-        border-radius: 24px;
-        padding: 15px;
-    }
-
-    .article-add-image-dropzone {
-        border-radius: 20px;
-    }
-
-    .article-add-image-placeholder {
-        font-size: 1rem;
-    }
-
-    .article-add-content-textarea {
-        padding: 16px;
-        font-size: 0.95rem;
-        min-height: 200px;
-    }
-
-    .article-add-submit-btn {
-        font-size: 1.1rem;
-        padding: 14px 32px;
-        max-width: 250px;
-    }
-
-    .article-add-form {
-        gap: 25px;
-    }
-}
-
-@media (max-width: 480px) {
-    .article-add-header-pill {
-        font-size: 1.1rem;
-        padding: 10px 24px;
-    }
-
-    .article-add-title-input {
-        font-size: 0.9rem;
-        padding: 10px 16px;
-    }
-
-    .article-add-content-textarea {
-        padding: 14px;
-        font-size: 0.9rem;
-        min-height: 160px;
-    }
-
-    .article-add-submit-btn {
-        font-size: 1rem;
-        padding: 12px 24px;
-        max-width: 220px;
-    }
-
-    .article-add-form {
-        gap: 20px;
-    }
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;  /* Сохраняет пробелы и переносы */
 }
 
 /* ========== СТРАНИЦА УПРАВЛЕНИЯ РЕЦЕПТОМ (ДЛЯ АВТОРА) ========== */

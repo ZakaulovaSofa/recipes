@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Be cooking — {{ 'Редактировать' if article else 'Добавить' }} статью{% endblock %}
+
+{% block main_class %}article-edit-main{% endblock %}
+{% block container_class %}article-edit-container{% endblock %}
+
+{% block content %}
+
+{% with back_url=url_for('articles'), back_text='К статьям', back_class='article-back-btn' %}
+    {% include 'components/_back_button.html' %}
+{% endwith %}
+
+<div class="article-edit-header-wrapper">
+    <div class="article-edit-header-pill">{{ 'Редактировать' if article else 'Добавить' }} статью</div>
+</div>
+
+<form class="article-edit-form" method="post" enctype="multipart/form-data">
+    <!-- 1. Фотография -->
+    <div class="article-edit-photo-wrapper">
+        <div class="article-edit-photo-card">
+            <label class="article-edit-photo-dropzone file-upload-dropzone">
+                <input
+                        type="file"
+                        name="photo"
+                        class="article-edit-photo-input file-upload-input"
+                        accept="image/*"
+                >
+                <span class="article-edit-photo-placeholder file-upload-placeholder">{{ 'Изменить фото' if article else 'Загрузите фото' }}</span>
+                {% if article and article.main_image_url %}
+                <img class="file-upload-preview is-visible"
+                     src="{{ article.main_image_url }}"
+                     alt="{{ article.title }}"
+                >
+                {% else %}
+                <img class="file-upload-preview" alt="Предпросмотр фото статьи">
+                {% endif %}
+            </label>
+        </div>
+    </div>
+
+    <!-- 2. Заголовок -->
+    <div class="article-edit-title-wrapper">
+        <input type="text" name="title" class="article-edit-title-input"
+               placeholder="Заголовок статьи" value="{{ article.title if article else '' }}" required>
+    </div>
+
+    <!-- 3. Содержание (текст статьи) -->
+    <div class="article-edit-content-wrapper">
+        <textarea name="text" class="article-edit-content-textarea"
+                  placeholder="Текст статьи" rows="12" required>{{ article.text if article else '' }}</textarea>
+    </div>
+
+    <!-- 4. Кнопка действия -->
+    <div class="article-edit-footer">
+        <button type="submit" class="article-edit-submit-btn">
+            {{ 'Сохранить' if article else 'Опубликовать' }}
+        </button>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/file_upload_preview.js') }}"></script>
+{% endblock %}

@@ -6,6 +6,11 @@
 {% block container_class %}article-add-container{% endblock %}
 
 {% block content %}
+
+{% with back_url=url_for('articles'), back_text='К статьям', back_class='article-back-btn' %}
+    {% include 'components/_back_button.html' %}
+{% endwith %}
+
 <div class="article-add-header-wrapper">
     <div class="article-add-header-pill">Добавить статью</div>
 </div>
@@ -17,19 +22,24 @@
 
     <div class="article-add-field">
         <div class="article-add-image-card">
-            <label class="article-add-image-dropzone">
-                <input type="file" name="image" class="article-add-image-input" accept="image/*">
-                <span class="article-add-image-placeholder">Загрузите фото</span>
+            <label class="article-add-image-dropzone file-upload-dropzone">
+                <input type="file" name="photo" class="article-add-image-input file-upload-input" accept="image/*">
+                <span class="article-add-image-placeholder file-upload-placeholder">Загрузите фото</span>
+                <img class="file-upload-preview" alt="Предпросмотр фото">
             </label>
         </div>
     </div>
 
     <div class="article-add-field">
-        <textarea name="content" class="article-add-content-textarea" placeholder="Введите текст статьи..." rows="10" required></textarea>
+        <textarea name="text" class="article-add-content-textarea" placeholder="Введите текст статьи..." rows="12" required></textarea>
     </div>
 
     <div class="article-add-submit-wrapper">
         <button type="submit" class="article-add-submit-btn">Опубликовать</button>
     </div>
 </form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/file_upload_preview.js') }}"></script>
 {% endblock %}

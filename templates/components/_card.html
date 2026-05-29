@@ -13,6 +13,22 @@
     </a>
 </div>
 
+{% elif detail_endpoint == 'article_detail' %}
+
+{# Блок для отображения статей #}
+<div class="card">
+    <a href="{{ url_for(detail_endpoint, article_id=item_id) }}"
+       class="card-link">
+        <div class="card-inner">
+            <div class="card-image">
+                <img src="{{ image_url if image_url else 'https://placehold.co/400x300' }}"
+                     alt="{{ title }}">
+            </div>
+            <div class="card-text">{{ title }}</div>
+        </div>
+    </a>
+</div>
+
 {% else %}
 
 {# Блок для отображения поваров и других сущностей #}

@@ -99,9 +99,8 @@ class Article(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     main_image_url = db.Column(db.String(300))
-
+    
     comments = db.relationship('Comment', backref='article', lazy='dynamic', cascade='all, delete-orphan')
-
 
 # 5. COMMENT
 class Comment(db.Model):

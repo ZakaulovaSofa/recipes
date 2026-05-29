@@ -5,7 +5,12 @@
 <div class="comments-container">
     {% for comment in comments %}
         {% if current_user.is_authenticated and comment.user_id == current_user.id %}
-            {% include 'components/_comment_self.html' %}
+            {# Передаем recipe или article в контекст для определения URL #}
+            {% if recipe %}
+                {% include 'components/_comment_self.html' with context %}
+            {% else %}
+                {% include 'components/_comment_self.html' with context %}
+            {% endif %}
         {% else %}
             {% include 'components/_comment_other.html' %}
         {% endif %}
