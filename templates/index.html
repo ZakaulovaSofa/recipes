@@ -28,8 +28,14 @@
     </div>
     <div class="cards-grid">
         {% for article in articles %}
-        {% set card_name = article %}
-        {% include 'components/_card.html' with context %}
+        {% with
+        title = article.title,
+        image_url = article.main_image_url,
+        detail_endpoint = 'article_detail',
+        item_id = article.id
+        %}
+        {% include 'components/_card.html' %}
+        {% endwith %}
         {% endfor %}
     </div>
 </section>

@@ -1,4 +1,4 @@
-{% if detail_endpoint == 'recipe_detail' or card_name == 'recipe' %}
+{% if detail_endpoint == 'recipe_detail' or  detail_endpoint == 'recipe_manage' %}
 
 <div class="card">
     <a href="{{ url_for(detail_endpoint, recipe_id=item_id) }}"

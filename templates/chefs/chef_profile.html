@@ -30,7 +30,6 @@
 <!-- 3. Блок тегов (категории) -->
 <div class="chef-tags-wrapper">
     {% for tag in chef.tags %}
-        {# Используем твой компонент тега #}
         {% with tag_name = tag %}
             {% include 'components/_chef_tag.html' %}
         {% endwith %}

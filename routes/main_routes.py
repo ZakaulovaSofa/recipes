@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template
-from models import Recipe, RecipeStatusEnum
+from models import Recipe, RecipeStatusEnum, Article
 
 
 @app.route('/')
@@ -10,4 +10,6 @@ def index():
         status=RecipeStatusEnum.PUBLISHED
     ).order_by(Recipe.created_at.desc())
     recipes = recipes_query.offset(0).limit(9).all()
-    return render_template('index.html', recipes=recipes)
+    articles_query = Article.query.order_by(Article.created_at.desc())
+    articles = articles_query.offset(0).limit(3).all()
+    return render_template('index.html', recipes=recipes, articles=articles)

@@ -71,7 +71,7 @@
             <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
                 <div class="card-inner-wide">
                     <div class="card-image-wide">
-                        <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
+                        <img src="{{ recipe.main_image_url }}" alt="{{ recipe.title }}">
                     </div>
                     <div class="card-text-wide">{{ recipe.title }}</div>
                 </div>
