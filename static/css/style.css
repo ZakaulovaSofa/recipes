@@ -2138,6 +2138,11 @@ body.menu-open::before {
     background-color: #d63a3a;
     transform: translateY(-2px);
 }
+.comment-item .comment-text-card,
+.comment-item .comment-text-content,
+.comment-item .comment-view-text {
+    text-align: left !important;
+}
 
 /* ========== 6. Нижняя панель (новый комментарий) ========== */
 .recipe-footer-panel {
@@ -2415,16 +2420,14 @@ body.menu-open::before {
 
 /* Тело карточки */
 .note-card-body {
-    padding: 24px;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .note-text {
-    color: var(--black);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin: 0;
-    white-space: pre-wrap;
-    word-break: break-word;
+    padding: 20px 24px !important;
+    margin: 0 !important;
+    text-align: left !important;
 }
 
 /* Футер карточки с кнопками */
@@ -2803,6 +2806,8 @@ body.menu-open::before {
     word-break: break-word;
 }
 
+
+
 /* ========== КНОПКА ЗАМЕТОК НА СТРАНИЦЕ РЕЦЕПТА ========== */
 
 .recipe-notes-icon {
@@ -2907,7 +2912,7 @@ body.menu-open::before {
     }
 
     .note-detail-content {
-        padding: 20px;
+        padding: 10px;
     }
 }
 
@@ -5648,4 +5653,32 @@ body.menu-open::before {
 .page-back-btn:hover {
     background: #e4e4e4;
     color: #222222;
+}
+
+/* ========== ПЕРЕНОС ДЛИННЫХ СЛОВ ========== */
+.article-content-text,
+.comment-text-content,
+.recipe-description-content,
+.step-text,
+.card-text,
+.note-text,
+.note-detail-content,
+.profile-status-text,
+.profile-login-text,
+.ingredient-name,
+.ingredient-amount,
+.total-name-pill,
+.total-amount-pill {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+/* Для карточек комментариев */
+.comment-text-card {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }

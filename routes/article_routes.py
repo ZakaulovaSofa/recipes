@@ -8,6 +8,7 @@ from models import db, Article, UserRoleEnum, Comment
 import os
 import uuid
 from werkzeug.utils import secure_filename
+from datetime import datetime
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
@@ -17,7 +18,6 @@ def allowed_file(filename):
 
 @app.route('/articles')
 def articles():
-    """Список всех статей с пагинацией."""
     page = request.args.get('page', 1, type=int)
     per_page = 6
     
@@ -35,7 +35,6 @@ def articles():
 
 
 def get_article_comments(article_id):
-    """Получить комментарии к статье."""
     comments = (
         Comment.query
         .filter_by(article_id=article_id)
@@ -61,13 +60,9 @@ def article_detail(article_id):
         recipe=None  
     )
 
-
-# ==========================================
 # КОММЕНТАРИИ К СТАТЬЯМ
-# ==========================================
 
 def redirect_back_to_article(article_id):
-    """Вернуться на страницу статьи после действия с комментарием."""
     next_url = request.form.get('next') or request.referrer
     if next_url:
         return redirect(next_url)
@@ -77,7 +72,6 @@ def redirect_back_to_article(article_id):
 @app.route('/articles/<int:article_id>/comments', methods=['POST'])
 @login_required
 def add_article_comment(article_id):
-    """Добавить комментарий к статье."""
     article = Article.query.get_or_404(article_id)
     text = request.form.get('text', '').strip()
     if not text:
@@ -98,7 +92,6 @@ def add_article_comment(article_id):
 @app.route('/articles/comments/<int:comment_id>/edit', methods=['POST'])
 @login_required
 def edit_article_comment(comment_id):
-    """Редактировать комментарий к статье."""
     comment = Comment.query.get_or_404(comment_id)
     if comment.user_id != current_user.id:
         flash('Нет прав для редактирования этого комментария.')
@@ -119,7 +112,6 @@ def edit_article_comment(comment_id):
 @app.route('/articles/comments/<int:comment_id>/delete', methods=['POST'])
 @login_required
 def delete_article_comment(comment_id):
-    """Удалить комментарий к статье."""
     comment = Comment.query.get_or_404(comment_id)
     
     # Проверяем, что комментарий принадлежит статье (не рецепту)
@@ -138,14 +130,11 @@ def delete_article_comment(comment_id):
     flash('Комментарий удалён.')
     return redirect(url_for('article_detail', article_id=article_id))
 
-# ==========================================
 # АДМИН-ПАНЕЛЬ (Управление статьями)
-# ==========================================
 
 @app.route('/admin/articles/add', methods=['GET', 'POST'])
 @login_required
 def admin_add_article():
-    """Создание статьи в админке."""
     if current_user.role != UserRoleEnum.ADMIN:
         abort(403)
 
@@ -155,8 +144,6 @@ def admin_add_article():
     # POST — сохранение новой статьи
     title = request.form.get('title')
     text = request.form.get('text')
-    
-    # Убираем получение тегов
     
     main_image_url = '/static/img/default_article.jpg'
     file = request.files.get('photo')
@@ -174,7 +161,6 @@ def admin_add_article():
         text=text,
         main_image_url=main_image_url,
         author_id=current_user.id
-        # убираем tags
     )
     
     db.session.add(new_article)
@@ -186,7 +172,6 @@ def admin_add_article():
 @app.route('/admin/articles/<int:article_id>/edit', methods=['GET', 'POST'])
 @login_required
 def article_edit(article_id):
-    """Редактирование статьи."""
     if current_user.role != UserRoleEnum.ADMIN:
         abort(403)
 
@@ -199,8 +184,6 @@ def article_edit(article_id):
     article.title = request.form.get('title')
     article.text = request.form.get('text')
     
-    # Убираем обновление тегов
-
     file = request.files.get('photo')
     if file and file.filename:
         if allowed_file(file.filename):
@@ -217,7 +200,6 @@ def article_edit(article_id):
 @app.route('/admin/articles/<int:article_id>/delete', methods=['POST'])
 @login_required
 def admin_delete_article(article_id):
-    """Удаление статьи администратором."""
     if current_user.role != UserRoleEnum.ADMIN:
         abort(403)
 
