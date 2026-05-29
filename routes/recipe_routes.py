@@ -7,6 +7,11 @@ from app import app
 from models import db, Recipe, RecipeStep, RecipeStatusEnum, Favorite, CartItem, Note, Comment
 
 
+def remove_recipe_from_user_collections(recipe_id):
+    Favorite.query.filter_by(recipe_id=recipe_id).delete()
+    CartItem.query.filter_by(recipe_id=recipe_id).delete()
+    Note.query.filter_by(recipe_id=recipe_id).delete()
+
 @app.route('/recipes')
 def recipes():
     limit = request.args.get('limit', 9, type=int)
@@ -229,6 +234,7 @@ def recipe_edit(recipe_id):
     recipe.title = request.form.get('title')
     recipe.description = request.form.get('description')
     recipe.status = RecipeStatusEnum.PENDING
+    remove_recipe_from_user_collections(recipe.id)
     main_photo = request.files.get('main_photo')
     if main_photo and main_photo.filename:
         filename = f"{uuid.uuid4()}_{secure_filename(main_photo.filename)}"
@@ -289,9 +295,7 @@ def recipe_delete(recipe_id):
         abort(403)
 
     RecipeStep.query.filter_by(recipe_id=recipe.id).delete()
-    Favorite.query.filter_by(recipe_id=recipe.id).delete()
-    CartItem.query.filter_by(recipe_id=recipe.id).delete()
-    Note.query.filter_by(recipe_id=recipe.id).delete()
+    remove_recipe_from_user_collections(recipe.id)
 
     db.session.delete(recipe)
     db.session.commit()
@@ -357,7 +361,6 @@ def remove_favorite(recipe_id):
     ).first_or_404()
     db.session.delete(favorite)
     db.session.commit()
-    flash('Рецепт удалён из избранного.')
     return redirect(url_for('favorites'))
 
 
