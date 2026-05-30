@@ -99,6 +99,68 @@ def build_ingredients_from_form():
     return ingredients, ingredient_errors
 
 
+def build_ingredient_rows_for_template():
+    ingredient_names = request.form.getlist('ingredient_name')
+    ingredient_amounts = request.form.getlist('ingredient_amount')
+    ingredient_units = request.form.getlist('ingredient_unit')
+    rows = []
+    max_len = max(
+        len(ingredient_names),
+        len(ingredient_amounts),
+        len(ingredient_units)
+    ) if ingredient_names or ingredient_amounts or ingredient_units else 0
+    for i in range(max_len):
+        rows.append({
+            'name': ingredient_names[i] if i < len(ingredient_names) else '',
+            'amount': ingredient_amounts[i] if i < len(ingredient_amounts) else '',
+            'unit': ingredient_units[i] if i < len(ingredient_units) else ''
+        })
+    if not rows:
+        rows.append({
+            'name': '',
+            'amount': '',
+            'unit': ''
+        })
+    return rows
+
+
+def build_steps_from_form():
+    step_texts = request.form.getlist('step_descriptions[]')
+    step_photos = request.files.getlist('step_images[]')
+    steps_data = []
+    step_errors = {}
+    for index, step_text in enumerate(step_texts):
+        text = clean_text(step_text)
+        if not text:
+            step_errors[index] = 'Описание шага не может быть пустым или состоять только из пробелов.'
+            continue
+        photo = step_photos[index] if index < len(step_photos) else None
+        steps_data.append({
+            'text': text,
+            'photo': photo,
+            'original_index': index
+        })
+    if not steps_data and not step_errors:
+        step_errors[0] = 'Добавьте хотя бы один шаг приготовления.'
+    return steps_data, step_errors
+
+
+def build_step_rows_for_template():
+    step_texts = request.form.getlist('step_descriptions[]')
+    rows = []
+    for step_text in step_texts:
+        rows.append({
+            'text': step_text,
+            'image_url': ''
+        })
+    if not rows:
+        rows.append({
+            'text': '',
+            'image_url': ''
+        })
+    return rows
+
+
 def remove_recipe_from_user_collections(recipe_id):
     Favorite.query.filter_by(recipe_id=recipe_id).delete()
     CartItem.query.filter_by(recipe_id=recipe_id).delete()
@@ -224,12 +286,38 @@ def recipe_add():
         return render_template(
             'recipes/recipe_add.html',
             unit_options=RECIPE_UNIT_OPTIONS,
-            ingredient_errors={}
+            ingredient_errors={},
+            step_errors={}
         )
 
     # POST → создание рецепта
-    title = request.form.get('title')
-    description = request.form.get('description')
+    title = clean_text(request.form.get('title'))
+    description = clean_text(request.form.get('description'))
+    ingredients, ingredient_errors = build_ingredients_from_form()
+    steps_data, step_errors = build_steps_from_form()
+    has_errors = False
+    if not title:
+        flash('Название рецепта не может быть пустым или состоять только из пробелов.', 'recipe_title_error')
+        has_errors = True
+    if not description:
+        flash('Описание рецепта не может быть пустым или состоять только из пробелов.', 'recipe_description_error')
+        has_errors = True
+
+    if ingredient_errors:
+        has_errors = True
+    if step_errors:
+        has_errors = True
+
+    if has_errors:
+        return render_template(
+            'recipes/recipe_add.html',
+            unit_options=RECIPE_UNIT_OPTIONS,
+            ingredient_errors=ingredient_errors,
+            step_errors=step_errors,
+            form_ingredients=build_ingredient_rows_for_template(),
+            form_steps=build_step_rows_for_template()
+        ), 400
+
     main_photo = request.files.get('main_photo')
     main_image_url = None
 
@@ -244,16 +332,6 @@ def recipe_add():
         main_photo.save(upload_path)
         main_image_url = f'/static/uploads/recipes/{filename}'
 
-    # Ингредиенты
-    ingredients, ingredient_errors = build_ingredients_from_form()
-    if ingredient_errors:
-        flash('Проверьте ингредиенты в рецепте.')
-        return render_template(
-            'recipes/recipe_add.html',
-            unit_options=RECIPE_UNIT_OPTIONS,
-            ingredient_errors=ingredient_errors
-        ), 400
-
     # Создание рецепта
     recipe = Recipe(
         title=title,
@@ -266,27 +344,23 @@ def recipe_add():
     db.session.commit()
 
     # Шаги
-    step_texts = request.form.getlist('step_descriptions[]')
-    step_photos = request.files.getlist('step_images[]')
-
-    for index, step_text in enumerate(step_texts):
+    for index, step_data in enumerate(steps_data):
         image_url = None
-        if index < len(step_photos):
-            photo = step_photos[index]
-            if photo and photo.filename:
-                filename = f"{uuid.uuid4()}_{secure_filename(photo.filename)}"
-                upload_path = os.path.join(
-                    app.config['UPLOAD_FOLDER'],
-                    'recipe_steps',
-                    filename
-                )
-                photo.save(upload_path)
-                image_url = f'/static/uploads/recipe_steps/{filename}'
+        photo = step_data['photo']
 
+        if photo and photo.filename:
+            filename = f"{uuid.uuid4()}_{secure_filename(photo.filename)}"
+            upload_path = os.path.join(
+                app.config['UPLOAD_FOLDER'],
+                'recipe_steps',
+                filename
+            )
+            photo.save(upload_path)
+            image_url = f'/static/uploads/recipe_steps/{filename}'
         step = RecipeStep(
             recipe_id=recipe.id,
             step_number=index + 1,
-            text=step_text,
+            text=step_data['text'],
             image_url=image_url
         )
         db.session.add(step)
@@ -322,11 +396,43 @@ def recipe_edit(recipe_id):
             recipe=recipe,
             RecipeStep=RecipeStep,
             unit_options=RECIPE_UNIT_OPTIONS,
-            ingredient_errors={}
+            ingredient_errors={},
+            step_errors={}
         )
 
-    recipe.title = request.form.get('title')
-    recipe.description = request.form.get('description')
+    title = clean_text(request.form.get('title'))
+    description = clean_text(request.form.get('description'))
+    ingredients, ingredient_errors = build_ingredients_from_form()
+    steps_data, step_errors = build_steps_from_form()
+    has_errors = False
+
+    if not title:
+        flash('Название рецепта не может быть пустым или состоять только из пробелов.', 'recipe_title_error')
+        has_errors = True
+    if not description:
+        flash('Описание рецепта не может быть пустым или состоять только из пробелов.', 'recipe_description_error')
+        has_errors = True
+
+    if ingredient_errors:
+        has_errors = True
+    if step_errors:
+        has_errors = True
+
+    if has_errors:
+        return render_template(
+            'recipes/recipe_edit.html',
+            recipe=recipe,
+            RecipeStep=RecipeStep,
+            unit_options=RECIPE_UNIT_OPTIONS,
+            ingredient_errors=ingredient_errors,
+            step_errors=step_errors,
+            form_ingredients=build_ingredient_rows_for_template(),
+            form_steps=build_step_rows_for_template()
+        ), 400
+
+    recipe.title = title
+    recipe.description = description
+    recipe.ingredients = ingredients
     recipe.status = RecipeStatusEnum.PENDING
     remove_recipe_from_user_collections(recipe.id)
     main_photo = request.files.get('main_photo')
@@ -339,18 +445,6 @@ def recipe_edit(recipe_id):
         )
         main_photo.save(upload_path)
         recipe.main_image_url = f'/static/uploads/recipes/{filename}'
-    ingredients, ingredient_errors = build_ingredients_from_form()
-
-    if ingredient_errors:
-        flash('Проверьте ингредиенты в рецепте.')
-        return render_template(
-            'recipes/recipe_edit.html',
-            recipe=recipe,
-            RecipeStep=RecipeStep,
-            unit_options=RECIPE_UNIT_OPTIONS,
-            ingredient_errors=ingredient_errors
-        ), 400
-    recipe.ingredients = ingredients
     RecipeStep.query.filter_by(recipe_id=recipe.id).delete()
     step_texts = request.form.getlist('step_descriptions[]')
     step_photos = request.files.getlist('step_images[]')

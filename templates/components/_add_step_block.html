@@ -1,3 +1,4 @@
+{% set step_index = step_index if step_index is defined else 0 %}
 <div class="step-block">
     <div class="step-number-pill">Шаг {{ loop.index if loop else 1 }}</div>
     <div class="step-card">
@@ -17,7 +18,14 @@
         <textarea name="step_descriptions[]"
                   class="step-description-textarea"
                   placeholder="Описание шага..."
-                  rows="3" required></textarea>
+                  rows="3"
+                  required>{{ step.text if step is defined and step else '' }}</textarea>
+
+        {% if step_errors and step_errors.get(step_index) %}
+        <div class="form-field-error step-row-error">
+            {{ step_errors.get(step_index) }}
+        </div>
+        {% endif %}
     </div>
     <button type="button" class="step-delete-btn" title="Удалить шаг">×</button>
 </div>

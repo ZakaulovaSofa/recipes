@@ -5936,3 +5936,7 @@ body.menu-open::before {
         justify-self: center;
     }
 }
+
+.step-row-error {
+    margin-top: 10px;
+}

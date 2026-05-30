@@ -1,4 +1,4 @@
-{% set row_index = loop.index0 if loop else 0 %}
+{% set row_index = ingredient_index if ingredient_index is defined else 0 %}
 {% set current_unit = ingredient.unit if ingredient else '' %}
 
 <div class="ingredient-row-wrapper">

@@ -39,7 +39,15 @@
         <div class="recipe-add-ingredients-card">
             <div class="recipe-add-ingredients-title">Ингредиенты</div>
             <div class="recipe-add-ingredients-list" id="ingredients-container">
+                {% if form_ingredients is defined %}
+                {% for ingredient in form_ingredients %}
+                {% set ingredient_index = loop.index0 %}
                 {% include 'components/_add_ingredient_row.html' %}
+                {% endfor %}
+                {% else %}
+                {% set ingredient_index = 0 %}
+                {% include 'components/_add_ingredient_row.html' %}
+                {% endif %}
             </div>
             <button type="button" class="recipe-add-plus-btn" id="add-ingredient">+</button>
         </div>

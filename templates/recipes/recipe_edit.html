@@ -50,7 +50,10 @@
             <div class="recipe-add-ingredients-title">Ингредиенты</div>
 
             <div class="recipe-add-ingredients-list" id="ingredients-container">
-                {% for ingredient in recipe.ingredients %}
+                {% set ingredients_to_render = form_ingredients if form_ingredients is defined else recipe.ingredients
+                %}
+                {% for ingredient in ingredients_to_render %}
+                {% set ingredient_index = loop.index0 %}
                 {% include 'components/_add_ingredient_row.html' %}
                 {% endfor %}
             </div>
@@ -60,8 +63,21 @@
     </div>
 
     <div class="recipe-add-field">
-        <textarea name="description" class="recipe-add-description-textarea"
-                  rows="5" required>{{ recipe.description }}</textarea>
+    <textarea name="description"
+              class="recipe-add-description-textarea"
+              placeholder="Введите описание рецепта..."
+              rows="5"
+              required>{{ recipe.description if recipe else '' }}</textarea>
+
+        {% with messages = get_flashed_messages(category_filter=['recipe_description_error']) %}
+        {% if messages %}
+        <div class="form-field-errors">
+            {% for message in messages %}
+            <div class="form-field-error">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
     </div>
 
     <div class="recipe-add-field">
@@ -69,16 +85,21 @@
             <div class="recipe-add-steps-title">Шаги приготовления</div>
 
             <div class="recipe-add-steps-list" id="steps-container">
-                {% for step in recipe.steps.order_by(RecipeStep.step_number).all() %}
+                {% set steps_to_render = form_steps if form_steps is defined else
+                recipe.steps.order_by(RecipeStep.step_number).all() %}
+
+                {% for step in steps_to_render %}
+                {% set step_index = loop.index0 %}
+
                 <div class="step-block">
                     <div class="step-number-pill">
-                        Шаг {{ step.step_number }}
+                        Шаг {{ loop.index }}
                     </div>
 
                     <div class="step-card">
                         <div class="step-image-dropzone">
-                            {% if step.image_url %}
-                            <img src="{{ step.image_url }}" alt="Шаг {{ step.step_number }}" style="max-width: 180px;">
+                            {% if step.image_url is defined and step.image_url %}
+                            <img src="{{ step.image_url }}" alt="Шаг {{ loop.index }}" style="max-width: 180px;">
                             {% endif %}
 
                             <label class="step-image-label">
@@ -86,9 +107,10 @@
                                        name="step_images[]"
                                        class="step-image-input"
                                        accept="image/*">
+
                                 <span class="step-image-placeholder">
-                                        Загрузите новое фото шага
-                                    </span>
+                            Загрузите новое фото шага
+                        </span>
                             </label>
                         </div>
 
@@ -96,11 +118,18 @@
                                   class="step-description-textarea"
                                   rows="3"
                                   required>{{ step.text }}</textarea>
+
+                        {% if step_errors and step_errors.get(step_index) %}
+                        <div class="form-field-error step-row-error">
+                            {{ step_errors.get(step_index) }}
+                        </div>
+                        {% endif %}
                     </div>
 
                     <button type="button" class="step-delete-btn" title="Удалить шаг">×</button>
                 </div>
                 {% else %}
+                {% set step_index = 0 %}
                 {% include 'components/_add_step_block.html' %}
                 {% endfor %}
             </div>
