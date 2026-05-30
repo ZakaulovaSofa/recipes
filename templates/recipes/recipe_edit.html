@@ -51,22 +51,6 @@
 
             <div class="recipe-add-ingredients-list" id="ingredients-container">
                 {% for ingredient in recipe.ingredients %}
-                <div class="ingredient-row">
-                    <input type="text" name="ingredient_name"
-                           class="ingredient-name-input"
-                           value="{{ ingredient.name }}" required>
-
-                    <input type="text" name="ingredient_amount"
-                           class="ingredient-amount-input"
-                           value="{{ ingredient.amount }}" required>
-
-                    <input type="text" name="ingredient_unit"
-                           class="ingredient-unit-input"
-                           value="{{ ingredient.unit }}" required>
-
-                    <button type="button" class="ingredient-delete-btn" title="Удалить">×</button>
-                </div>
-                {% else %}
                 {% include 'components/_add_ingredient_row.html' %}
                 {% endfor %}
             </div>

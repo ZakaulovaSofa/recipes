@@ -8,10 +8,42 @@ document.addEventListener('DOMContentLoaded', () => {
             const ingredientRow = document.createElement('div');
             ingredientRow.classList.add('ingredient-row');
             ingredientRow.innerHTML = `
-                <input type="text" name="ingredient_name" class="ingredient-name-input" placeholder="Название" required>
-                <input type="text" name="ingredient_amount" class="ingredient-amount-input" placeholder="Кол-во" required>
-                <input type="text" name="ingredient_unit" class="ingredient-unit-input" placeholder="Ед. изм." required>
-                <button type="button" class="ingredient-delete-btn" title="Удалить">×</button>
+                <input type="text"
+                       name="ingredient_name"
+                       class="ingredient-name-input"
+                       placeholder="Название"
+                       required>
+            
+                <input type="text"
+                       name="ingredient_amount"
+                       class="ingredient-amount-input"
+                       placeholder="Кол-во"
+                       pattern="^\\\\s*\\\\d+([.,]\\\\d+)?\\\\s*$|^\\\\s*\\\\d+\\\\s*/\\\\s*\\\\d+\\\\s*$"
+                       title="Введите число: например 100, 100.5, 100,5 или 1/2"
+                       inputmode="decimal"
+                       required>
+            
+                <select name="ingredient_unit"
+                        class="ingredient-unit-input"
+                        required>
+                    <option value="" disabled selected>Ед. изм.</option>
+                    <option value="г">граммы</option>
+                    <option value="кг">килограммы</option>
+                    <option value="л">литры</option>
+                    <option value="мл">миллилитры</option>
+                    <option value="ст. л.">столовые ложки</option>
+                    <option value="ч. л.">чайные ложки</option>
+                    <option value="стакан">стаканы</option>
+                    <option value="капля">капли</option>
+                    <option value="щепотка">щепотки</option>
+                    <option value="шт">штуки</option>
+                </select>
+            
+                <button type="button"
+                        class="ingredient-delete-btn"
+                        title="Удалить">
+                    ×
+                </button>
             `;
             ingredientsContainer.appendChild(ingredientRow);
         });

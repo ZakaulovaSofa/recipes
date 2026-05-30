@@ -1,16 +1,108 @@
 import os
 import uuid
+import re
 from werkzeug.utils import secure_filename
 from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 from app import app
 from models import db, Recipe, RecipeStep, RecipeStatusEnum, Favorite, CartItem, Note, Comment
 
+RECIPE_UNIT_OPTIONS = [
+    ('г', 'граммы'),
+    ('кг', 'килограммы'),
+    ('л', 'литры'),
+    ('мл', 'миллилитры'),
+    ('ст. л.', 'столовые ложки'),
+    ('ч. л.', 'чайные ложки'),
+    ('стакан', 'стаканы'),
+    ('капля', 'капли'),
+    ('щепотка', 'щепотки'),
+    ('шт', 'штуки'),
+]
+
+
+def clean_text(value):
+    if value is None:
+        return ''
+    return value.strip()
+
+
+def get_allowed_recipe_units():
+    return {unit_value for unit_value, unit_label in RECIPE_UNIT_OPTIONS}
+
+
+AMOUNT_PATTERN = re.compile(r'^\s*\d+([.,]\d+)?\s*$|^\s*\d+\s*/\s*\d+\s*$')
+
+
+def is_valid_ingredient_amount(value):
+    if value is None:
+        return False
+    value = value.strip()
+    if not value:
+        return False
+    if not AMOUNT_PATTERN.match(value):
+        return False
+    if '/' in value:
+        numerator, denominator = value.split('/')
+        numerator = numerator.strip()
+        denominator = denominator.strip()
+        if int(denominator) == 0:
+            return False
+    return True
+
+
+def build_ingredients_from_form():
+    ingredient_names = request.form.getlist('ingredient_name')
+    ingredient_amounts = request.form.getlist('ingredient_amount')
+    ingredient_units = request.form.getlist('ingredient_unit')
+    allowed_units = get_allowed_recipe_units()
+    ingredients = []
+    ingredient_errors = {}
+    max_len = max(
+        len(ingredient_names),
+        len(ingredient_amounts),
+        len(ingredient_units)
+    ) if ingredient_names or ingredient_amounts or ingredient_units else 0
+
+    for i in range(max_len):
+        name = clean_text(ingredient_names[i]) if i < len(ingredient_names) else ''
+        amount = clean_text(ingredient_amounts[i]) if i < len(ingredient_amounts) else ''
+        unit = clean_text(ingredient_units[i]) if i < len(ingredient_units) else ''
+        row_errors = {}
+        if not name and not amount and not unit:
+            row_errors['row'] = 'Заполните строку ингредиента.'
+        else:
+            if not name:
+                row_errors['name'] = 'Укажите название ингредиента.'
+
+            if not amount:
+                row_errors['amount'] = 'Укажите количество ингредиента.'
+            elif not is_valid_ingredient_amount(amount):
+                row_errors['amount'] = 'Количество должно быть числом: например 100, 100.5, 100,5 или 1/2.'
+
+            if not unit:
+                row_errors['unit'] = 'Необходимо выбрать единицу измерения.'
+            elif unit not in allowed_units:
+                row_errors['unit'] = 'Выберите единицу измерения из списка.'
+        if row_errors:
+            ingredient_errors[i] = row_errors
+            continue
+        ingredients.append({
+            'name': name,
+            'amount': amount,
+            'unit': unit
+        })
+    if not ingredients and not ingredient_errors:
+        ingredient_errors[0] = {
+            'row': 'Добавьте хотя бы один ингредиент.'
+        }
+    return ingredients, ingredient_errors
+
 
 def remove_recipe_from_user_collections(recipe_id):
     Favorite.query.filter_by(recipe_id=recipe_id).delete()
     CartItem.query.filter_by(recipe_id=recipe_id).delete()
-    Note.query.filter_by(recipe_id=recipe_id).delete()
+
 
 @app.route('/recipes')
 def recipes():
@@ -129,7 +221,11 @@ def my_recipes():
 def recipe_add():
     # GET → просто показать страницу
     if request.method == 'GET':
-        return render_template('recipes/recipe_add.html')
+        return render_template(
+            'recipes/recipe_add.html',
+            unit_options=RECIPE_UNIT_OPTIONS,
+            ingredient_errors={}
+        )
 
     # POST → создание рецепта
     title = request.form.get('title')
@@ -149,18 +245,14 @@ def recipe_add():
         main_image_url = f'/static/uploads/recipes/{filename}'
 
     # Ингредиенты
-    ingredient_names = request.form.getlist('ingredient_name')
-    ingredient_amounts = request.form.getlist('ingredient_amount')
-    ingredient_units = request.form.getlist('ingredient_unit')
-    ingredients = []
-
-    for i in range(len(ingredient_names)):
-        if ingredient_names[i].strip():
-            ingredients.append({
-                "name": ingredient_names[i],
-                "amount": ingredient_amounts[i],
-                "unit": ingredient_units[i]
-            })
+    ingredients, ingredient_errors = build_ingredients_from_form()
+    if ingredient_errors:
+        flash('Проверьте ингредиенты в рецепте.')
+        return render_template(
+            'recipes/recipe_add.html',
+            unit_options=RECIPE_UNIT_OPTIONS,
+            ingredient_errors=ingredient_errors
+        ), 400
 
     # Создание рецепта
     recipe = Recipe(
@@ -228,7 +320,9 @@ def recipe_edit(recipe_id):
         return render_template(
             'recipes/recipe_edit.html',
             recipe=recipe,
-            RecipeStep=RecipeStep
+            RecipeStep=RecipeStep,
+            unit_options=RECIPE_UNIT_OPTIONS,
+            ingredient_errors={}
         )
 
     recipe.title = request.form.get('title')
@@ -245,17 +339,17 @@ def recipe_edit(recipe_id):
         )
         main_photo.save(upload_path)
         recipe.main_image_url = f'/static/uploads/recipes/{filename}'
-    ingredient_names = request.form.getlist('ingredient_name')
-    ingredient_amounts = request.form.getlist('ingredient_amount')
-    ingredient_units = request.form.getlist('ingredient_unit')
-    ingredients = []
-    for i in range(len(ingredient_names)):
-        if ingredient_names[i].strip():
-            ingredients.append({
-                "name": ingredient_names[i],
-                "amount": ingredient_amounts[i],
-                "unit": ingredient_units[i]
-            })
+    ingredients, ingredient_errors = build_ingredients_from_form()
+
+    if ingredient_errors:
+        flash('Проверьте ингредиенты в рецепте.')
+        return render_template(
+            'recipes/recipe_edit.html',
+            recipe=recipe,
+            RecipeStep=RecipeStep,
+            unit_options=RECIPE_UNIT_OPTIONS,
+            ingredient_errors=ingredient_errors
+        ), 400
     recipe.ingredients = ingredients
     RecipeStep.query.filter_by(recipe_id=recipe.id).delete()
     step_texts = request.form.getlist('step_descriptions[]')
@@ -295,6 +389,7 @@ def recipe_delete(recipe_id):
         abort(403)
 
     RecipeStep.query.filter_by(recipe_id=recipe.id).delete()
+    Note.query.filter_by(recipe_id=recipe_id).delete()
     remove_recipe_from_user_collections(recipe.id)
 
     db.session.delete(recipe)

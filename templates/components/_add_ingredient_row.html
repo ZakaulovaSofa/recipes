@@ -1,21 +1,74 @@
-<div class="ingredient-row">
-    <input type="text"
-           name="ingredient_name"
-           class="ingredient-name-input"
-           placeholder="Название"
-           value="{{ ingredient.name if ingredient else '' }}" required>
+{% set row_index = loop.index0 if loop else 0 %}
+{% set current_unit = ingredient.unit if ingredient else '' %}
 
-    <input type="text"
-           name="ingredient_amount"
-           class="ingredient-amount-input"
-           placeholder="Кол-во"
-           value="{{ ingredient.amount if ingredient else '' }}" required>
+<div class="ingredient-row-wrapper">
+    <div class="ingredient-row">
+        <input type="text"
+               name="ingredient_name"
+               class="ingredient-name-input"
+               placeholder="Название"
+               value="{{ ingredient.name if ingredient else '' }}"
+               required>
 
-    <input type="text"
-           name="ingredient_unit"
-           class="ingredient-unit-input"
-           placeholder="Ед. изм."
-           value="{{ ingredient.unit if ingredient else '' }}" required>
+        <input type="text"
+               name="ingredient_amount"
+               class="ingredient-amount-input"
+               placeholder="Кол-во"
+               value="{{ ingredient.amount if ingredient else '' }}"
+               pattern="^\s*\d+([.,]\d+)?\s*$|^\s*\d+\s*/\s*\d+\s*$"
+               title="Введите число: например 100, 100.5, 100,5 или 1/2"
+               inputmode="decimal"
+               required>
 
-    <button type="button" class="ingredient-delete-btn" title="Удалить">×</button>
+        <select name="ingredient_unit"
+                class="ingredient-unit-input"
+                required>
+            <option value="" disabled {% if not current_unit %}selected{% endif %}>
+                Ед. изм.
+            </option>
+
+            {% for unit_value, unit_label in unit_options %}
+            <option value="{{ unit_value }}"
+                    {% if current_unit== unit_value %}selected{% endif %}>
+                {{ unit_label }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <button type="button" class="ingredient-delete-btn" title="Удалить">×</button>
+    </div>
+
+    {% if ingredient_errors and ingredient_errors.get(row_index) %}
+    {% set row_errors = ingredient_errors.get(row_index) %}
+
+    {% if row_errors.get('name') %}
+    <div class="form-field-error ingredient-row-error">
+        {{ row_errors.get('name') }}
+    </div>
+    {% endif %}
+
+    {% if row_errors.get('amount') %}
+    <div class="form-field-error ingredient-row-error">
+        {{ row_errors.get('amount') }}
+    </div>
+    {% endif %}
+
+    {% if row_errors.get('unit') %}
+    <div class="form-field-error ingredient-row-error">
+        {{ row_errors.get('unit') }}
+    </div>
+    {% endif %}
+
+    {% if row_errors.get('row') %}
+    <div class="form-field-error ingredient-row-error">
+        {{ row_errors.get('row') }}
+    </div>
+    {% endif %}
+    {% endif %}
+
+    {% if ingredient_errors and ingredient_errors.get(row_index) and ingredient_errors.get(row_index).get('unit') %}
+    <div class="form-field-error ingredient-row-error">
+        {{ ingredient_errors.get(row_index).get('unit') }}
+    </div>
+    {% endif %}
 </div>
