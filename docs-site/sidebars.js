@@ -50,7 +50,6 @@ const sidebars = {
                 'features/comments',
                 'features/articles',
                 'features/chefs',
-                'features/admin-panel',
             ],
         },
         {
