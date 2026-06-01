@@ -34,8 +34,7 @@
         </div>
     </div>
     <div class="note-detail-content">
-        {# Убираем лишние пробелы и табуляцию в начале и конце текста #}
-        {{ note.text|trim|replace('\n', '<br>')|safe }}
+        {{ note.text|trim }}
     </div>
 </div>
 {% endblock %}

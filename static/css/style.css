@@ -2428,6 +2428,22 @@ body.menu-open::before {
     padding: 20px 24px !important;
     margin: 0 !important;
     text-align: left !important;
+
+    max-height: 120px;
+    overflow: hidden;
+    
+    /* Показываем, что текст обрезан */
+    position: relative;
+}
+.note-text::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, var(--white));
+    pointer-events: none;
 }
 
 /* Футер карточки с кнопками */
@@ -5663,6 +5679,7 @@ body.menu-open::before {
 .card-text,
 .note-text,
 .note-detail-content,
+.chef-bio-content,
 .profile-status-text,
 .profile-login-text,
 .ingredient-name,
@@ -5672,7 +5689,7 @@ body.menu-open::before {
     word-wrap: break-word;
     word-break: break-word;
     overflow-wrap: break-word;
-    white-space: normal;
+    white-space: pre-wrap;
 }
 
 /* Для карточек комментариев */

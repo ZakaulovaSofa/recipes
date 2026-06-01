@@ -27,14 +27,11 @@
             </div>
         </div>
         <div class="note-card-body">
-            <p class="note-text">
-                {# Ограничение текста до 200 символов #}
-                {% if note.text|length > 200 %}
-                    {{ note.text[:200] }}...
-                {% else %}
-                    {{ note.text }}
-                {% endif %}
-            </p>
+            <div class="note-text-wrapper">
+                <p class="note-text">
+                    {{ note.text|trim }}
+                </p>
+            </div>
         </div>
         <div class="note-card-footer">
             <a href="{{ url_for('view_note', note_id=note.id) }}" class="note-btn note-btn-view">Просмотр</a>
