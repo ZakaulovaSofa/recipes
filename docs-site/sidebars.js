@@ -75,6 +75,16 @@ const sidebars = {
                 'development/future-roadmap',
             ],
         },
+        {
+            type: 'category',
+            label: 'E2E-тесты',
+            items: [
+                'testing/readme',
+                'testing/chefs',
+                'testing/articles',
+                'testing/recipes_calorie_counting'
+            ],
+        },
     ],
 };
 
