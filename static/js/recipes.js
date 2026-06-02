@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
                        name="ingredient_amount"
                        class="ingredient-amount-input"
                        placeholder="Кол-во"
-                       pattern="^\\\\s*\\\\d+([.,]\\\\d+)?\\\\s*$|^\\\\s*\\\\d+\\\\s*/\\\\s*\\\\d+\\\\s*$"
+                       pattern="^\\s*\\d+([.,]\\d+)?\\s*$|^\\s*\\d+\\s*/\\s*\\d+\\s*$"
                        title="Введите число: например 100, 100.5, 100,5 или 1/2"
                        inputmode="decimal"
                        required>

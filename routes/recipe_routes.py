@@ -161,6 +161,64 @@ def build_step_rows_for_template():
     return rows
 
 
+def parse_optional_float(value):
+    value = clean_text(value)
+    if not value:
+        return None
+
+    value = value.replace(',', '.')
+    try:
+        number = float(value)
+    except ValueError:
+        return None
+
+    if number < 0:
+        return None
+    return number
+
+
+def build_nutrition_from_form():
+    nutrition_errors = {}
+
+    calories_raw = request.form.get('calories')
+    proteins_raw = request.form.get('proteins')
+    fats_raw = request.form.get('fats')
+    carbohydrates_raw = request.form.get('carbohydrates')
+
+    calories = parse_optional_float(calories_raw)
+    proteins = parse_optional_float(proteins_raw)
+    fats = parse_optional_float(fats_raw)
+    carbohydrates = parse_optional_float(carbohydrates_raw)
+
+    if clean_text(calories_raw) and calories is None:
+        nutrition_errors['calories'] = 'Ккал должны быть положительным числом.'
+
+    if clean_text(proteins_raw) and proteins is None:
+        nutrition_errors['proteins'] = 'Белки должны быть положительным числом.'
+
+    if clean_text(fats_raw) and fats is None:
+        nutrition_errors['fats'] = 'Жиры должны быть положительным числом.'
+
+    if clean_text(carbohydrates_raw) and carbohydrates is None:
+        nutrition_errors['carbohydrates'] = 'Углеводы должны быть положительным числом.'
+
+    return {
+        'calories': calories,
+        'proteins': proteins,
+        'fats': fats,
+        'carbohydrates': carbohydrates,
+    }, nutrition_errors
+
+
+def build_nutrition_rows_for_template():
+    return {
+        'calories': request.form.get('calories', ''),
+        'proteins': request.form.get('proteins', ''),
+        'fats': request.form.get('fats', ''),
+        'carbohydrates': request.form.get('carbohydrates', ''),
+    }
+
+
 def remove_recipe_from_user_collections(recipe_id):
     Favorite.query.filter_by(recipe_id=recipe_id).delete()
     CartItem.query.filter_by(recipe_id=recipe_id).delete()
@@ -206,6 +264,9 @@ def get_recipe_comments(recipe_id):
 @app.route('/recipes/<int:recipe_id>')
 def recipe_detail(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
+    if current_user.is_authenticated and recipe.author_id == current_user.id:
+        return redirect(url_for('recipe_manage', recipe_id=recipe.id))
+
     is_favorite = False
     cart_servings = 1
     is_in_cart = False
@@ -287,7 +348,8 @@ def recipe_add():
             'recipes/recipe_add.html',
             unit_options=RECIPE_UNIT_OPTIONS,
             ingredient_errors={},
-            step_errors={}
+            step_errors={},
+            nutrition_errors={}
         )
 
     # POST → создание рецепта
@@ -295,6 +357,7 @@ def recipe_add():
     description = clean_text(request.form.get('description'))
     ingredients, ingredient_errors = build_ingredients_from_form()
     steps_data, step_errors = build_steps_from_form()
+    nutrition, nutrition_errors = build_nutrition_from_form()
     has_errors = False
     if not title:
         flash('Название рецепта не может быть пустым или состоять только из пробелов.', 'recipe_title_error')
@@ -307,6 +370,8 @@ def recipe_add():
         has_errors = True
     if step_errors:
         has_errors = True
+    if nutrition_errors:
+        has_errors = True
 
     if has_errors:
         return render_template(
@@ -315,7 +380,11 @@ def recipe_add():
             ingredient_errors=ingredient_errors,
             step_errors=step_errors,
             form_ingredients=build_ingredient_rows_for_template(),
-            form_steps=build_step_rows_for_template()
+            form_steps=build_step_rows_for_template(),
+            form_title=request.form.get('title', ''),
+            form_description=request.form.get('description', ''),
+            form_nutrition=build_nutrition_rows_for_template(),
+            nutrition_errors=nutrition_errors
         ), 400
 
     main_photo = request.files.get('main_photo')
@@ -338,7 +407,11 @@ def recipe_add():
         description=description,
         author_id=current_user.id,
         ingredients=ingredients,
-        main_image_url=main_image_url
+        main_image_url=main_image_url,
+        calories=nutrition['calories'],
+        proteins=nutrition['proteins'],
+        fats=nutrition['fats'],
+        carbohydrates=nutrition['carbohydrates']
     )
     db.session.add(recipe)
     db.session.commit()
@@ -397,13 +470,15 @@ def recipe_edit(recipe_id):
             RecipeStep=RecipeStep,
             unit_options=RECIPE_UNIT_OPTIONS,
             ingredient_errors={},
-            step_errors={}
+            step_errors={},
+            nutrition_errors={}
         )
 
     title = clean_text(request.form.get('title'))
     description = clean_text(request.form.get('description'))
     ingredients, ingredient_errors = build_ingredients_from_form()
     steps_data, step_errors = build_steps_from_form()
+    nutrition, nutrition_errors = build_nutrition_from_form()
     has_errors = False
 
     if not title:
@@ -417,6 +492,8 @@ def recipe_edit(recipe_id):
         has_errors = True
     if step_errors:
         has_errors = True
+    if nutrition_errors:
+        has_errors = True
 
     if has_errors:
         return render_template(
@@ -427,13 +504,19 @@ def recipe_edit(recipe_id):
             ingredient_errors=ingredient_errors,
             step_errors=step_errors,
             form_ingredients=build_ingredient_rows_for_template(),
-            form_steps=build_step_rows_for_template()
+            form_steps=build_step_rows_for_template(),
+            form_nutrition=build_nutrition_rows_for_template(),
+            nutrition_errors=nutrition_errors
         ), 400
 
     recipe.title = title
     recipe.description = description
     recipe.ingredients = ingredients
     recipe.status = RecipeStatusEnum.PENDING
+    recipe.calories = nutrition['calories']
+    recipe.proteins = nutrition['proteins']
+    recipe.fats = nutrition['fats']
+    recipe.carbohydrates = nutrition['carbohydrates']
     remove_recipe_from_user_collections(recipe.id)
     main_photo = request.files.get('main_photo')
     if main_photo and main_photo.filename:
@@ -446,27 +529,24 @@ def recipe_edit(recipe_id):
         main_photo.save(upload_path)
         recipe.main_image_url = f'/static/uploads/recipes/{filename}'
     RecipeStep.query.filter_by(recipe_id=recipe.id).delete()
-    step_texts = request.form.getlist('step_descriptions[]')
-    step_photos = request.files.getlist('step_images[]')
-    for index, step_text in enumerate(step_texts):
-        if not step_text.strip():
-            continue
+
+    for index, step_data in enumerate(steps_data):
         image_url = None
-        if index < len(step_photos):
-            photo = step_photos[index]
-            if photo and photo.filename:
-                filename = f"{uuid.uuid4()}_{secure_filename(photo.filename)}"
-                upload_path = os.path.join(
-                    app.config['UPLOAD_FOLDER'],
-                    'recipe_steps',
-                    filename
-                )
-                photo.save(upload_path)
-                image_url = f'/static/uploads/recipe_steps/{filename}'
+        photo = step_data['photo']
+
+        if photo and photo.filename:
+            filename = f"{uuid.uuid4()}_{secure_filename(photo.filename)}"
+            upload_path = os.path.join(
+                app.config['UPLOAD_FOLDER'],
+                'recipe_steps',
+                filename
+            )
+            photo.save(upload_path)
+            image_url = f'/static/uploads/recipe_steps/{filename}'
         step = RecipeStep(
             recipe_id=recipe.id,
             step_number=index + 1,
-            text=step_text,
+            text=step_data['text'],
             image_url=image_url
         )
         db.session.add(step)

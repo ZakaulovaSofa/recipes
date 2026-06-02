@@ -82,6 +82,8 @@
     </div>
 </div>
 
+{% include 'components/_nutrition_view.html' %}
+
 <!-- 3. Описание -->
 <div class="recipe-manage-description-block">
     <div class="recipe-manage-description-card">
@@ -92,6 +94,7 @@
 <!-- 4. Шаги (Используем компонент!) -->
 <div class="recipe-manage-steps-block">
     {% for step in recipe.steps %}
+    {% set step_index = loop.index %}
     {% include 'components/_step_block.html' %}
     {% endfor %}
 </div>

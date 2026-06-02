@@ -12,12 +12,11 @@
 
 {# Указываем url_for для отправки формы #}
 <form class="recipe-add-form" action="{{ url_for('recipe_add') }}" method="post" enctype="multipart/form-data">
-    {# 1. Название #}
+
     <div class="recipe-add-field">
         <input type="text" name="title" class="recipe-add-title-input" placeholder="Введите название рецепта" required>
     </div>
 
-    {# 2. Главное фото #}
     <div class="recipe-add-field">
         <div class="recipe-add-photo-card">
             <label class="recipe-add-photo-dropzone file-upload-dropzone">
@@ -34,7 +33,6 @@
         </div>
     </div>
 
-    {# 3. Ингредиенты #}
     <div class="recipe-add-field">
         <div class="recipe-add-ingredients-card">
             <div class="recipe-add-ingredients-title">Ингредиенты</div>
@@ -53,13 +51,15 @@
         </div>
     </div>
 
-    {# 4. Описание #}
+    <div class="recipe-add-field">
+        {% include 'components/_nutrition_form.html' %}
+    </div>
+
     <div class="recipe-add-field">
         <textarea name="description" class="recipe-add-description-textarea" placeholder="Введите описание рецепта..."
                   rows="5" required></textarea>
     </div>
 
-    {# 5. Шаги приготовления #}
     <div class="recipe-add-field">
         <div class="recipe-add-steps-card">
             <div class="recipe-add-steps-title">Шаги приготовления</div>
@@ -72,7 +72,6 @@
         </div>
     </div>
 
-    {# 6. Публикация #}
     <div class="recipe-add-submit-wrapper">
         <button type="submit" class="recipe-add-submit-btn">Опубликовать</button>
     </div>

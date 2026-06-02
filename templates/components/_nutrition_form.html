@@ -1,0 +1,72 @@
+{% set nutrition = form_nutrition if form_nutrition is defined else {} %}
+
+<div class="nutrition-form-card">
+    <div class="nutrition-form-header">
+        <span>КБЖУ</span>
+        <span class="nutrition-form-subtitle">на 100 г</span>
+    </div>
+
+    <div class="nutrition-form-row">
+        <label for="proteins">Белки</label>
+        <span class="nutrition-dots"></span>
+        <input
+                type="text"
+                id="proteins"
+                name="proteins"
+                class="nutrition-input"
+                inputmode="decimal"
+                value="{{ nutrition.proteins if form_nutrition is defined else (recipe.proteins if recipe is defined and recipe.proteins is not none else '') }}"
+        >
+    </div>
+    {% if nutrition_errors and nutrition_errors.get('proteins') %}
+    <div class="form-field-error nutrition-error">{{ nutrition_errors.get('proteins') }}</div>
+    {% endif %}
+
+    <div class="nutrition-form-row">
+        <label for="fats">Жиры</label>
+        <span class="nutrition-dots"></span>
+        <input
+                type="text"
+                id="fats"
+                name="fats"
+                class="nutrition-input"
+                inputmode="decimal"
+                value="{{ nutrition.fats if form_nutrition is defined else (recipe.fats if recipe is defined and recipe.fats is not none else '') }}"
+        >
+    </div>
+    {% if nutrition_errors and nutrition_errors.get('fats') %}
+    <div class="form-field-error nutrition-error">{{ nutrition_errors.get('fats') }}</div>
+    {% endif %}
+
+    <div class="nutrition-form-row">
+        <label for="carbohydrates">Углеводы</label>
+        <span class="nutrition-dots"></span>
+        <input
+                type="text"
+                id="carbohydrates"
+                name="carbohydrates"
+                class="nutrition-input"
+                inputmode="decimal"
+                value="{{ nutrition.carbohydrates if form_nutrition is defined else (recipe.carbohydrates if recipe is defined and recipe.carbohydrates is not none else '') }}"
+        >
+    </div>
+    {% if nutrition_errors and nutrition_errors.get('carbohydrates') %}
+    <div class="form-field-error nutrition-error">{{ nutrition_errors.get('carbohydrates') }}</div>
+    {% endif %}
+
+    <div class="nutrition-form-row">
+        <label for="calories">Ккал</label>
+        <span class="nutrition-dots"></span>
+        <input
+                type="text"
+                id="calories"
+                name="calories"
+                class="nutrition-input"
+                inputmode="decimal"
+                value="{{ nutrition.calories if form_nutrition is defined else (recipe.calories if recipe is defined and recipe.calories is not none else '') }}"
+        >
+    </div>
+    {% if nutrition_errors and nutrition_errors.get('calories') %}
+    <div class="form-field-error nutrition-error">{{ nutrition_errors.get('calories') }}</div>
+    {% endif %}
+</div>

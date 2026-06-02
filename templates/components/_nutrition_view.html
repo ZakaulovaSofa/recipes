@@ -1,0 +1,39 @@
+{% set has_nutrition =
+recipe.proteins is not none
+or recipe.fats is not none
+or recipe.carbohydrates is not none
+or recipe.calories is not none
+%}
+
+{% if has_nutrition %}
+<div class="nutrition-view-card">
+    <div class="nutrition-view-header">
+        <span>КБЖУ</span>
+        <span class="nutrition-view-subtitle">на 100 г</span>
+    </div>
+
+    <div class="nutrition-view-row">
+        <span>Белки</span>
+        <span class="nutrition-dots"></span>
+        <strong>{{ recipe.proteins if recipe.proteins is not none else '—' }}</strong>
+    </div>
+
+    <div class="nutrition-view-row">
+        <span>Жиры</span>
+        <span class="nutrition-dots"></span>
+        <strong>{{ recipe.fats if recipe.fats is not none else '—' }}</strong>
+    </div>
+
+    <div class="nutrition-view-row">
+        <span>Углеводы</span>
+        <span class="nutrition-dots"></span>
+        <strong>{{ recipe.carbohydrates if recipe.carbohydrates is not none else '—' }}</strong>
+    </div>
+
+    <div class="nutrition-view-row">
+        <span>Ккал</span>
+        <span class="nutrition-dots"></span>
+        <strong>{{ recipe.calories if recipe.calories is not none else '—' }}</strong>
+    </div>
+</div>
+{% endif %}

@@ -5957,3 +5957,126 @@ body.menu-open::before {
 .step-row-error {
     margin-top: 10px;
 }
+
+.nutrition-form-card,
+.nutrition-view-card {
+    width: 100%;
+    max-width: 620px;
+    margin: 24px auto;
+    padding: 22px 28px;
+
+    border-radius: 24px;
+    background: var(--orange);
+    color: var(--white);
+
+    box-sizing: border-box;
+}
+
+.nutrition-form-header,
+.nutrition-view-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.nutrition-form-subtitle,
+.nutrition-view-subtitle {
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0.85;
+}
+
+.nutrition-form-row,
+.nutrition-view-row {
+    display: grid;
+    grid-template-columns: auto 1fr 86px;
+    align-items: center;
+    gap: 12px;
+
+    margin: 10px 0;
+
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.nutrition-form-row label,
+.nutrition-view-row span:first-child {
+    white-space: nowrap;
+}
+
+.nutrition-dots {
+    height: 2px;
+    border-bottom: 3px dotted rgba(255, 255, 255, 0.65);
+    transform: translateY(4px);
+}
+
+.nutrition-input {
+    width: 86px;
+    height: 42px;
+
+    border: none;
+    border-radius: 18px;
+
+    background: var(--white);
+    color: var(--black);
+
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+
+    outline: none;
+    box-sizing: border-box;
+}
+
+.nutrition-input:focus {
+    box-shadow: 0 0 0 3px rgba(118, 168, 169, 0.35);
+}
+
+.nutrition-view-row strong {
+    min-width: 86px;
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+    background: var(--white);
+    color: var(--black);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.nutrition-error {
+    margin: 8px 0 10px;
+}
+
+@media (max-width: 600px) {
+    .nutrition-form-card,
+    .nutrition-view-card {
+        padding: 18px 20px;
+    }
+
+    .nutrition-form-row,
+    .nutrition-view-row {
+        grid-template-columns: 1fr 72px;
+        gap: 8px;
+        font-size: 20px;
+    }
+
+    .nutrition-dots {
+        display: none;
+    }
+
+    .nutrition-input,
+    .nutrition-view-row strong {
+        width: 72px;
+        min-width: 72px;
+    }
+}
