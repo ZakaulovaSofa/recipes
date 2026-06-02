@@ -38,6 +38,7 @@ class User(db.Model, UserMixin):
     notes = db.relationship('Note', backref='user', lazy='dynamic')
     chefs = db.relationship('Chef', backref='admin', lazy='dynamic')
     articles = db.relationship('Article', backref='author', lazy='dynamic')
+    chef_ratings = db.relationship('ChefRating', backref='user', lazy='dynamic', cascade='all, delete-orphan')
 
     def set_password(self, password):
         """Создает хеш из чистого пароля."""
@@ -60,6 +61,11 @@ class Recipe(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     main_image_url = db.Column(db.String(300))
+
+    calories = db.Column(db.Float, nullable=True)
+    proteins = db.Column(db.Float, nullable=True)
+    fats = db.Column(db.Float, nullable=True)
+    carbohydrates = db.Column(db.Float, nullable=True)
 
     # array(JSON) - массив JSON объектов
     # Структура: [{"title": "flour", "amount": "200", "unit": "g"}, ...]
@@ -99,8 +105,9 @@ class Article(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     main_image_url = db.Column(db.String(300))
-    
+
     comments = db.relationship('Comment', backref='article', lazy='dynamic', cascade='all, delete-orphan')
+
 
 # 5. COMMENT
 class Comment(db.Model):
@@ -129,6 +136,8 @@ class Chef(db.Model):
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    ratings = db.relationship('ChefRating', backref='chef', lazy='dynamic', cascade='all, delete-orphan')
 
 
 # 7. FAVORITE
@@ -170,3 +179,21 @@ class Note(db.Model):
     text = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+# 10. CHEF_RATING
+class ChefRating(db.Model):
+    __tablename__ = 'chef_rating'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    chef_id = db.Column(db.Integer, db.ForeignKey('chef.id'), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        # гарантия уникальности пары user_id - chef_id
+        db.UniqueConstraint('user_id', 'chef_id', name='unique_chef_rating'),
+        # гарантия корректности оценки
+        db.CheckConstraint('rating >= 1 AND rating <= 5', name='check_chef_rating_range'),
+    )
