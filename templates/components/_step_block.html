@@ -1,12 +1,12 @@
 <div class="recipe-step-item">
     <div class="step-number-pill">Шаг {{ step_index }}</div>
     <div class="step-card">
+        {% if step.image_url %}
         <div class="step-image">
-            {% if step.image_url %}
             <img src="{{ step.image_url }}"
                  alt="Шаг {{ step_index }}">
-            {% endif %}
         </div>
+        {% endif %}
         <div class="step-text">{{ step.text }}</div>
     </div>
 </div>
