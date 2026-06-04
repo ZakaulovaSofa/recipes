@@ -20,11 +20,7 @@
 
     <div class="recipe-add-field">
         <div class="recipe-add-photo-card">
-            {% if recipe.main_image_url %}
-            <img src="{{ recipe.main_image_url }}" alt="{{ recipe.title }}" style="max-width: 250px;">
-            {% endif %}
-
-            <label class="recipe-add-photo-dropzone file-upload-dropzone">
+            <label class="recipe-add-photo-dropzone file-upload-dropzone {% if recipe.main_image_url %}has-file{% endif %}">
                 <input
                         type="file"
                         name="main_photo"
@@ -102,19 +98,28 @@
 
                     <div class="step-card">
                         <div class="step-image-dropzone">
-                            {% if step.image_url is defined and step.image_url %}
-                            <img src="{{ step.image_url }}" alt="Шаг {{ loop.index }}" style="max-width: 180px;">
-                            {% endif %}
-
-                            <label class="step-image-label">
+                            <label class="step-image-label file-upload-dropzone {% if step.image_url is defined and step.image_url %}has-file{% endif %}">
                                 <input type="file"
                                        name="step_images[]"
-                                       class="step-image-input"
+                                       class="step-image-input file-upload-input"
                                        accept="image/*">
 
-                                <span class="step-image-placeholder">
-                            Загрузите новое фото шага
-                        </span>
+                                <span class="step-image-placeholder file-upload-placeholder">
+                                    {% if step.image_url is defined and step.image_url %}
+                                        Загрузите новое фото шага
+                                    {% else %}
+                                        Загрузите фото шага
+                                    {% endif %}
+                                </span>
+
+                                {% if step.image_url is defined and step.image_url %}
+                                <img class="file-upload-preview is-visible"
+                                     src="{{ step.image_url }}"
+                                     alt="Шаг {{ loop.index }}">
+                                {% else %}
+                                <img class="file-upload-preview"
+                                     alt="Предпросмотр фото шага">
+                                {% endif %}
                             </label>
                         </div>
 
@@ -149,4 +154,5 @@
 {% endblock %}
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/recipes.js') }}"></script>
+<script src="{{ url_for('static', filename='js/file_upload_preview.js') }}"></script>
 {% endblock %}
