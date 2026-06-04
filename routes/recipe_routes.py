@@ -129,6 +129,7 @@ def build_ingredient_rows_for_template():
 def build_steps_from_form():
     step_texts = request.form.getlist('step_descriptions[]')
     step_photos = request.files.getlist('step_images[]')
+    existing_step_image_urls = request.form.getlist('existing_step_image_urls[]')
     steps_data = []
     step_errors = {}
     for index, step_text in enumerate(step_texts):
@@ -137,9 +138,15 @@ def build_steps_from_form():
             step_errors[index] = 'Описание шага не может быть пустым или состоять только из пробелов.'
             continue
         photo = step_photos[index] if index < len(step_photos) else None
+        existing_image_url = (
+            existing_step_image_urls[index]
+            if index < len(existing_step_image_urls)
+            else ''
+        )
         steps_data.append({
             'text': text,
             'photo': photo,
+            'existing_image_url': existing_image_url,
             'original_index': index
         })
     if not steps_data and not step_errors:
@@ -149,11 +156,18 @@ def build_steps_from_form():
 
 def build_step_rows_for_template():
     step_texts = request.form.getlist('step_descriptions[]')
+    existing_step_image_urls = request.form.getlist('existing_step_image_urls[]')
     rows = []
-    for step_text in step_texts:
+
+    for index, step_text in enumerate(step_texts):
+        image_url = (
+            existing_step_image_urls[index]
+            if index < len(existing_step_image_urls)
+            else ''
+        )
         rows.append({
             'text': step_text,
-            'image_url': ''
+            'image_url': image_url
         })
     if not rows:
         rows.append({
@@ -533,7 +547,7 @@ def recipe_edit(recipe_id):
     RecipeStep.query.filter_by(recipe_id=recipe.id).delete()
 
     for index, step_data in enumerate(steps_data):
-        image_url = None
+        image_url = step_data.get('existing_image_url')
         photo = step_data['photo']
 
         if photo and photo.filename:

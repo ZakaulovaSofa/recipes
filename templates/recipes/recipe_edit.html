@@ -92,6 +92,12 @@
                 {% set step_index = loop.index0 %}
 
                 <div class="step-block">
+                    <input
+                            type="hidden"
+                            name="existing_step_image_urls[]"
+                            value="{{ step.image_url if step.image_url is defined and step.image_url else '' }}"
+                    >
+
                     <div class="step-number-pill">
                         Шаг {{ loop.index }}
                     </div>

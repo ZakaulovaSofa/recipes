@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const stepBlock = document.createElement('div');
             stepBlock.classList.add('step-block');
             stepBlock.innerHTML = `
+                <input type="hidden" name="existing_step_image_urls[]" value="">
                 <div class="step-number-pill">Шаг ${stepsCount}</div>
                 <div class="step-card">
                     <div class="step-image-dropzone">
