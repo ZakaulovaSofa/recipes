@@ -9,7 +9,6 @@ const sidebars = {
                 'project/goals',
                 'project/tech-stack',
                 'project/repository-structure',
-                'project/setup',
             ],
         },
         {
@@ -71,7 +70,6 @@ const sidebars = {
             label: 'Разработка',
             items: [
                 'development/workflow',
-                'development/commits',
                 'development/future-roadmap',
             ],
         },
