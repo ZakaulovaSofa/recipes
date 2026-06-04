@@ -10,11 +10,18 @@
 </div>
 
 {% for recipe in cart.recipes %}
-    {% include 'components/_cart_recipe_block.html' %}
+{% include 'components/_cart_recipe_block.html' %}
 {% else %}
-    <div class="cart-empty-message">
-        <p>Ваша корзина пуста. Добавьте ингредиенты из рецептов!</p>
-    </div>
+{% with
+empty_state_class = 'empty-state-cart',
+empty_state_icon = '🧺',
+empty_state_title = 'Ваша корзина пуста',
+empty_state_text = 'Добавьте рецепт в корзину, и здесь появится список нужных ингредиентов.',
+empty_state_action_url = url_for('recipes'),
+empty_state_action_text = 'Перейти к рецептам'
+%}
+{% include 'components/_empty_state.html' %}
+{% endwith %}
 {% endfor %}
 
 {% if cart.recipes %}

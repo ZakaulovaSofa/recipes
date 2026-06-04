@@ -68,7 +68,7 @@
     <div class="profile-cards-row">
         {% for recipe in favorite_recipes %}
         <div class="card-wide">
-            <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
+            <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="profile-card-link">
                 <div class="card-inner-wide">
                     <div class="card-image-wide">
                         <img src="{{ recipe.main_image_url }}" alt="{{ recipe.title }}">
@@ -78,7 +78,16 @@
             </a>
         </div>
         {% else %}
-        <p class="profile-empty-text">У вас пока нет избранных рецептов.</p>
+        {% with
+        empty_state_class = 'empty-state-profile',
+        empty_state_icon = '❤️',
+        empty_state_title = 'У вас пока нет избранных рецептов',
+        empty_state_text = 'Добавляйте понравившиеся рецепты в избранное, чтобы быстро возвращаться к ним.',
+        empty_state_action_url = url_for('recipes'),
+        empty_state_action_text = 'Перейти к рецептам'
+        %}
+        {% include 'components/_empty_state.html' %}
+        {% endwith %}
         {% endfor %}
     </div>
 </div>
@@ -94,7 +103,7 @@
     <div class="profile-cards-row">
         {% for recipe in my_recipes %}
         <div class="card-wide">
-            <a href="{{ url_for('recipe_manage', recipe_id=recipe.id) }}" style="text-decoration: none;">
+            <a href="{{ url_for('recipe_manage', recipe_id=recipe.id) }}" class="profile-card-link">
                 <div class="card-inner-wide">
                     <div class="card-image-wide">
                         <img
@@ -116,7 +125,16 @@
             </a>
         </div>
         {% else %}
-        <p class="profile-empty-text">У вас пока нет рецептов.</p>
+        {% with
+        empty_state_class = 'empty-state-profile',
+        empty_state_icon = '+',
+        empty_state_title = 'У вас пока нет рецептов',
+        empty_state_text = 'Создайте первый рецепт и отправьте его на модерацию.',
+        empty_state_action_url = url_for('recipe_add'),
+        empty_state_action_text = 'Создать рецепт'
+        %}
+        {% include 'components/_empty_state.html' %}
+        {% endwith %}
         {% endfor %}
     </div>
 </div>

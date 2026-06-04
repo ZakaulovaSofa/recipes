@@ -1,0 +1,23 @@
+<div class="empty-state {{ empty_state_class if empty_state_class else '' }}">
+    <div class="empty-state-icon">
+        {{ empty_state_icon if empty_state_icon else '♡' }}
+    </div>
+
+    <div class="empty-state-content">
+        <div class="empty-state-title">
+            {{ empty_state_title }}
+        </div>
+
+        {% if empty_state_text %}
+        <div class="empty-state-text">
+            {{ empty_state_text }}
+        </div>
+        {% endif %}
+
+        {% if empty_state_action_url and empty_state_action_text %}
+        <a href="{{ empty_state_action_url }}" class="empty-state-action">
+            {{ empty_state_action_text }}
+        </a>
+        {% endif %}
+    </div>
+</div>

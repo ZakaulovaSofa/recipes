@@ -6156,3 +6156,192 @@ body.menu-open::before {
     overflow-wrap: break-word;
     white-space: pre-wrap;
 }
+
+.card-link,
+.card-link:visited {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.card-link:hover,
+.card-link:active,
+.card-link:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.card-text {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ========== EMPTY STATE / ЗАГЛУШКИ ========== */
+
+.empty-state {
+    width: 100%;
+    max-width: 720px;
+    margin: 24px auto 32px;
+    padding: 28px 32px;
+
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    background: var(--white);
+    border-radius: 30px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+
+    color: var(--black);
+}
+
+.empty-state-icon {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+    background: var(--light-green);
+    color: var(--white);
+
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.empty-state-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.empty-state-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.empty-state-text {
+    max-width: 520px;
+
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.45;
+
+    opacity: 0.75;
+}
+
+.empty-state-action {
+    margin-top: 8px;
+    padding: 9px 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+    background: #b8d88b;
+    color: var(--white);
+
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.empty-state-action:visited {
+    color: var(--white);
+}
+
+.empty-state-action:hover {
+    transform: translateY(-2px);
+    filter: brightness(0.96);
+    text-decoration: none;
+}
+
+/* Заглушка внутри grid должна занимать всю строку */
+.empty-state-grid {
+    grid-column: 1 / -1;
+}
+
+/* Заглушка внутри профиля должна растягиваться по строке карточек */
+.profile-cards-row .empty-state,
+.empty-state-profile {
+    width: 100%;
+    max-width: 760px;
+}
+
+/* Корзина */
+.empty-state-cart {
+    margin-top: 32px;
+}
+
+/* Если где-то остались старые p-заглушки */
+.profile-empty-text,
+.cart-empty-message {
+    width: 100%;
+}
+
+/* Адаптив */
+@media (max-width: 640px) {
+    .empty-state {
+        padding: 24px 22px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .empty-state-content {
+        align-items: center;
+    }
+
+    .empty-state-text {
+        max-width: 100%;
+    }
+}
+
+.profile-card-link,
+.profile-card-link:visited,
+.profile-card-link:hover,
+.profile-card-link:active,
+.profile-card-link:focus {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.profile-card-link:hover {
+    text-decoration: none;
+}
+
+.profile-card-link .card-inner-wide {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-card-link:hover .card-inner-wide {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.profile-card-link .card-text-wide {
+    color: var(--black);
+    text-decoration: none;
+}
+
+.profile-card-link:visited .card-text-wide {
+    color: var(--black);
+}

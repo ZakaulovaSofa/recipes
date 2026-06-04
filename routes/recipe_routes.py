@@ -226,7 +226,7 @@ def remove_recipe_from_user_collections(recipe_id):
 
 @app.route('/recipes')
 def recipes():
-    limit = request.args.get('limit', 9, type=int)
+    limit = request.args.get('limit', 20, type=int)
     offset = request.args.get('offset', 0, type=int)
     recipes_query = Recipe.query.filter_by(
         status=RecipeStatusEnum.PUBLISHED

@@ -48,7 +48,16 @@
         {% endif %}
     </div>
     {% else %}
-    <p>У вас нет рецептов с таким статусом</p>
+    {% with
+    empty_state_class = 'empty-state-grid',
+    empty_state_icon = '🍽',
+    empty_state_title = 'У вас нет рецептов с таким статусом',
+    empty_state_text = 'Попробуйте выбрать другой статус или создайте новый рецепт.',
+    empty_state_action_url = url_for('recipe_add'),
+    empty_state_action_text = 'Создать рецепт'
+    %}
+    {% include 'components/_empty_state.html' %}
+    {% endwith %}
     {% endfor %}
 </div>
 
