@@ -89,7 +89,7 @@ def chefs():
     """Просмотр списка всех поваров с пагинацией и фильтрацией по категориям."""
     page = request.args.get('page', 1, type=int)
     category = request.args.get('category', type=str)
-    per_page = 6
+    per_page = 20
     
     query = Chef.query.order_by(Chef.created_at.desc())
     

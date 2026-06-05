@@ -29,8 +29,17 @@
     {% endfor %}
 </div>
 
+{% if articles|length > 0 %}
 <div class="gallery-pagination">
-    <a href="{{ url_for('articles', page=current_page-1) }}" class="pagination-btn {% if current_page == 1 %}disabled{% endif %}">←</a>
-    <a href="{{ url_for('articles', page=current_page+1) }}" class="pagination-btn {% if not has_next %}disabled{% endif %}">→</a>
+    {# Стрелка "назад" — только если не первая страница #}
+    {% if current_page > 1 %}
+        <a href="{{ url_for('articles', page=current_page-1) }}" class="pagination-btn">←</a>
+    {% endif %}
+    
+    {# Стрелка "вперед" — только если есть следующая страница #}
+    {% if has_next %}
+        <a href="{{ url_for('articles', page=current_page+1) }}" class="pagination-btn">→</a>
+    {% endif %}
 </div>
+{% endif %}
 {% endblock %}

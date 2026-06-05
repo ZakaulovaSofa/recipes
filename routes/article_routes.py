@@ -19,7 +19,7 @@ def allowed_file(filename):
 @app.route('/articles')
 def articles():
     page = request.args.get('page', 1, type=int)
-    per_page = 6
+    per_page = 20
     
     pagination = Article.query.order_by(Article.created_at.desc()).paginate(
         page=page, per_page=per_page, error_out=False
