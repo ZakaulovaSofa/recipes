@@ -6638,3 +6638,15 @@ body.menu-open::before {
     border: 2px solid #fff; /* Белая аккуратная рамка вокруг круга */
     user-select: none;
 }
+
+.chef-avg-number {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-left: 4px;
+    margin-right: 2px;
+    color: #ff3b30; /* Красный цвет в тон закрашенных звезд */
+    background: rgba(255, 255, 255, 0.8); /* Легкая белая подложка для читаемости */
+    padding: 1px 6px;
+    border-radius: 8px;
+    line-height: 1;
+}
