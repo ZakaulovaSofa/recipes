@@ -6612,3 +6612,29 @@ body.menu-open::before {
     font-weight: bold;
     text-decoration: none;
 }
+
+/* [КОММИТ 2] Выстраиваем желтую пилюлю и счетчик в одну линию */
+.chef-rating-flex {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+/* Стильная круглая плашка с количеством отзывов */
+.chef-reviews-badge {
+    background-color: #6da4a3; /* Фирменный сине-зеленый цвет вашей кнопки */
+    color: #fff;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 2px solid #fff; /* Белая аккуратная рамка вокруг круга */
+    user-select: none;
+}

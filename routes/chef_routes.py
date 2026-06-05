@@ -23,9 +23,12 @@ def adapt_chef_for_template(chef):
         chef.photo_url = chef.image_url
         chef.bio = chef.description
         
-        # Используем существующий relationship 'ratings'
+        # Расчет среднего рейтинга повара (округляем до 1 знака)
         avg_rating = db.session.query(func.avg(ChefRating.rating)).filter(ChefRating.chef_id == chef.id).scalar()
         chef.average_rating = round(avg_rating, 1) if avg_rating else 0.0
+
+        # Считаем общее количество оценок через связь ratings
+        chef.ratings_count = chef.ratings.count()
 
         # Проверяем, оставлял ли текущий авторизованный пользователь оценку
         chef.user_rating = None

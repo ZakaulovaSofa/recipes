@@ -31,16 +31,23 @@
 <div class="chef-rating-container">
     
     <!-- Желтый блок отображения рейтинга -->
-    <div class="chef-rating-pill">
-        <span>Рейтинг:</span>
-        <div class="chef-stars-display">
-            {% for i in range(1, 6) %}
-                {% if chef.average_rating >= i %}
-                    <span class="star-filled">★</span>
-                {% else %}
-                    <span class="star-empty">★</span>
-                {% endif %}
-            {% endfor %}
+    <div class="chef-rating-flex">
+        <div class="chef-rating-pill">
+            <span>Рейтинг:</span>
+            <div class="chef-stars-display">
+                {% for i in range(1, 6) %}
+                    {% if chef.average_rating >= i %}
+                        <span class="star-filled">★</span>
+                    {% else %}
+                        <span class="star-empty">★</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Круглая плашка с количеством отзывов (в цвет сине-зеленой кнопки) -->
+        <div class="chef-reviews-badge" title="Всего оценок поставлено повару">
+            {{ chef.ratings_count }}
         </div>
     </div>
 
