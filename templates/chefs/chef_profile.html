@@ -27,6 +27,64 @@
     <div class="chef-name-pill">{{ chef.name }}</div>
 </div>
 
+<!-- 2.5 Блок рейтинга и управления оценками [КОММИТ 1] -->
+<div class="chef-rating-container">
+    
+    <!-- Желтый блок отображения рейтинга -->
+    <div class="chef-rating-pill">
+        <span>Рейтинг:</span>
+        <div class="chef-stars-display">
+            {% for i in range(1, 6) %}
+                {% if chef.average_rating >= i %}
+                    <span class="star-filled">★</span>
+                {% else %}
+                    <span class="star-empty">★</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Блок действий для авторизованных пользователей -->
+    {% if current_user.is_authenticated %}
+        
+        <!-- Контейнер для формы отправки и формы удаления -->
+        <div class="chef-rating-post-form">
+            <form action="{{ url_for('rate_chef', chef_id=chef.id) }}" method="POST">
+                <div class="chef-rating-select-group">
+                    <label for="rating-select">Ваша оценка:</label>
+                    <select name="rating" id="rating-select">
+                        {% for i in range(1, 6) %}
+                            <option value="{{ i }}" {% if chef.user_rating == i %}selected{% endif %}>{{ i }} ★</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="chef-rating-buttons-group">
+                    <button type="submit" class="chef-btn-submit-rate">
+                        {% if chef.user_rating %}Изменить оценку{% else %}Поставить оценку{% endif %}
+                    </button>
+            </form> <!-- Форма отправки закрывается после своей кнопки -->
+
+                    <!-- Если оценка уже стоит, рядом показываем форму удаления -->
+                    {% if chef.user_rating %}
+                    <form action="{{ url_for('rate_chef', chef_id=chef.id) }}" method="POST" class="chef-rating-delete-inline-form">
+                        <input type="hidden" name="action" value="delete">
+                        <button type="submit" class="chef-btn-delete-rate" onclick="return confirm('Вы уверены, что хотите удалить свою оценку?');">
+                            Удалить
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+        </div>
+
+    {% else %}
+        <p class="chef-rating-guest-hint">
+            <a href="{{ url_for('login') }}">Войдите</a>, чтобы оценивать поваров.
+        </p>
+    {% endif %}
+</div>
+
+
 <!-- 3. Блок тегов (категории) -->
 <div class="chef-tags-wrapper">
     {% for tag in chef.tags %}
