@@ -75,7 +75,7 @@ const sidebars = {
         },
         {
             type: 'category',
-            label: 'E2E-тесты',
+            label: 'Тестирование',
             items: [
                 'testing/readme',
                 'testing/chefs',
