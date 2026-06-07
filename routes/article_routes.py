@@ -142,24 +142,54 @@ def admin_add_article():
         return render_template('articles/article_edit.html', article=None)
 
     # POST — сохранение новой статьи
-    title = request.form.get('title')
-    text = request.form.get('text')
-    
-    main_image_url = '/static/img/default_article.jpg'
+    title = request.form.get('title', '').strip()
+    text = request.form.get('text', '').strip()
     file = request.files.get('photo')
     
-    if file and file.filename:
-        if allowed_file(file.filename):
-            filename = f"{uuid.uuid4()}_{secure_filename(file.filename)}"
-            upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'articles', filename)
-            os.makedirs(os.path.dirname(upload_path), exist_ok=True)
-            file.save(upload_path)
-            main_image_url = f'/static/uploads/articles/{filename}'
-
+    has_errors = False
+    
+    # Проверка заголовка
+    if not title:
+        flash('Название статьи не может быть пустым или состоять только из пробелов.', 'article_title_error')
+        has_errors = True
+    
+    # Проверка текста
+    if not text:
+        flash('Текст статьи не может быть пустым или состоять только из пробелов.', 'article_text_error')
+        has_errors = True
+    
+    # Проверка фото и СОХРАНЕНИЕ даже при ошибках
+    saved_image_url = None
+    
+    if not file or not file.filename:
+        flash('Фото статьи обязательно для загрузки.', 'article_photo_error')
+        has_errors = True
+    elif not allowed_file(file.filename):
+        flash('Неподдерживаемый формат фото. Используйте PNG, JPG, JPEG, GIF или WEBP.', 'article_photo_error')
+        has_errors = True
+    else:
+        # СОХРАНЯЕМ ФОТО СРАЗУ, даже если есть другие ошибки
+        filename = f"{uuid.uuid4()}_{secure_filename(file.filename)}"
+        upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'articles', filename)
+        os.makedirs(os.path.dirname(upload_path), exist_ok=True)
+        file.save(upload_path)
+        saved_image_url = f'/static/uploads/articles/{filename}'
+    
+    # Если есть ошибки, возвращаем форму с сохранённым фото
+    if has_errors:
+        return render_template(
+            'articles/article_edit.html', 
+            article=None,
+            form_title=title,
+            form_text=text,
+            temp_image_url=saved_image_url  # Передаём сохранённое фото
+        ), 400
+    
+    # Если ошибок нет, создаём статью с сохранённым фото
     new_article = Article(
         title=title,
         text=text,
-        main_image_url=main_image_url,
+        main_image_url=saved_image_url,
         author_id=current_user.id
     )
     
@@ -181,17 +211,45 @@ def article_edit(article_id):
         return render_template('articles/article_edit.html', article=article)
 
     # POST — сохранение изменений
-    article.title = request.form.get('title')
-    article.text = request.form.get('text')
+    title = request.form.get('title', '').strip()
+    text = request.form.get('text', '').strip()
     
+    has_errors = False
+    
+    # Проверка заголовка
+    if not title:
+        flash('Название статьи не может быть пустым или состоять только из пробелов.', 'article_title_error')
+        has_errors = True
+    
+    # Проверка текста
+    if not text:
+        flash('Текст статьи не может быть пустым или состоять только из пробелов.', 'article_text_error')
+        has_errors = True
+    
+    # Проверка фото (только если загружено новое, проверяем формат)
     file = request.files.get('photo')
-    if file and file.filename:
-        if allowed_file(file.filename):
-            filename = f"{uuid.uuid4()}_{secure_filename(file.filename)}"
-            upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'articles', filename)
-            os.makedirs(os.path.dirname(upload_path), exist_ok=True)
-            file.save(upload_path)
-            article.main_image_url = f'/static/uploads/articles/{filename}'
+    if file and file.filename and not allowed_file(file.filename):
+        flash('Неподдерживаемый формат фото. Используйте PNG, JPG, JPEG, GIF или WEBP.', 'article_photo_error')
+        has_errors = True
+    
+    if has_errors:
+        return render_template(
+            'articles/article_edit.html', 
+            article=article,
+            form_title=title,
+            form_text=text
+        ), 400
+    
+    article.title = title
+    article.text = text
+    
+    # Проверяем, загружено ли новое фото
+    if file and file.filename and allowed_file(file.filename):
+        filename = f"{uuid.uuid4()}_{secure_filename(file.filename)}"
+        upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'articles', filename)
+        os.makedirs(os.path.dirname(upload_path), exist_ok=True)
+        file.save(upload_path)
+        article.main_image_url = f'/static/uploads/articles/{filename}'
 
     db.session.commit()
     flash(f'Статья "{article.title}" обновлена!', 'success')

@@ -15,7 +15,7 @@
     <div class="article-edit-header-pill">{{ 'Редактировать' if article else 'Добавить' }} статью</div>
 </div>
 
-<form class="article-edit-form" method="post" enctype="multipart/form-data">
+<form class="article-edit-form" method="post" enctype="multipart/form-data" novalidate>
     <!-- 1. Фотография -->
     <div class="article-edit-photo-wrapper">
         <div class="article-edit-photo-card">
@@ -27,28 +27,60 @@
                         accept="image/*"
                 >
                 <span class="article-edit-photo-placeholder file-upload-placeholder">{{ 'Изменить фото' if article else 'Загрузите фото' }}</span>
-                {% if article and article.main_image_url %}
-                <img class="file-upload-preview is-visible"
-                     src="{{ article.main_image_url }}"
-                     alt="{{ article.title }}"
-                >
+                <!-- ПОКАЗЫВАЕМ СОХРАНЁННОЕ ФОТО -->
+                {% if temp_image_url %}
+                    <img class="file-upload-preview is-visible"
+                         src="{{ temp_image_url }}"
+                         alt="Предпросмотр">
+                {% elif article and article.main_image_url %}
+                    <img class="file-upload-preview is-visible"
+                         src="{{ article.main_image_url }}"
+                         alt="{{ article.title }}">
                 {% else %}
-                <img class="file-upload-preview" alt="Предпросмотр фото статьи">
+                    <img class="file-upload-preview" alt="Предпросмотр фото статьи">
                 {% endif %}
             </label>
+            {% with messages = get_flashed_messages(category_filter=['article_photo_error']) %}
+                {% if messages %}
+                    <div class="form-field-errors">
+                        {% for message in messages %}
+                            <div class="form-field-error">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
         </div>
     </div>
 
     <!-- 2. Заголовок -->
     <div class="article-edit-title-wrapper">
         <input type="text" name="title" class="article-edit-title-input"
-               placeholder="Заголовок статьи" value="{{ article.title if article else '' }}" required>
+               placeholder="Заголовок статьи" 
+               value="{{ form_title if form_title else (article.title if article else '') }}">
+        {% with messages = get_flashed_messages(category_filter=['article_title_error']) %}
+            {% if messages %}
+                <div class="form-field-errors">
+                    {% for message in messages %}
+                        <div class="form-field-error">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
     </div>
 
     <!-- 3. Содержание (текст статьи) -->
     <div class="article-edit-content-wrapper">
         <textarea name="text" class="article-edit-content-textarea"
-                  placeholder="Текст статьи" rows="12" required>{{ article.text if article else '' }}</textarea>
+                  placeholder="Текст статьи" rows="12">{{ form_text if form_text else (article.text if article else '') }}</textarea>
+        {% with messages = get_flashed_messages(category_filter=['article_text_error']) %}
+            {% if messages %}
+                <div class="form-field-errors">
+                    {% for message in messages %}
+                        <div class="form-field-error">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
     </div>
 
     <!-- 4. Кнопка действия -->
