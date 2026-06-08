@@ -26,6 +26,7 @@ def adapt_chef_for_template(chef):
         # Расчет среднего рейтинга повара (округляем до 1 знака)
         avg_rating = db.session.query(func.avg(ChefRating.rating)).filter(ChefRating.chef_id == chef.id).scalar()
         chef.average_rating = round(avg_rating, 1) if avg_rating else 0.0
+        chef.average_rating_raw = avg_rating if avg_rating else 0.0  # Для JS с половинками
 
         # Считаем общее количество оценок через связь ratings
         chef.ratings_count = chef.ratings.count()

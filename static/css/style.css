@@ -6498,7 +6498,7 @@ body.menu-open::before {
 
 /* Желтая пилюля повара */
 .chef-rating-pill {
-    background-color: #b1c643;
+    background-color: rgb(177, 198, 67);
     color: #fff;
     padding: 12px 30px;
     border-radius: 25px;
@@ -6613,7 +6613,7 @@ body.menu-open::before {
     text-decoration: none;
 }
 
-/* [КОММИТ 2] Выстраиваем желтую пилюлю и счетчик в одну линию */
+/* Выстраиваем желтую пилюлю и счетчик в одну линию */
 .chef-rating-flex {
     display: flex;
     align-items: center;
@@ -6649,4 +6649,364 @@ body.menu-open::before {
     padding: 1px 6px;
     border-radius: 8px;
     line-height: 1;
+}
+
+/* Блок рейтинга и управления оценками */
+.chef-rating-container {
+    margin: 20px auto;
+    padding: 15px;
+    max-width: 500px;
+    text-align: center;
+}
+
+.chef-rating-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.chef-stars-display,
+.chef-stars-selector {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.chef-stars-selector svg {
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+}
+
+.chef-stars-selector svg:hover {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+.chef-avg-number {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #ff3b30;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 8px;
+    min-width: 45px;
+}
+
+.chef-reviews-badge {
+    background-color: #6da4a3;
+    color: #fff;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 2px solid #fff;
+    user-select: none;
+}
+
+.chef-rating-form-wrapper {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 15px;
+}
+
+.chef-rating-select-group {
+    margin-bottom: 15px;
+}
+
+.chef-rating-select-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.chef-rating-buttons-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.chef-btn-submit-rate,
+.chef-btn-delete-rate {
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+    border: none;
+}
+
+.chef-btn-submit-rate {
+    background-color: #6da4a3;
+    color: #fff;
+}
+
+.chef-btn-submit-rate:hover {
+    background-color: #5c918f;
+    transform: translateY(-1px);
+}
+
+.chef-btn-delete-rate {
+    background-color: #ff3b30;
+    color: #fff;
+}
+
+.chef-btn-delete-rate:hover {
+    background-color: #e6352b;
+    transform: translateY(-1px);
+}
+
+.chef-rating-guest-hint {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin: 10px 0 0;
+}
+
+.chef-rating-guest-hint a {
+    color: #6da4a3;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.rating-hint {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #6da4a3;
+    transition: opacity 0.3s;
+    text-align: center;
+}
+
+/* Блок администратора */
+.chef-admin-wrapper {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.chef-admin-edit-btn,
+.chef-admin-delete-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    font-size: 0.9rem;
+}
+
+.chef-admin-edit-btn {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.chef-admin-edit-btn:hover {
+    background-color: #e0a800;
+    transform: translateY(-1px);
+}
+
+.chef-admin-delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.chef-admin-delete-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
+.chef-admin-delete-form {
+    display: inline;
+}
+
+/* Теги */
+.chef-tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.chef-no-tags {
+    color: #999;
+    font-style: italic;
+}
+
+/* Биография */
+.chef-bio-wrapper {
+    margin: 30px auto;
+    max-width: 800px;
+}
+
+.chef-bio-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.chef-bio-content {
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Фото */
+.chef-photo-wrapper {
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.chef-photo-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.chef-photo-inner img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Имя */
+.chef-name-wrapper {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.chef-name-pill {
+    display: inline-block;
+    background: #6da4a3;
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Желтая подложка для блока рейтинга */
+.chef-rating-pill {
+    background-color: #ffc107;
+    padding: 8px 20px;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chef-rating-pill span {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Стили для статичных звезд (средний рейтинг) */
+.chef-stars-display svg {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Для пустых звезд в статичном режиме делаем обводку видимой */
+.chef-stars-display svg path[stroke="#ddd"] {
+    stroke: #c0c0c0;
+    stroke-width: 1.8;
+}
+
+/* Улучшаем видимость половинчатой звезды */
+.chef-stars-display svg path[fill="#ff3b30"] {
+    fill: #ff3b30;
+}
+
+/* Для лучшей читаемости всех звезд */
+.chef-stars-display {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 5px 10px;
+    border-radius: 30px;
+}
+
+/* Желтая подложка для блока рейтинга */
+.chef-rating-pill {
+    background-color: #b1c643;
+    padding: 8px 20px;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chef-rating-pill span {
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Стили для статичных звезд (средний рейтинг) */
+.chef-stars-display svg {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Для пустых звезд в статичном режиме делаем обводку видимой */
+.chef-stars-display svg path[stroke="#ddd"] {
+    stroke: #ff3b30;
+    stroke-width: 1.8;
+}
+
+/* Улучшаем видимость половинчатой звезды */
+.chef-stars-display svg path[fill="#ff3b30"] {
+    fill: #b1c643;
+}
+
+/* Для лучшей читаемости всех звезд */
+.chef-stars-display {
+    background:  #ffffff;
+    padding: 5px 10px;
+    border-radius: 30px;
+}
+
+/* Восстанавливаем желто-салатовую подложку вокруг рейтинга */
+.chef-rating-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background-color: #b1c643;
+    padding: 10px 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .chef-rating-flex {
+        flex-wrap: wrap;
+        padding: 12px 20px;
+    }
+    
+    .chef-stars-display {
+        order: 1;
+    }
+    
+    .chef-avg-number {
+        order: 2;
+    }
+    
+    .chef-reviews-badge {
+        order: 3;
+    }
 }
