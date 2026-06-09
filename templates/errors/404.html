@@ -1,0 +1,128 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Страница не найдена — 404{% endblock %}
+
+{% block content %}
+<section class="error-section">
+    <div class="error-container">
+        <img src="{{ url_for('static', filename='img/404.png') }}" 
+             alt="404 Not Found" 
+             class="error-image">
+        <div class="error-code-wrapper">
+            <h1 class="error-code">404</h1>
+        </div>
+        <h2 class="error-title">Страница не найдена :/</h2>
+        <p class="error-message">
+            К сожалению, страница, которую вы ищете, не существует или была перемещена.
+        </p>
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="error-btn error-btn-primary">На главную</a>
+            <button onclick="history.back()" class="error-btn error-btn-secondary">Вернуться назад</button>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-section {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+    }
+    .error-container {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .error-image {
+        max-width: 280px;
+        width: 100%;
+        height: auto;
+        margin-bottom: 30px;
+        border-radius: 30px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    .error-code-wrapper {
+        margin-bottom: 20px;
+    }
+    .error-code {
+        font-size: 120px;
+        font-weight: 800;
+        margin: 0;
+        line-height: 1;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 4px;
+    }
+    .error-title {
+        font-size: 28px;
+        margin: 0 0 15px 0;
+        color: var(--black);
+        font-weight: 700;
+    }
+    .error-message {
+        color: #666;
+        font-size: 18px;
+        margin-bottom: 35px;
+        line-height: 1.6;
+    }
+    .error-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .error-btn {
+        display: inline-block;
+        padding: 12px 28px;
+        border-radius: 60px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        font-size: 16px;
+        font-family: inherit;
+    }
+    .error-btn-primary {
+        background-color: var(--red);
+        color: var(--white);
+    }
+    .error-btn-primary:hover {
+        background-color: #d63a3a;
+        transform: translateY(-2px);
+        text-decoration: none;
+        color: var(--white);
+    }
+    .error-btn-secondary {
+        background-color: var(--teal);
+        color: var(--white);
+    }
+    .error-btn-secondary:hover {
+        background-color: #5c8a8b;
+        transform: translateY(-2px);
+        text-decoration: none;
+        color: var(--white);
+    }
+    @media (max-width: 640px) {
+        .error-code { font-size: 90px; }
+        .error-title { font-size: 24px; }
+        .error-message { font-size: 16px; }
+        .error-image { max-width: 220px; }
+        .error-btn { padding: 10px 22px; font-size: 14px; }
+    }
+    @media (max-width: 480px) {
+        .error-code { font-size: 70px; }
+        .error-title { font-size: 20px; }
+        .error-message { font-size: 14px; }
+        .error-image { max-width: 180px; }
+        .error-btn { padding: 8px 18px; font-size: 13px; }
+    }
+</style>
+{% endblock %}

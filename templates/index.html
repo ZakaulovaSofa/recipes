@@ -3,6 +3,14 @@
 {% block title %}Be cooking — Главная{% endblock %}
 
 {% block content %}
+<section class="main-image-section">
+    <div class="main-image-container">
+        <img src="{{ url_for('static', filename='img/main.png') }}" 
+             alt="Be cooking" 
+             class="main-image">
+    </div>
+</section>
+
 <!-- СЕКЦИЯ 1: НОВЫЕ РЕЦЕПТЫ -->
 <section class="section">
     <div class="section-title-wrapper">
@@ -39,4 +47,23 @@
         {% endfor %}
     </div>
 </section>
+{% endblock %}
+{% block extra_css %}
+<style>
+    .main-image-section {
+        margin-bottom: 50px;
+        display: flex;
+        justify-content: center;
+    }
+    .main-image-container {
+        max-width: 100%;
+        border-radius: 30px;
+        overflow: hidden;
+    }
+    .main-image {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+</style>
 {% endblock %}
