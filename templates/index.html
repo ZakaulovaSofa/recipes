@@ -3,11 +3,19 @@
 {% block title %}Be cooking — Главная{% endblock %}
 
 {% block content %}
-<section class="main-image-section">
-    <div class="main-image-container">
-        <img src="{{ url_for('static', filename='img/main.png') }}" 
-             alt="Be cooking" 
-             class="main-image">
+<!-- ДВА ИЗОБРАЖЕНИЯ РЯДОМ: main (слева) + main_text (справа) -->
+<section class="double-image-section">
+    <div class="double-image-wrapper">
+        <div class="image-block image-block-main">
+            <img src="{{ url_for('static', filename='img/main.png') }}" 
+                 alt="Be cooking" 
+                 class="image-block-img">
+        </div>
+        <div class="image-block image-block-text">
+            <img src="{{ url_for('static', filename='img/main_text.png') }}" 
+                 alt="Be cooking text" 
+                 class="image-block-img">
+        </div>
     </div>
 </section>
 
@@ -48,22 +56,83 @@
     </div>
 </section>
 {% endblock %}
+
 {% block extra_css %}
 <style>
-    .main-image-section {
+    .double-image-section {
         margin-bottom: 50px;
-        display: flex;
-        justify-content: center;
+        width: 100%;
     }
-    .main-image-container {
-        max-width: 100%;
+    
+    .double-image-wrapper {
+        display: flex;
+        justify-content: space-between;
+        gap: 25px;
+        width: 100%;
+    }
+    
+    .image-block-main {
+        flex: 1;  
+        max-width: 30%;  
         border-radius: 30px;
         overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .main-image {
+    
+    .image-block-text {
+        flex: 3;  
+        min-width: 0; 
+        border-radius: 30px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .image-block-img {
         width: 100%;
-        height: auto;
+        height: auto;  
         display: block;
+    }
+    
+    /* Адаптив для планшетов */
+    @media (max-width: 768px) {
+        .double-image-wrapper {
+            gap: 20px;
+        }
+        .image-block-main,
+        .image-block-text {
+            border-radius: 20px;
+        }
+        .image-block-main {
+            max-width: 35%;
+        }
+    }
+    
+    /* Адаптив для телефонов - изображения друг под другом */
+    @media (max-width: 640px) {
+        .double-image-wrapper {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .image-block-main,
+        .image-block-text {
+            max-width: 100%;
+            flex: auto;
+        }
+        
+        .double-image-section {
+            margin-bottom: 35px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .image-block-main,
+        .image-block-text {
+            border-radius: 15px;
+        }
+        .double-image-wrapper {
+            gap: 15px;
+        }
     }
 </style>
 {% endblock %}
