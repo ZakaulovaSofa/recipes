@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <option value="капля">капли</option>
                     <option value="щепотка">щепотки</option>
                     <option value="шт">штуки</option>
+                    <option value="зубчик">зубчики</option>
+                    <option value="по вкусу">по вкусу</option>
                 </select>
             
                 <button type="button"
