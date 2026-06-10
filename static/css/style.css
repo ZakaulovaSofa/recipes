@@ -7010,3 +7010,38 @@ body.menu-open::before {
         order: 3;
     }
 }
+
+/* ========== ИСПРАВЛЕНИЕ КОММЕНТАРИЕВ НА МОБИЛЬНЫХ ========== */
+
+@media (max-width: 768px) {
+    /* Переопределяем максимальную ширину родительского контейнера */
+    .comment-item {
+        max-width: 100% !important;
+        width: 100%;
+    }
+    
+    /* Карточка комментария занимает всю доступную ширину с отступами */
+    .comment-text-card,
+    .comment-other .comment-text-card,
+    .comment-self .comment-text-card {
+        max-width: calc(100% - 20px) !important;
+        width: auto;
+    }
+    
+    /* Отступы для левых комментариев */
+    .comment-other .comment-text-card {
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+    
+    /* Отступы для правых комментариев */
+    .comment-self .comment-text-card {
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+    
+    /* Убираем лишний внутренний отступ у контейнера */
+    .comments-container {
+        padding: 0 5px;
+    }
+}
